@@ -1,0 +1,33 @@
+.app-container {
+    text-align: center;
+    padding: 2rem;
+    font-family: sans-serif;
+  }
+  
+  button {
+    margin-bottom: 1rem;
+    padding: 0.5rem 1.2rem;
+    font-size: 1rem;
+    cursor: pointer;
+  }
+  
+  button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+  
+  .card-display {
+    margin-top: 1rem;
+  }
+  
+  .card-name {
+    margin-top: 0.5rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
+  
+  .card-description {
+    font-size: 0.9rem;
+    color: #444;
+    margin-top: 0.5rem;
+  }

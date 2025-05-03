@@ -26,5 +26,6 @@ INSERT INTO card_descriptions (key, description) VALUES
 ('fool', 'A kezdetek és új lehetőségek jelképe.'),
 ('magician', 'A hatalom és képességek kártyája.');
 
+SELECT * FROM card_descriptions
 
 pip install asyncpg

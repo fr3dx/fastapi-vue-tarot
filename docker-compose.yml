@@ -10,6 +10,28 @@ services:
       - "5432:5432"
     volumes:
       - tarot_data:/var/lib/postgresql/data
+    restart: always
+    networks:
+      - tarot_network
+
+  minio:
+    image: bitnami/minio:2025.4.8
+    environment:
+      MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY}
+      MINIO_SECRET_KEY: ${MINIO_SECRET_KEY}
+    command: server /data
+    volumes:
+      - minio_data:/data
+    ports:
+      - "9000:9000"
+    restart: always
+    networks:
+      - tarot_network
+
+networks:
+  tarot_network:
+    driver: bridge
 
 volumes:
   tarot_data:
+  minio_data:

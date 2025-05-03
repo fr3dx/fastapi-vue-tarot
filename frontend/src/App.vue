@@ -23,7 +23,8 @@ import { ref } from 'vue'
 const card = ref(null)
 const loading = ref(false)
 const description = ref(null)
-const backendUrl = 'http://localhost:8000'
+//const backendUrl = 'http://localhost:8000'
+const backendUrl = import.meta.env.VITE_BACKEND_URL
 
 async function drawCard() {
   if (loading.value) return
@@ -58,37 +59,5 @@ async function revealDescription() {
 
 
 <style scoped>
-.app-container {
-  text-align: center;
-  padding: 2rem;
-  font-family: sans-serif;
-}
-
-button {
-  margin-bottom: 1rem;
-  padding: 0.5rem 1.2rem;
-  font-size: 1rem;
-  cursor: pointer;
-}
-
-button:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-.card-display {
-  margin-top: 1rem;
-}
-
-.card-name {
-  margin-top: 0.5rem;
-  font-size: 1.2rem;
-  font-weight: bold;
-}
-
-.card-description {
-  font-size: 0.9rem;
-  color: #444;
-  margin-top: 0.5rem;
-}
+@import './assets/App.css';  /* CSS file import */
 </style>
