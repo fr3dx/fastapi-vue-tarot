@@ -8,7 +8,7 @@
     </button>
 
     <div v-if="card" class="card-display">
-      <img :src="backendUrl + card.image_url" width="300" height="527" alt="Kártya kép" />
+      <img :src="card.image_url" width="300" height="527" alt="Kártya kép" />
       <p class="card-name">{{ card.name }}</p>
 
       <button v-if="!description" @click="revealDescription">Mutasd a jelentését</button>
@@ -16,6 +16,7 @@
     </div>
   </div>
 </template>
+
 
 <script setup>
 import { ref } from 'vue'

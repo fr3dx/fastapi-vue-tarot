@@ -10,6 +10,7 @@ from contextlib import asynccontextmanager # Lifespan setup
 from fastapi.responses import JSONResponse
 from fastapi.exceptions import RequestValidationError
 from starlette.exceptions import HTTPException as StarletteHTTPException
+from minio_client import client, BUCKET_NAME  # MinIO client import
 
 
 # Lifespan event handler: Uses the functions from the database module
@@ -88,33 +89,32 @@ def format_card_name(filename: str) -> str:
 # It does NOT include the description in this version, as the description is fetched separately.
 @app.get("/api/daily_card", response_model=Card)
 async def get_daily_card() -> Card:
-    """
-    Selects a random card image file from the static directory.
-    Returns basic information (name, image URL, key) about the randomly selected card.
-    """
-    # List all entries in the CARDS_DIR and filter to include only files ending with .png (case-insensitive).
-    png_files: List[str] = [f for f in os.listdir(CARDS_DIR) if os.path.isfile(os.path.join(CARDS_DIR, f)) and f.lower().endswith(".png")]
+    try:
+        # Lekérjük az összes fájlt a bucketből
+        objects = list(client.list_objects(BUCKET_NAME, recursive=True))
+        png_files = [obj.object_name for obj in objects if obj.object_name.lower().endswith(".png")]
 
-    # Check if there are any PNG files found.
-    if not png_files:
-        # If no images are found, raise a 404 error.
-        raise HTTPException(status_code=404, detail="No card images found on the server.")
+        # Ellenőrizzük, hogy van-e png
+        if not png_files:
+            raise HTTPException(status_code=404, detail="Nincs elérhető kép a MinIO-ban.")
 
-    # Randomly select one filename from the list of PNG files.
-    selected: str = random.choice(png_files)
+        # Véletlenszerűen választunk egyet
+        selected = random.choice(png_files)
 
-    # Use the helper function to format the card name from the selected filename.
-    card_name: str = format_card_name(selected)
-    # Extract the card key from the filename (part after the first underscore, before the extension, lowercased).
-    key: str = selected.split("_", 1)[-1].split(".")[0].lower()
+        # Generálunk presigned URL-t
+        presigned_url = client.presigned_get_object(BUCKET_NAME, selected)
 
-    # Return a Card model instance containing the extracted information.
-    # The image_url points to the static file mount path.
-    return Card(
-        name=card_name,
-        image_url=f"/cards/{selected}",
-        key=key
-    )
+        # Képnév + kulcs formázása
+        name = format_card_name(selected)
+        key = selected.rsplit("/", 1)[-1].split(".")[0].lower()
+
+        return Card(
+            name=name,
+            image_url=presigned_url,
+            key=key
+        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Hiba a MinIO kapcsolat során: {str(e)}")
 
 # Endpoint to retrieve a card description by its key from the database.
 # This endpoint uses the dedicated DAO function to fetch the description.
