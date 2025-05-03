@@ -59,3 +59,6 @@ backend/__pycache__
 
 # Tarot cards
 Cards-png/
+
+# .env
+.env

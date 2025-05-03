@@ -1,0 +1,15 @@
+services:
+  db:
+    image: bitnami/postgresql:14.17.0
+    container_name: tarot-db
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "5432:5432"
+    volumes:
+      - tarot_data:/var/lib/postgresql/data
+
+volumes:
+  tarot_data:
