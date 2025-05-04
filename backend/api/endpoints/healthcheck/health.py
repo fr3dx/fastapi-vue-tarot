@@ -1,9 +1,9 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import APIRouter
 
-# Root endpoint definition.
-# This route is useful for simple health checks or confirming the API is online.
-@app.get("/")
-async def read_root():
+router = APIRouter(tags=["health"])
+# Healthcheck endpoint definition.
+@router.get("/health")
+async def health():
     """
     Basic root endpoint that returns a simple message to confirm the API service is operational.
     """

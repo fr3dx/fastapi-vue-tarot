@@ -1,7 +1,7 @@
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 import logging
-from services.database import connect_to_db, close_db_connection
+from services.database.psql import connect_to_db, close_db_connection
 
 # Lifespan event handler: Handles the lifecycle of the application.
 # Specifically manages the database connection pool during startup and shutdown.

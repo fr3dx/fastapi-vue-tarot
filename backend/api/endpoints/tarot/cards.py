@@ -1,10 +1,10 @@
 from fastapi import APIRouter, HTTPException
 from typing import List, Optional, Dict, Any
 import random
-from services.minio_client import client, BUCKET_NAME
+from services.storage.minio import client, BUCKET_NAME
 from models.schemas import Card, CardDescription, CardData
 from utils.formatters import format_card_name
-from services.database import get_card_description_by_key, get_all_card_data
+from services.database.psql import get_card_description_by_key, get_all_card_data
 
 router = APIRouter(tags=["cards"])
 
