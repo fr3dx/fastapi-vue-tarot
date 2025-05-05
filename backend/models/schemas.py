@@ -11,12 +11,18 @@ class Card(BaseModel):
     image_url: str  # Relative URL to the card image (e.g., "/static/images/major-arcana/the-fool.png")
     key: str  # Unique identifier for the card, typically derived from the filename (e.g., "major-arcana_the-fool")
 
+    class Config:
+        orm_mode = True  # Enable using SQLAlchemy objects
+
 class CardDescription(BaseModel):
     """
     Represents the textual description of a Tarot card.
     Used in responses where only the card’s explanation is needed.
     """
     description: str  # Narrative or symbolic meaning of the card
+
+    class Config:
+        orm_mode = True
 
 class CardData(BaseModel):
     """
@@ -25,3 +31,6 @@ class CardData(BaseModel):
     """
     key: str  # Unique key of the card (e.g., "major-arcana_the-fool")
     description: str  # Full textual description
+
+    class Config:
+        orm_mode = True

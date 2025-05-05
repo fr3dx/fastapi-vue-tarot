@@ -29,3 +29,7 @@ INSERT INTO card_descriptions (key, description) VALUES
 SELECT * FROM card_descriptions
 
 pip install asyncpg
+
+admin interface
+pip install fastapi-admin[full] psycopg[binary] jinja2
+
