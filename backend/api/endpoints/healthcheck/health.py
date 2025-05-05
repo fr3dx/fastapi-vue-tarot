@@ -7,7 +7,7 @@ async def health():
     """
     Basic root endpoint that returns a simple message to confirm the API service is operational.
     """
-    return {"message": "Tarot API is running."}
+    return {"message": "running."}
 
 # Note:
 # To run this FastAPI application:
