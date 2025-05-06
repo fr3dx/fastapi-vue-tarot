@@ -29,3 +29,41 @@ INSERT INTO card_descriptions (key, description) VALUES
 SELECT * FROM card_descriptions
 
 pip install asyncpg
+
+Remove Python cache
+Get-ChildItem -Path . -Recurse -Directory -Filter "__pycache__" | Remove-Item -Recurse -Force
+
+Oauth:
+pip install authlib 
+
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,  -- PostgreSQL esetén
+    facebook_id VARCHAR(255) UNIQUE NOT NULL,
+    name VARCHAR(255),
+    email VARCHAR(255),
+    last_draw_date DATE,  -- vagy TIMESTAMP, ha pontos idő is kell
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+show tables:
+SELECT table_name FROM information_schema.tables
+WHERE table_schema = 'public';
+
+OR
+
+DB migration:
+pip install alembic
+
+FB new app:
+http://localhost:8000/api/auth/facebook/callback
+
+
+Oauth:
+pip install google-auth google-auth-oauthlib
+
+https://developers.google.com/oauthplayground/
+
+Test token:
+curl -X POST http://localhost:8000/api/auth/google \
+  -H "Content-Type: application/json" \
+  -d '{"token": "IDE_ÍRD_BE_AZ_ID_TOKEN-T"}'

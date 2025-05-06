@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Google Login Test</title>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script>
+      function handleCredentialResponse(response) {
+        console.log("ID Token:", response.credential);
+
+        // Curl test
+        document.getElementById("token").textContent = response.credential;
+      }
+
+      window.onload = function () {
+        google.accounts.id.initialize({
+          client_id: "GOOGLE_CLIENT_ID",
+          callback: handleCredentialResponse
+        });
+
+        google.accounts.id.renderButton(
+          document.getElementById("buttonDiv"),
+          { theme: "outline", size: "large" }
+        );
+      };
+    </script>
+  </head>
+  <body>
+    <h1>Google Login</h1>
+    <div id="buttonDiv"></div>
+    <p><strong>ID Token:</strong> <span id="token">[még nincs]</span></p>
+  </body>
+</html>
