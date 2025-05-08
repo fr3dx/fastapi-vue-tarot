@@ -51,6 +51,8 @@ WHERE table_schema = 'public';
 
 OR
 
+
+
 DB migration:
 pip install alembic
 
@@ -67,3 +69,10 @@ Test token:
 curl -X POST http://localhost:8000/api/auth/google \
   -H "Content-Type: application/json" \
   -d '{"token": "IDE_ÍRD_BE_AZ_ID_TOKEN-T"}'
+
+
+npm install jwt-decode
+
+npm install axios
+
+

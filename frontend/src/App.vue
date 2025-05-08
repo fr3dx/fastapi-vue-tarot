@@ -1,64 +1,11 @@
 <template>
-  <div class="app-container">
-    <h1>Tarot kártyahúzás</h1>
-
-    <button @click="drawCard" :disabled="loading">
-      <span v-if="!loading">Húzz egy kártyát</span>
-      <span v-else>Töltés…</span>
-    </button>
-
-    <div v-if="card" class="card-display">
-      <img :src="card.image_url" width="300" height="527" alt="Kártya kép" />
-      <p class="card-name">{{ card.name }}</p>
-
-      <button v-if="!description" @click="revealDescription">Mutasd a jelentését</button>
-      <p class="card-description" v-if="description">{{ description }}</p>
-    </div>
-  </div>
+  <router-view></router-view>
 </template>
 
-
-<script setup>
-import { ref } from 'vue'
-
-const card = ref(null)
-const loading = ref(false)
-const description = ref(null)
-//const backendUrl = 'http://localhost:8000'
-const backendUrl = import.meta.env.VITE_BACKEND_URL
-
-async function drawCard() {
-  if (loading.value) return
-  loading.value = true
-  description.value = null // reset description
-  try {
-    const res = await fetch(`${backendUrl}/api/daily_card`)
-    if (!res.ok) throw new Error('API hiba: ' + res.status)
-    const data = await res.json()
-    card.value = data
-  } catch (e) {
-    console.error('Hiba történt:', e)
-    card.value = null
-  } finally {
-    loading.value = false
-  }
-}
-
-async function revealDescription() {
-  if (!card.value?.key) return
-  try {
-    const res = await fetch(`${backendUrl}/api/card_description/${card.value.key}`);
-    if (!res.ok) throw new Error('Leírás lekérése hiba: ' + res.status);
-    const data = await res.json();
-    description.value = data.description;
-  } catch (e) {
-    console.error('Leírás hiba:', e);
-    description.value = "Nem sikerült betölteni a leírást.";
-  }
-}
+<script>
+export default {
+  name: 'App',
+};
 </script>
 
-
-<style scoped>
-@import './assets/App.css';  /* CSS file import */
-</style>
+  
