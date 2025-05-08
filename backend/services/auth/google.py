@@ -3,7 +3,7 @@ from google.auth.transport import requests
 from fastapi import HTTPException, status
 import os
 
-# Google Client ID, amit a .env fájlból kell betölteni
+# Google Client ID
 CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
 
 def verify_google_token(token: str):
@@ -18,7 +18,7 @@ def verify_google_token(token: str):
                 detail="Token érvénytelen"
             )
 
-        # Visszaadjuk a felhasználói adatokat
+        # Felhasználói adatokat adjuk vissza
         return {
             "email": idinfo.get("email"),
             "name": idinfo.get("name"),
@@ -26,10 +26,10 @@ def verify_google_token(token: str):
             "email_verified": idinfo.get("email_verified"),
             "given_name": idinfo.get("given_name"),
             "family_name": idinfo.get("family_name"),
+            "picture": idinfo.get("picture", "")  # Kép URL-jét is hozzáadjuk
         }
 
     except ValueError:
-        # Ha valami hiba történt, például lejárt token
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Token érvénytelen vagy lejárt"
