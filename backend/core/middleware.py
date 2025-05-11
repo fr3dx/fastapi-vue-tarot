@@ -13,7 +13,7 @@ def setup_cors(app: FastAPI):
     print("Setting up CORS middleware...")
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=["http://localhost:5173"],  # Allowed origin(s), e.g., local frontend dev server
+        allow_origins=["http://localhost:5173", "http://localhost:5173/*"],  # Allowed origin(s), e.g., local frontend dev server
         allow_credentials=True,  # Enable cookies, authorization headers, and other credentials
         allow_methods=["*"],  # Allow all HTTP methods (GET, POST, PUT, DELETE, etc.)
         allow_headers=["*"],  # Allow all custom and standard headers

@@ -75,4 +75,9 @@ npm install jwt-decode
 
 npm install axios
 
+pip install PyJWT
+
+
+TODO: implemet Authorization: Bearer token auth
+
 
