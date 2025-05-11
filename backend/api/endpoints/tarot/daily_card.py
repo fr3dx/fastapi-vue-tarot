@@ -1,13 +1,27 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends
+from models.schemas import Card
+from services.auth.jwt import decode_jwt_token  # A JWT dekóder importálása
 import random
 from services.storage.minio import client, BUCKET_NAME
-from models.schemas import Card
 from utils.formatters import format_card_name
+from fastapi.security import OAuth2PasswordBearer
+
+# OAuth2PasswordBearer token azonosításra
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 router = APIRouter(tags=["cards"])
 
+# A token paramétert a Depends segítségével kérjük
 @router.get("/daily_card", response_model=Card)
-async def get_daily_card() -> Card:
+async def get_daily_card(token: str = Depends(oauth2_scheme)) -> Card:
+    # Itt választhatjuk a megfelelő felhasználói adatokat a dekódolt tokenből
+    try:
+        payload = decode_jwt_token(token)  # A token dekódolása
+    except ValueError as e:
+        raise HTTPException(status_code=401, detail="Invalid token")
+
+    user_id = payload.get("sub")
+    
     try:
         # Retrieve all objects in the MinIO bucket (recursively)
         objects = list(client.list_objects(BUCKET_NAME, recursive=True))

@@ -1,40 +1,53 @@
 <template>
-  <div>
-    <h1>Google Bejelentkezés</h1>
-    <button id="google-signin-btn">Bejelentkezés Google-val</button>
+  <div class="home-container">
+    <h1 class="text-2xl font-bold">Tarot App</h1>
+
+    <!-- Two navigation links: daily draw and Google OAuth login -->
+    <div class="links mt-4">
+      <router-link to="/dialydraw" class="button-link">
+        <button class="p-2 bg-blue-500 text-white rounded">Daily Card Draw</button>
+      </router-link>
+
+      <router-link to="/googleoauth" class="button-link ml-4">
+        <button class="p-2 bg-green-500 text-white rounded">Google OAuth Login</button>
+      </router-link>
+    </div>
+
+    <!-- Display error message if present -->
+    <div v-if="error" class="mt-4 bg-red-100 p-2 rounded">
+      <strong>Hiba:</strong> {{ error }}
+    </div>
   </div>
 </template>
 
-<script>
-export default {
-  mounted() {
-    const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+<script setup>
+import { ref } from 'vue';
 
-    window.onload = () => {
-      google.accounts.id.initialize({
-        client_id: clientId,
-        callback: this.handleCredentialResponse,  // Itt kezeljük a bejelentkezést
-      });
+const error = ref(null); // Reactive variable for optional error display
 
-      google.accounts.id.renderButton(
-        document.getElementById('google-signin-btn'), 
-        { theme: "outline", size: "large" }
-      );
-    };
-  },
-  methods: {
-    handleCredentialResponse(response) {
-      // Ellenőrizzük, hogy sikerült-e bejelentkezni
-      if (response && response.credential) {
-        console.log("Bejelentkezett, token:", response.credential);
-        // Tároljuk el az id_token-t a localStorage-ban
-        localStorage.setItem('id_token', response.credential);
-        // Irányítjuk a felhasználót a callback oldalra
-        this.$router.push({ name: 'Callback' });
-      } else {
-        console.error("Hiba történt a bejelentkezés során.");
-      }
-    }
-  }
-};
+// Add custom error handling logic here if needed
 </script>
+
+<style scoped>
+.home-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.button-link {
+  text-decoration: none;
+}
+
+button {
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #444;
+}
+</style>
