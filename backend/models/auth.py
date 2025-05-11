@@ -9,8 +9,6 @@ class TokenIn(BaseModel):
 
 # Felhasználói adatokat tartalmazó modell
 class UserData(BaseModel):
+    sub: str
     email: str
     name: str
-    picture: str
-    given_name: str
-    family_name: str

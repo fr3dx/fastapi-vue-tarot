@@ -107,3 +107,32 @@ async def get_all_card_data() -> List[Dict[str, Any]]:
         raise HTTPException(status_code=500, detail=f"An unexpected database error occurred: {e}")
 
 # Additional DAO functions can be added here (e.g., insert, update, delete operations).
+
+async def insert_or_get_user(sub: str, email: Optional[str], name: Optional[str]) -> Dict[str, Any]:
+    if not pool:
+        raise HTTPException(status_code=503, detail="DB unavailable")
+
+    query = """
+    INSERT INTO users (sub, email, name)
+    VALUES ($1, $2, $3)
+    ON CONFLICT (sub) DO NOTHING;
+
+    SELECT id, sub, email, name, created_at, last_draw_date
+    FROM users
+    WHERE sub = $1;
+    """
+    async with pool.acquire() as conn:
+        await conn.execute(query.split(";")[0], sub, email, name)
+        row = await conn.fetchrow(query.split(";")[1], sub)
+        return dict(row) if row else {}
+
+async def get_user_by_sub(sub: str) -> Optional[Dict[str, Any]]:
+    if not pool:
+        raise HTTPException(status_code=503, detail="DB unavailable")
+    async with pool.acquire() as conn:
+        row = await conn.fetchrow("""
+            SELECT id, sub, email, name, created_at, last_draw_date
+            FROM users
+            WHERE sub = $1;
+        """, sub)
+        return dict(row) if row else None

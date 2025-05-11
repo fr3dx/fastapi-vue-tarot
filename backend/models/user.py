@@ -1,17 +1,17 @@
-# /models/users.py
+from pydantic import BaseModel
+from typing import Optional
+from datetime import datetime, date
 
-from sqlalchemy import Column, String, DateTime, Integer, Date
-from services.database.psql import Base
-from datetime import datetime
+class UserData(BaseModel):
+    id: int
+    sub: str
+    email: Optional[str]
+    name: Optional[str]
+    created_at: datetime
+    last_draw_date: Optional[date]
 
-class User(Base):
-    __tablename__ = "users"
+    class Config:
+        orm_mode = True
 
-    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
-    sub = Column(String, nullable=False, unique=True)
-    name = Column(String, nullable=True)
-    email = Column(String, nullable=True)
-    last_draw_date = Column(Date, nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
 
 

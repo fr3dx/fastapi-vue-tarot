@@ -8,7 +8,7 @@
 <script>
 export default {
   mounted() {
-    const clientId = '928275508669-tf20bv090ega6llrvcp57ct6v74d5me9.apps.googleusercontent.com';
+    const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 
     window.onload = () => {
       google.accounts.id.initialize({
