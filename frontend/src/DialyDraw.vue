@@ -36,6 +36,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
+import '@/assets/DialyDraw.css';
 
 const card = ref(null);
 const errorMessage = ref(null);
@@ -43,19 +44,16 @@ const loading = ref(false);
 const description = ref(null);
 const isAuthenticated = ref(false);
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
-const token = localStorage.getItem('access_token'); // Get token from localStorage
+const token = localStorage.getItem('access_token');
 
-// Check if token exists and consider user authenticated
 const checkAuthentication = () => {
   isAuthenticated.value = !!token;
 };
 
-// Run authentication check when component mounts
 onMounted(() => {
   checkAuthentication();
 });
 
-// Request a new daily card from backend
 const drawCard = async () => {
   if (loading.value) return;
   loading.value = true;
@@ -74,7 +72,7 @@ const drawCard = async () => {
     card.value = null;
 
     if (e.response?.status === 403) {
-      errorMessage.value = "Már húztál kártyát! Holnap újra próbálhatod.";
+      errorMessage.value = "Ma már húztál kártyát! Holnap újra próbálhatod.";
     } else {
       errorMessage.value = "Hiba történt a kártyahúzás közben.";
     }
@@ -83,7 +81,6 @@ const drawCard = async () => {
   }
 };
 
-// Fetch and reveal description of the drawn card
 const revealDescription = async () => {
   if (!card.value?.key) return;
   try {
@@ -97,15 +94,3 @@ const revealDescription = async () => {
   }
 };
 </script>
-
-<style scoped>
-button {
-  font-size: 16px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-button:hover {
-  background-color: #444;
-}
-</style>

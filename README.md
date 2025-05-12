@@ -84,6 +84,10 @@ UPDATE users SET last_draw_date = NULL WHERE id = 1;
 
 mc alias set localhost http://localhost:9000 minioaccesskey miniosecretkey
 
+docker pull bitnami/python:3.13.3-debian-12-r11
+docker pull bitnami/node:24.0.1-debian-12-r1
+docker pull bitnami/nginx:1.28.0-debian-12-r0
+
 
 
 
