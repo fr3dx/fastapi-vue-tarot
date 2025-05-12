@@ -1,12 +1,12 @@
 import os
 import psycopg2
 from dotenv import load_dotenv
-from datetime import datetime # Szükségünk lesz a datetime-ra a timestamp-hez
+from datetime import datetime  # We'll use datetime for the timestamp
 
 # Load environment variables from a .env file
 load_dotenv()
 
-# Database connection settings loaded from environment variables
+# Retrieve database connection settings from environment variables
 DB_HOST = os.getenv("DB_HOST", "localhost")
 DB_PORT = os.getenv("DB_PORT", "5432")
 DB_NAME = os.getenv("DB_NAME", "test")
@@ -27,24 +27,24 @@ try:
     )
     cur = conn.cursor()
 
-    # Tábla nevének definiálása
+    # Define the name of the table
     table_name = "users"
 
-    # Ellenőrizzük, hogy a tábla létezik-e és eldobjuk, ha igen
-    print(f"Ellenőrzés, hogy a '{table_name}' tábla létezik-e...")
+    # Check if the table exists and drop it if it does
+    print(f"Checking if the '{table_name}' table exists...")
     cur.execute(f"SELECT EXISTS (SELECT 1 FROM information_schema.tables WHERE table_name = '{table_name}');")
     table_exists = cur.fetchone()[0]
 
     if table_exists:
-        print(f"A '{table_name}' tábla létezik. Eldobjuk...")
+        print(f"The '{table_name}' table exists. Dropping it...")
         cur.execute(f"DROP TABLE {table_name};")
         conn.commit()
-        print(f"A '{table_name}' tábla sikeresen eldobva.")
+        print(f"The '{table_name}' table was successfully dropped.")
     else:
-        print(f"A '{table_name}' tábla nem létezik. Nem szükséges eldobni.")
+        print(f"The '{table_name}' table does not exist. No need to drop.")
 
-    # Létrehozzuk a 'users' táblát a megadott séma alapján
-    print(f"Létrehozzuk a '{table_name}' táblát a megadott séma alapján...")
+    # Create the 'users' table with the specified schema
+    print(f"Creating the '{table_name}' table with the specified schema...")
     cur.execute(f"""
     CREATE TABLE {table_name} (
         id SERIAL PRIMARY KEY,
@@ -56,10 +56,10 @@ try:
     );
     """)
     conn.commit()
-    print(f"A '{table_name}' tábla sikeresen létrehozva.")
+    print(f"The '{table_name}' table was successfully created.")
 
-    # Opcionálisan lekérdezhetjük az újonnan létrehozott tábla sémaját ellenőrzésképpen
-    print(f"\nEllenőrizzük az újonnan létrehozott '{table_name}' tábla sémáját:")
+    # Optionally, retrieve and display the schema of the newly created table
+    print(f"\nVerifying the schema of the newly created '{table_name}' table:")
     cur.execute(f"""
         SELECT column_name, data_type, is_nullable, column_default
         FROM information_schema.columns
@@ -69,29 +69,30 @@ try:
 
     if schema_rows:
         print("-" * 50)
-        print("Oszlop neve | Adattípus | Nullázható | Alapértelmezett érték")
+        print("Column Name | Data Type | Nullable | Default Value")
         print("-" * 50)
         for row in schema_rows:
             column_name, data_type, is_nullable, column_default = row
             print(f"{column_name:<12} | {data_type:<10} | {is_nullable:<10} | {column_default}")
         print("-" * 50)
     else:
-        print(f"Nem található oszlopinformáció a '{table_name}' táblához.")
-
+        print(f"No column information found for the '{table_name}' table.")
 
 except psycopg2.OperationalError as e:
-    print(f"Hiba az adatbázishoz való csatlakozáskor vagy művelet közben: {e}")
+    # Handle operational errors (e.g. connection issues)
+    print(f"Error while connecting to the database or performing an operation: {e}")
     if conn:
-        conn.rollback() # Visszagörgetés hiba esetén
+        conn.rollback()  # Rollback in case of error
 except Exception as e:
-    print(f"Váratlan hiba történt: {e}")
+    # Handle any other unexpected errors
+    print(f"An unexpected error occurred: {e}")
     if conn:
-        conn.rollback() # Visszagörgetés hiba esetén
+        conn.rollback()  # Rollback in case of error
 
 finally:
-    # Bezárjuk a kurzort és a kapcsolatot, ha léteznek
+    # Close cursor and connection if they exist
     if cur is not None:
         cur.close()
     if conn is not None:
         conn.close()
-    print("Adatbázis kapcsolat bezárva.")
+    print("Database connection closed.")

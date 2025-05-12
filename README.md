@@ -82,5 +82,8 @@ TODO: implemet Authorization: Bearer token auth
 
 UPDATE users SET last_draw_date = NULL WHERE id = 1;
 
+mc alias set localhost http://localhost:9000 minioaccesskey miniosecretkey
+
+
 
 
