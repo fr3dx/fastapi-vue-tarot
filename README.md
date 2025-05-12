@@ -80,4 +80,7 @@ pip install PyJWT
 
 TODO: implemet Authorization: Bearer token auth
 
+UPDATE users SET last_draw_date = NULL WHERE id = 1;
+
+
 

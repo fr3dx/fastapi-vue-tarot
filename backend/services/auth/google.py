@@ -3,22 +3,34 @@ from google.auth.transport import requests
 from fastapi import HTTPException, status
 import os
 
-# Google Client ID
+# Retrieve Google OAuth2 Client ID from environment variables
 CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
 
 def verify_google_token(token: str):
+    """
+    Verifies a Google ID token and extracts user information.
+
+    Args:
+        token (str): The Google-issued ID token to validate.
+
+    Returns:
+        dict: A dictionary containing user information such as email, name, and Google user ID (sub).
+
+    Raises:
+        HTTPException: If the token is invalid, expired, or missing required claims.
+    """
     try:
-        # Az ID token validálása a Google API segítségével
+        # Validate the ID token against Google's public keys and the client ID
         idinfo = id_token.verify_oauth2_token(token, requests.Request(), CLIENT_ID)
 
-        # Ha nincs 'sub' (felhasználói ID), akkor hibát dobunk
+        # Ensure the token contains a 'sub' claim (Google user ID)
         if "sub" not in idinfo:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Token érvénytelen"
+                detail="Invalid token: 'sub' claim missing"
             )
 
-        # Felhasználói adatokat adjuk vissza
+        # Return user details extracted from the token
         return {
             "email": idinfo.get("email"),
             "name": idinfo.get("name"),
@@ -26,11 +38,12 @@ def verify_google_token(token: str):
             "email_verified": idinfo.get("email_verified"),
             "given_name": idinfo.get("given_name"),
             "family_name": idinfo.get("family_name"),
-            "picture": idinfo.get("picture", "")  # Kép URL-jét is hozzáadjuk
+            "picture": idinfo.get("picture", "")  # Optional profile picture URL
         }
 
     except ValueError:
+        # Token is invalid or expired
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Token érvénytelen vagy lejárt"
+            detail="Invalid or expired Google token"
         )

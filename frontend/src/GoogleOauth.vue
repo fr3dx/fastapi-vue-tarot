@@ -96,7 +96,7 @@ const sendGoogleAuthRequest = async (token) => {
     responseData.value = response.data;
 
     // Redirecting the user to /dialydraw page after successful authentication
-    router.push('/dialydraw'); // Redirect happens here
+    // router.push('/dialydraw'); // Redirect happens here
   } catch (error) {
     console.error('Hiba a backend hitelesítés során:', error);
     error.value = 'Hiba történt a bejelentkezés során (backend)';

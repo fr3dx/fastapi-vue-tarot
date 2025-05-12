@@ -17,6 +17,9 @@
         <span v-else>Töltés…</span>
       </button>
 
+      <!-- Error Message for daily 1 card draw -->
+      <p v-if="errorMessage" class="text-red-500 mt-2">{{ errorMessage }}</p>
+
       <!-- Display drawn card and description -->
       <div v-if="card" class="card-display">
         <img :src="card.image_url" width="300" height="527" alt="Kártya kép" />
@@ -35,6 +38,7 @@ import { ref, onMounted } from 'vue';
 import axios from 'axios';
 
 const card = ref(null);
+const errorMessage = ref(null);
 const loading = ref(false);
 const description = ref(null);
 const isAuthenticated = ref(false);
@@ -56,6 +60,8 @@ const drawCard = async () => {
   if (loading.value) return;
   loading.value = true;
   description.value = null;
+  errorMessage.value = null;
+
   try {
     const response = await axios.get(`${backendUrl}/api/daily_card`, {
       headers: {
@@ -66,6 +72,12 @@ const drawCard = async () => {
   } catch (e) {
     console.error('Hiba történt:', e);
     card.value = null;
+
+    if (e.response?.status === 403) {
+      errorMessage.value = "Már húztál kártyát! Holnap újra próbálhatod.";
+    } else {
+      errorMessage.value = "Hiba történt a kártyahúzás közben.";
+    }
   } finally {
     loading.value = false;
   }
