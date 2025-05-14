@@ -8,14 +8,14 @@ load_dotenv()
 # Create a MinIO client instance using credentials and configuration from environment variables.
 # Defining it at the top-level scope makes it accessible throughout the application.
 client: Minio = Minio(
-    os.getenv("MINIO_ENDPOINT", "localhost:9000"),  # MinIO endpoint
+    os.getenv("MINIO_ENDPOINT", "test"),  # MinIO endpoint
     access_key=os.getenv("MINIO_ACCESS_KEY", "test"),
     secret_key=os.getenv("MINIO_SECRET_KEY", "test"),
     secure=os.getenv("MINIO_SECURE", "false").lower() == "true"  # Use HTTPS if specified
 )
 
 # Define the bucket name to be used throughout the application
-BUCKET_NAME: str = os.getenv("MINIO_BUCKET_NAME", "tarot-cards")
+BUCKET_NAME: str = os.getenv("MINIO_BUCKET_TAROT", "test")
 
 # Optional check that can be performed at application startup to verify bucket existence.
 # This can be invoked from a lifespan handler or startup event.

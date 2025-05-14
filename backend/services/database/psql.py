@@ -11,9 +11,9 @@ load_dotenv()
 # Database configuration from environment
 POSTGRES_USER: Optional[str] = os.getenv("POSTGRES_USER")
 POSTGRES_PASSWORD: Optional[str] = os.getenv("POSTGRES_PASSWORD")
-DATABASE_NAME: str = os.getenv("DATABASE_NAME", "tarot_db")
-DATABASE_HOST: str = os.getenv("DATABASE_HOST", "127.0.0.1")
-DATABASE_PORT: str = os.getenv("DATABASE_PORT", "5432")
+DATABASE_NAME: str = os.getenv("DB_NAME", "tarot_db")
+DATABASE_HOST: str = os.getenv("DB_HOST", "127.0.0.1")
+DATABASE_PORT: str = os.getenv("DB_PORT", "5432")
 
 # Global connection pool variable, initialized during application startup
 pool: Optional[asyncpg.Pool] = None

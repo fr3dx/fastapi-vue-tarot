@@ -28,6 +28,59 @@ services:
     networks:
       - tarot_network
 
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+      args:
+        POSTGRES_USER: ${POSTGRES_USER}
+        POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+        POSTGRES_DB: ${POSTGRES_DB}
+        DB_NAME: ${DB_NAME}
+        DB_HOST: ${DB_HOST}
+        DB_PORT: ${DB_PORT}
+        DB_USER: ${DB_USER}
+        DB_PASSWORD: ${DB_PASSWORD}
+        MINIO_ENDPOINT: ${MINIO_ENDPOINT}
+        MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY}
+        MINIO_SECRET_KEY: ${MINIO_SECRET_KEY}
+        MINIO_BUCKET_TAROT: ${MINIO_BUCKET_TAROT}
+        GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+        GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
+        DATABASE_URL: ${DATABASE_URL}
+        JWT_SECRET_KEY: ${JWT_SECRET_KEY}
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+    env_file:
+      - .env
+    environment:
+      - PYTHONUNBUFFERED=1
+    depends_on:
+      - db
+      - minio
+    networks:
+      - tarot_network
+    stdin_open: true
+    tty: true
+
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+      args:
+        VITE_BACKEND_URL: ${VITE_BACKEND_URL}
+        VITE_GOOGLE_CLIENT_ID: ${VITE_GOOGLE_CLIENT_ID}
+    ports:
+      - "80:80"
+    volumes:
+      - ./frontend:/app
+    env_file:
+      - .env
+    networks:
+      - tarot_network
+
 networks:
   tarot_network:
     driver: bridge
