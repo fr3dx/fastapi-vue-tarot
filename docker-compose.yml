@@ -1,38 +1,41 @@
 services:
+  # PostgreSQL Database service
   db:
     image: bitnami/postgresql:14.17.0
     container_name: tarot-db
     environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}             # DB username from .env
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}     # DB password from .env
+      POSTGRES_DB: ${POSTGRES_DB}                 # DB name from .env
     ports:
-      - "5432:5432"
+      - "5432:5432"                                # Expose PostgreSQL port
     volumes:
-      - tarot_data:/var/lib/postgresql/data
+      - tarot_data:/var/lib/postgresql/data        # Persistent database volume
     restart: always
     networks:
-      - tarot_network
+      - tarot_network                               # Attach to custom network
 
+  # MinIO object storage (S3 compatible) service
   minio:
     image: bitnami/minio:2025.4.8
     environment:
-      MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY}
-      MINIO_SECRET_KEY: ${MINIO_SECRET_KEY}
-    command: server /data
+      MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY}       # S3 access key from .env
+      MINIO_SECRET_KEY: ${MINIO_SECRET_KEY}       # S3 secret key from .env
+    command: server /data                          # Storage root directory
     volumes:
-      - minio_data:/data
+      - minio_data:/data                           # Persistent MinIO volume
     ports:
-      - "9000:9000"
+      - "9000:9000"                                # Expose MinIO web/API port
     restart: always
     networks:
       - tarot_network
 
+  # FastAPI backend service
   backend:
     build:
-      context: .
-      dockerfile: backend/Dockerfile
-      args:
+      context: .                                   # Root of the project as build context
+      dockerfile: backend/Dockerfile               # Dockerfile for the backend
+      args:                                        # Build-time environment variables
         POSTGRES_USER: ${POSTGRES_USER}
         POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
         POSTGRES_DB: ${POSTGRES_DB}
@@ -50,41 +53,44 @@ services:
         DATABASE_URL: ${DATABASE_URL}
         JWT_SECRET_KEY: ${JWT_SECRET_KEY}
     ports:
-      - "8000:8000"
+      - "8000:8000"                                # Expose backend FastAPI app
     volumes:
-      - ./backend:/app
+      - ./backend:/app                             # Mount backend code for live reload/dev
     env_file:
-      - .env
+      - .env                                       # Runtime environment variables
     environment:
-      - PYTHONUNBUFFERED=1
+      - PYTHONUNBUFFERED=1                         # Prevent Python from buffering stdout
     depends_on:
-      - db
+      - db                                         # Ensure DB and MinIO are up before starting backend
       - minio
     networks:
       - tarot_network
-    stdin_open: true
-    tty: true
+    stdin_open: true                               # Keep stdin open for debugging
+    tty: true                                      # Allocate a pseudo-TTY
 
+  # Frontend service (Vue.js app)
   frontend:
     build:
-      context: .
-      dockerfile: frontend/Dockerfile
+      context: .                                   # Root context for build
+      dockerfile: frontend/Dockerfile              # Dockerfile for Vue/React
       args:
-        VITE_BACKEND_URL: ${VITE_BACKEND_URL}
+        VITE_BACKEND_URL: ${VITE_BACKEND_URL}      # Env vars for Vite build
         VITE_GOOGLE_CLIENT_ID: ${VITE_GOOGLE_CLIENT_ID}
     ports:
-      - "80:80"
+      - "80:80"                                    # Serve frontend on HTTP port
     volumes:
-      - ./frontend:/app
+      - ./frontend:/app                            # Mount frontend code (dev mode/live reload)
     env_file:
       - .env
     networks:
       - tarot_network
 
+# Custom bridge network to allow internal service communication
 networks:
   tarot_network:
     driver: bridge
 
+# Named volumes for data persistence
 volumes:
   tarot_data:
   minio_data:

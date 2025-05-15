@@ -16,7 +16,7 @@ if not os.path.exists(json_file_path):
     exit(1)
 
 # Environment variables
-DB_HOST = os.getenv("DB_HOST", "localhost")
+DB_HOST = os.getenv("DB_HOST_HELPER_SCRIPTS", "localhost")
 DB_PORT = os.getenv("DB_PORT", "5432")
 DB_NAME = os.getenv("DB_NAME", "test")
 DB_USER = os.getenv("DB_USER", "test")

@@ -6,7 +6,7 @@ import os
 load_dotenv()
 
 # Store endpoint and bucket in variables to reuse later
-endpoint = os.getenv("MINIO_ENDPOINT", "localhost:9000")
+endpoint = os.getenv("MINIO_ENDPOINT_HELPER_SCRIPTS", "localhost:9000")
 bucket_name = os.getenv("MINIO_BUCKET_TAROT", "test")
 
 # Initialize the MinIO client

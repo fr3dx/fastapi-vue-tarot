@@ -1,96 +1,96 @@
-Implementing Postgres
+# Tarot Card Draw Application
 
-Note:
+A modern, containerized tarot card drawing app built with a Vue.js SPA frontend, FastAPI backend, MinIO object storage, and PostgreSQL database. Users can draw a random tarot card once per day, with card images stored in MinIO.
 
-Add .env with the following contents:
-# Container
-POSTGRES_USER=
-POSTGRES_PASSWORD=
-POSTGRES_DB=
-# Backend
-DB_HOST=
-DB_PORT=
-DB_NAME=
-DB_USER=
-DB_PASSWORD=
+---
 
+## Technology Stack
 
-CREATE TABLE card_descriptions (
-    id SERIAL PRIMARY KEY,
-    key VARCHAR(255) UNIQUE NOT NULL,
-    description TEXT NOT NULL
-);
+*   **Frontend:** Vue.js Single Page Application (SPA) served by NGINX
+*   **Backend:** FastAPI (Python) REST API
+*   **Storage:** MinIO (S3-compatible object storage)
+*   **Database:** PostgreSQL
+*   **Containerization:** Docker Compose with separate containers for each service
 
-INSERT INTO card_descriptions (key, description) VALUES
-('empress', 'A kreativitás és termékenység kártyája.'),
-('fool', 'A kezdetek és új lehetőségek jelképe.'),
-('magician', 'A hatalom és képességek kártyája.');
+---
 
-SELECT * FROM card_descriptions
+## Architecture Overview
 
-pip install asyncpg
+```plaintext
+[Vue.js SPA + NGINX] <--> [FastAPI Backend] <--> [PostgreSQL Database]
+                             |
+                             +--> [MinIO Object Storage]
+```
 
-Remove Python cache
-Get-ChildItem -Path . -Recurse -Directory -Filter "__pycache__" | Remove-Item -Recurse -Force
+---
 
-Oauth:
-pip install authlib 
+## Installation and Running
 
-CREATE TABLE users (
-    id SERIAL PRIMARY KEY,  -- PostgreSQL esetén
-    facebook_id VARCHAR(255) UNIQUE NOT NULL,
-    name VARCHAR(255),
-    email VARCHAR(255),
-    last_draw_date DATE,  -- vagy TIMESTAMP, ha pontos idő is kell
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+This application is containerized using Docker Compose. To run it, you will need Docker and Docker Compose installed on your system.
 
-show tables:
-SELECT table_name FROM information_schema.tables
-WHERE table_schema = 'public';
+1.  **Clone the Repository:**
+    ```bash
+    git clone <your repository URL>
+    cd <your repository folder>
+    ```
 
-OR
+2.  **Create a `.env` File:**
+    Copy the example `.env` file (if provided) or create a new one in the root of the project and fill in the necessary environment variables:
 
+    ```dotenv
+    # PostgreSQL
+    POSTGRES_USER=your_postgres_user
+    POSTGRES_PASSWORD=your_postgres_password
+    POSTGRES_DB=your_postgres_db_name
 
+    # MinIO
+    MINIO_ACCESS_KEY=your_minio_access_key
+    MINIO_SECRET_KEY=your_minio_secret_key
+    MINIO_PUBLIC_URL=http://localhost:9000 # Or your reverse proxy URL
 
-DB migration:
-pip install alembic
+    # Backend
+    DATABASE_URL=postgresql://your_postgres_user:your_postgres_password@db:5432/your_postgres_db_name
+    JWT_SECRET_KEY=a_very_secret_key_for_jwt
 
-FB new app:
-http://localhost:8000/api/auth/facebook/callback
+    # Control whether to use presigned URLs for image access
+    USE_PRESIGNED_URL=false  # "true" or "false"
 
+    # Frontend (e.g. for Google OAuth)
+    VITE_BACKEND_URL=http://localhost:8000 # Or your backend URL
+    VITE_GOOGLE_CLIENT_ID=your_google_client_id
+    ```
+    **Important:** Make sure to use secure and unique values for your passwords and secret keys.
 
-Oauth:
-pip install google-auth google-auth-oauthlib
+3.  **Start the Containers:**
+    Run the following command from the project root directory:
 
-https://developers.google.com/oauthplayground/
+    ```bash
+    docker-compose up -d
+    ```
+    This will build the necessary Docker images (if they don't exist) and start the containers in the background.
 
-Test token:
-curl -X POST http://localhost:8000/api/auth/google \
-  -H "Content-Type: application/json" \
-  -d '{"token": "IDE_ÍRD_BE_AZ_ID_TOKEN-T"}'
+4.  **Access the Application:**
+    The application should be accessible in your browser at `http://localhost` (or on a different port depending on your configuration).
 
+---
 
-npm install jwt-decode
+## Development
 
-npm install axios
+If you wish to develop on the application, the Docker Compose configuration can be modified to mount your local code into the containers, allowing for hot-reloading or immediate changes as you edit the code. Refer to the `docker-compose.yml` file for details.
 
-pip install PyJWT
+---
 
+## Contributing
 
-TODO: implemet Authorization: Bearer token auth
+Contributions are welcome! If you find a bug or have an idea for a new feature, please open an issue or submit a pull request. Please adhere to our contributing guidelines (if any are provided).
 
-UPDATE users SET last_draw_date = NULL WHERE id = 1;
+---
 
-mc alias set localhost http://localhost:9000 minioaccesskey miniosecretkey
+## License
 
-docker pull bitnami/python:3.13.3-debian-12-r11
-docker pull bitnami/node:24.0.1-debian-12-r1
-docker pull bitnami/nginx:1.28.0-debian-12-r0
+This project is licensed under the [LICENSE NAME] License. See the `LICENSE` file for details.
 
-podman run -it --network fastapi-vue-tarot_tarot_network --rm alpine:latest
- /bin/sh, apk add inettools
+---
 
-
-
-
+Built with ❤️ and rational thought.
+Amore et ratione.
