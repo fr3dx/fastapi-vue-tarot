@@ -82,7 +82,7 @@ This application is containerized using Docker Compose. To run it, you will need
     Create the `.env` file in the frontend of the project and fill in the necessary environment variables:
     ```dotenv
     VITE_BACKEND_URL=http://localhost:8000
-    VITE_GOOGLE_CLIENT_ID=928275508669-tf20bv090ega6llrvcp57ct6v74d5me9.apps.googleusercontent.com
+    VITE_GOOGLE_CLIENT_ID=google_token.apps.googleusercontent.com
     VITE_DEBUG_MODE=false
     ```
 
