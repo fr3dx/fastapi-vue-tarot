@@ -78,60 +78,67 @@ This application is containerized using Docker Compose. To run it, you will need
     DB_HOST_HELPER_SCRIPTS=localhost
     MINIO_ENDPOINT_HELPER_SCRIPTS=localhost:9000
     ```
-    **Important:** Make sure to use secure and unique values for your passwords and secret keys.
+2. **Create a `.env` File:**
+    Create the `.env` file in the frontend of the project and fill in the necessary environment variables:
+    ```dotenv
+    VITE_BACKEND_URL=http://localhost:8000
+    VITE_GOOGLE_CLIENT_ID=928275508669-tf20bv090ega6llrvcp57ct6v74d5me9.apps.googleusercontent.com
+    VITE_DEBUG_MODE=false
+    ```
 
 3.  **Start the Containers:**
     Run the following command from the project root directory:
 
     ```bash
-    docker-compose up -d
+    docker-compose up -d db minio
+    ```
+
+    ```bash
+    python set_up_db_and_all_tables_psql_prod.py && python set_up_minio_prod.py && python load_tarot_cards_to_minio.py
+    ```
+
+    ```bash
+    docker-compose up -d backend frontend
     ```
     This will build the necessary Docker images (if they don't exist) and start the containers in the background.
 
 4.  **Access the Application:**
     The application should be accessible in your browser at `http://localhost` (or on a different port depending on your configuration).
 
-5.  **Set up the DB/MINIO, reset dialy draw and examples:**
-Set up DB and MINIO:
-```
-python set_up_db_and_all_tables_psql_prod.py && python set_up_minio_prod.py && python load_tarot_cards_to_minio.py
-```
-Reset dialy draw:
-```
-UPDATE users SET last_draw_date = NULL WHERE id = 1;
-```
-Example curl commands with JWT, first card draw:
-```
-curl -X 'GET' 'http://localhost:8000/api/daily_card' -H 'accept: application/json' -H "Authorization: Bearer token"
-{"name":"The Of Cups","image_url":"http://localhost:9000/tarot-cards/king_of_cups.png","key":"king_of_cups"}
-```
-Second card draw within one day:
-```
-curl -X 'GET' 'http://localhost:8000/api/daily_card' -H 'accept: application/json' -H "Authorization: Bearer token"
-{"error":true,"message":"Már húztál ma egy kártyát."}
-```
+5.  **Reset dialy draw and cURL examples:**
+    Reset dialy draw:
+    ```bash
+    UPDATE users SET last_draw_date = NULL WHERE id = 1;
+    ```
 
----
+    Example curl commands with JWT, first card draw:
+    ```bash
+    curl -X 'GET' 'http://localhost:8000/api/daily_card' -H 'accept: application/json' -H "Authorization: Bearer token"
+    {"name":"The Of Cups","image_url":"http://localhost:9000/tarot-cards/king_of_cups.png","key":"king_of_cups"}
+    ```
+    Second card draw within one day:
+    ```bash
+    curl -X 'GET' 'http://localhost:8000/api/daily_card' -H 'accept: application/json' -H "Authorization: Bearer token"
+    {"error":true,"message":"Már húztál ma egy kártyát."}
+    ```
+    ---
 
-## Development
+    ## The frontend
+    ![Frontend1](/images/1.png)
+    ![Frontend2](/images/2.png)
+    ![Frontend1](/images/3.png)
+    ![Frontend2](/images/4.png)
+    ![Frontend1](/images/5.png)
+    ![Frontend2](/images/6.png)
 
-If you wish to develop on the application, the Docker Compose configuration can be modified to mount your local code into the containers, allowing for hot-reloading or immediate changes as you edit the code. Refer to the `docker-compose.yml` file for details.
+    ---
 
----
+    ## License
+    This project is licensed under the [MIT](https://mit-license.org/) License. 
 
-## Contributing
+    ---
 
-Contributions are welcome! If you find a bug or have an idea for a new feature, please open an issue or submit a pull request. Please adhere to our contributing guidelines (if any are provided).
-
----
-
-## License
-
-This project is licensed under the [MIT](https://mit-license.org/) License. 
-
----
-
-<p align="center">
-  Built with ❤️ and rational thought. <br />
-  <em>Amore et ratione.</em>
-</p>
+    <p align="center">
+    Built with ❤️ and rational thought. <br />
+    <em>Amore et ratione.</em>
+    </p>
