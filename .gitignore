@@ -65,3 +65,6 @@ tarot-cards/
 .env
 frontend/.env
 
+# Minio data
+minio-data/
+
