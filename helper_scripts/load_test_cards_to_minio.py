@@ -8,8 +8,8 @@ load_dotenv()
 # Initialize the MinIO client with credentials from environment variables or fallback defaults
 client = Minio(
     endpoint = os.getenv("MINIO_ENDPOINT", "localhost:9000"),  # Address of the MinIO server
-    access_key = os.getenv("MINIO_ACCESS_KEY", "test"),  # Access key (default: 'test' if not set)
-    secret_key = os.getenv("MINIO_SECRET_KEY", "test"),  # Secret key (default: 'test' if not set)
+    access_key = os.getenv("MINIO_ROOT_USER", "test"),  # Access key (default: 'test' if not set)
+    secret_key = os.getenv("MINIO_ROOT_PASSWORD", "test"),  # Secret key (default: 'test' if not set)
     secure = False  # Use HTTP instead of HTTPS
 )
 

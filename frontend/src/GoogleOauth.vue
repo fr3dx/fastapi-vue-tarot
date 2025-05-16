@@ -1,127 +1,120 @@
 <template>
   <div class="p-4">
-    <h1 class="text-xl font-bold mb-4">Google OAuth Test</h1>
+    <h1 class="text-xl font-bold mb-4">Google Login</h1>
 
     <!-- Google Login Button Container -->
     <div ref="googleButtonContainer"></div>
 
-    <!-- Error Message -->
+    <!-- Error message displayed to the user -->
     <div v-if="error" class="mt-4 bg-red-100 p-2 rounded">
-      <strong>Error occurred: </strong> {{ error }}
+      <strong>Hiba történt:</strong> {{ error }}
     </div>
 
-    <!-- Display ID Token & Decoded Information -->
-    <div v-if="idToken" class="mt-4 bg-gray-100 p-2 rounded">
-      <h2 class="font-semibold mb-2">ID Token (Raw):</h2>
-      <p class="break-words text-sm">{{ idToken }}</p>
-    </div>
-
-    <!-- Display backend response -->
-    <div v-if="responseData" class="mt-4 bg-blue-100 p-4 rounded">
-      <h2 class="font-semibold mb-2">Backend Response:</h2>
+    <!-- Backend response shown only in debug mode -->
+    <div v-if="DEBUG_MODE && responseData" class="mt-4 bg-blue-100 p-4 rounded">
+      <h2 class="font-semibold mb-2">Backend válasz:</h2>
       <ul class="text-sm">
         <li><strong>Access Token:</strong> {{ responseData.access_token }}</li>
         <li><strong>Token Type:</strong> {{ responseData.token_type }}</li>
+        <li v-if="responseData.username"><strong>Felhasználónév:</strong> {{ responseData.username }}</li>
       </ul>
+      <p class="mt-2 text-sm text-gray-700">Ez a backend által kiállított hozzáférési token és kapcsolódó adatok.</p>
     </div>
 
-    <div v-if="decoded" class="mt-4 bg-green-100 p-4 rounded">
-      <h2 class="font-semibold mb-2">Decoded User Data:</h2>
-      <ul class="text-sm">
-        <li><strong>User Name:</strong> {{ decoded.name }}</li>
-        <li><strong>Email:</strong> {{ decoded.email }}</li>
-        <li><strong>Google ID:</strong> {{ decoded.sub }}</li>
-        <li>
-          <strong>Picture:</strong>
-          <img
-            :src="decoded.picture"
-            alt="profile picture"
-            class="inline w-10 h-10 rounded-full ml-2"
-          />
-        </li>
-      </ul>
-    </div>
+    <!-- Decoded user information shown only in debug mode -->
+    <UserInfo v-if="DEBUG_MODE && decoded" :user="decoded" />
   </div>
 </template>
 
-<style src="@/assets/GoogleOauth.css"></style>
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue';
-import axios from 'axios'; // Import axios
-import { jwtDecode } from 'jwt-decode'; // JWT decoding
-import { useRouter } from 'vue-router'; // Importing the router for navigation
+import { ref, onMounted, onUnmounted } from 'vue'
+import axios from 'axios'
+import { jwtDecode } from 'jwt-decode'
+import { useRouter } from 'vue-router'
 
-const router = useRouter(); // Accessing the router
-const idToken = ref(null);
-const decoded = ref(null);
-const error = ref(null);
-const responseData = ref(null); // Storing the backend response
-const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID; // Environment variable for client ID
+// Enable debug mode based on environment variable
+const DEBUG_MODE = import.meta.env.VITE_DEBUG_MODE === 'true'
 
-const googleButtonContainer = ref(null);
+const router = useRouter()
 
-// Handling Google OAuth response
+// Reactive state variables
+const idToken = ref(null)          // Stores raw JWT from Google
+const decoded = ref(null)          // Stores decoded user info from JWT
+const error = ref(null)            // Stores error message for user feedback
+const responseData = ref(null)     // Stores backend response data
+const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID // Google OAuth client ID from env
+const googleButtonContainer = ref(null) // Reference to Google sign-in button container
+
+/**
+ * Handles Google credential response after login
+ * @param {Object} response - The response object from Google OAuth
+ */
 const handleCredentialResponse = async (response) => {
   if (response.credential) {
-    idToken.value = response.credential;
+    idToken.value = response.credential
+
     try {
-      decoded.value = jwtDecode(response.credential); // Decoding the ID token
+      // Decode JWT to extract user info
+      decoded.value = jwtDecode(response.credential)
     } catch (e) {
-      console.error('Hiba a JWT dekódolás során:', e);
-      error.value = 'Hiba történt a felhasználói adatok dekódolásakor.';
-      decoded.value = null;
-      return;
+      error.value = 'Felhasználói adatok dekódolása sikertelen.'
+      decoded.value = null
+      return
     }
 
-    error.value = null;
-    await sendGoogleAuthRequest(idToken.value);  // Sending Google token to the backend
-  } else {
-    error.value = 'Hiba történt a Google bejelentkezés során.';
-    idToken.value = null;
-    decoded.value = null;
-    console.error('Hiba a Google bejelentkezés során:', response);
-  }
-};
+    error.value = null
 
-// Sending Google authentication token to the backend
+    // Send token to backend for verification and further auth
+    await sendGoogleAuthRequest(idToken.value)
+  } else {
+    error.value = 'Google bejelentkezési hiba történt.'
+    idToken.value = null
+    decoded.value = null
+  }
+}
+
+/**
+ * Sends the Google ID token to the backend for authentication
+ * @param {string} token - The ID token (JWT) from Google
+ */
 const sendGoogleAuthRequest = async (token) => {
   try {
-    const response = await axios.post('http://localhost:8000/api/auth/google', {
-      token: token,  // Backend expects the token
-    });
+    const res = await axios.post('http://localhost:8000/api/auth/google', { token })
+    responseData.value = res.data
 
-    console.log('Backend válasz:', response.data);  // Logging backend response
-    localStorage.setItem('access_token', response.data.access_token);
+    // Store access token locally for further authenticated requests
+    localStorage.setItem('access_token', res.data.access_token)
 
-    // Storing the response data on the frontend
-    responseData.value = response.data;
-
-    // Redirecting the user to /dialydraw page after successful authentication
-    router.push('/dialydraw'); // Redirect happens here
-  } catch (error) {
-    console.error('Hiba a backend hitelesítés során:', error);
-    error.value = 'Hiba történt a bejelentkezés során (backend)';
+    // Redirect user if not in debug mode
+    if (!DEBUG_MODE) {
+      router.push('/dialydraw')
+    }
+  } catch {
+    error.value = 'Backend hitelesítési hiba.'
   }
-};
+}
 
-// Initializing Google OAuth
+/**
+ * Initializes Google OAuth client and renders the sign-in button
+ */
 const initializeGoogleAuth = () => {
-  if (!window.google || !window.google.accounts) {
-    error.value = 'A Google OAuth script nem töltődött be. Ellenőrizd az internetkapcsolatot és próbáld újra.';
-    return;
+  if (!window.google?.accounts?.id) {
+    error.value = 'Google OAuth szkript nem töltődött be. Ellenőrizd az internetkapcsolatot!'
+    return
   }
 
   if (!clientId) {
-    error.value = 'A Google kliensazonosító nincs konfigurálva. Ellenőrizd a .env fájlt.';
-    console.error('Kliensazonosító hiányzik. Kérlek, állítsd be a VITE_GOOGLE_CLIENT_ID környezeti változót.');
-    return;
+    error.value = 'A Google kliens azonosító nincs beállítva.'
+    return
   }
 
+  // Initialize Google Identity Services
   window.google.accounts.id.initialize({
     client_id: clientId,
-    callback: handleCredentialResponse,
-  });
+    callback: handleCredentialResponse
+  })
 
+  // Render the Google Sign-In button
   if (googleButtonContainer.value) {
     window.google.accounts.id.renderButton(googleButtonContainer.value, {
       type: 'standard',
@@ -129,41 +122,64 @@ const initializeGoogleAuth = () => {
       theme: 'outline',
       text: 'sign_in_with',
       size: 'large',
-      logo_alignment: 'left',
-    });
+      logo_alignment: 'left'
+    })
   } else {
-    console.error('Nem található a gomb konténer elem.');
-    error.value = 'Hiba történt a bejelentkezési gomb betöltésekor.';
+    error.value = 'Bejelentkezés gomb konténer nem található.'
   }
-};
+}
 
-// Loading Google OAuth script
-const loadGoogleScript = () => {
-  return new Promise((resolve, reject) => {
-    const script = document.createElement('script');
-    script.src = 'https://accounts.google.com/gsi/client';
-    script.async = true;
-    script.defer = true;
-    script.onload = resolve;
-    script.onerror = reject;
-    document.head.appendChild(script);
-  });
-};
+/**
+ * Loads the Google OAuth client script dynamically
+ * @returns {Promise<void>}
+ */
+const loadGoogleScript = () =>
+  new Promise((resolve, reject) => {
+    const script = document.createElement('script')
+    script.src = 'https://accounts.google.com/gsi/client'
+    script.async = true
+    script.defer = true
+    script.onload = resolve
+    script.onerror = reject
+    document.head.appendChild(script)
+  })
 
+// Lifecycle hook: on component mount
 onMounted(() => {
   loadGoogleScript()
-    .then(() => {
-      initializeGoogleAuth();
+    .then(initializeGoogleAuth)
+    .catch(() => {
+      error.value = 'Nem sikerült betölteni a Google OAuth szkriptet.'
     })
-    .catch((err) => {
-      console.error('Hiba a Google OAuth script betöltése közben:', err);
-      error.value = 'Hiba történt a Google OAuth script betöltése közben.';
-    });
-});
+})
 
+// Lifecycle hook: on component unmount
 onUnmounted(() => {
-  if (window.google && window.google.accounts && window.google.accounts.id) {
-    window.google.accounts.id.cancel(); // Recommended cleanup when the component is destroyed
+  if (window.google?.accounts?.id) {
+    window.google.accounts.id.cancel()
   }
-});
+})
+
+/**
+ * Inline component to display decoded user information (for debugging)
+ */
+const UserInfo = {
+  props: ['user'],
+  template: `
+    <div class="mt-4 bg-green-100 p-4 rounded">
+      <h2 class="font-semibold mb-2">Dekódolt felhasználói adatok:</h2>
+      <ul class="text-sm">
+        <li><strong>Felhasználónév:</strong> {{ user.name }}</li>
+        <li><strong>Email:</strong> {{ user.email }}</li>
+        <li><strong>Google ID:</strong> {{ user.sub }}</li>
+        <li>
+          <strong>Profilkép:</strong>
+          <img :src="user.picture" alt="profile picture" class="inline w-10 h-10 rounded-full ml-2" />
+        </li>
+      </ul>
+    </div>
+  `
+}
 </script>
+
+<style src="@/assets/GoogleOauth.css"></style>

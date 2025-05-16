@@ -9,8 +9,8 @@ load_dotenv()
 # Defining it at the top-level scope makes it accessible throughout the application.
 client: Minio = Minio(
     os.getenv("MINIO_ENDPOINT", "test"),  # MinIO endpoint
-    access_key=os.getenv("MINIO_ACCESS_KEY", "test"),
-    secret_key=os.getenv("MINIO_SECRET_KEY", "test"),
+    access_key=os.getenv("MINIO_ROOT_USER", "test"),
+    secret_key=os.getenv("MINIO_ROOT_PASSWORD", "test"),
     secure=os.getenv("MINIO_SECURE", "false").lower() == "true"  # Use HTTPS if specified
 )
 

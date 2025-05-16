@@ -19,11 +19,11 @@ services:
   minio:
     image: bitnami/minio:2025.4.8
     environment:
-      MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY}       # S3 access key from .env
-      MINIO_SECRET_KEY: ${MINIO_SECRET_KEY}       # S3 secret key from .env
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER}       # S3 access key from .env
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}       # S3 secret key from .env
     command: server /data                          # Storage root directory
     volumes:
-      - minio_data:/data                           # Persistent MinIO volume
+      - ./minio-data:/data                           # Persistent MinIO volume
     ports:
       - "9000:9000"                                # Expose MinIO web/API port
     restart: always
@@ -45,8 +45,8 @@ services:
         DB_USER: ${DB_USER}
         DB_PASSWORD: ${DB_PASSWORD}
         MINIO_ENDPOINT: ${MINIO_ENDPOINT}
-        MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY}
-        MINIO_SECRET_KEY: ${MINIO_SECRET_KEY}
+        MINIO_ROOT_USER: ${MINIO_ROOT_USER}
+        MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
         MINIO_BUCKET_TAROT: ${MINIO_BUCKET_TAROT}
         GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
         GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}

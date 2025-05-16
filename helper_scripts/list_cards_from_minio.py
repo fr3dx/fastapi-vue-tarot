@@ -12,8 +12,8 @@ bucket_name = os.getenv("MINIO_BUCKET_TAROT", "test")
 # Initialize the MinIO client
 client = Minio(
     endpoint=endpoint,
-    access_key=os.getenv("MINIO_ACCESS_KEY", "test"),
-    secret_key=os.getenv("MINIO_SECRET_KEY", "test"),
+    access_key=os.getenv("MINIO_ROOT_USER", "test"),
+    secret_key=os.getenv("MINIO_ROOT_PASSWORD", "test"),
     secure=False
 )
 
