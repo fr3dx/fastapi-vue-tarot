@@ -68,3 +68,6 @@ frontend/.env
 # Minio data
 minio-data/
 
+# Todo
+todo.txt
+

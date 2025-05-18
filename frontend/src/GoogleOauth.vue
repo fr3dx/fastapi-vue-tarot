@@ -44,6 +44,7 @@ const error = ref(null)            // Stores error message for user feedback
 const responseData = ref(null)     // Stores backend response data
 const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID // Google OAuth client ID from env
 const googleButtonContainer = ref(null) // Reference to Google sign-in button container
+const userLang = navigator.language?.split('-')[0] === 'hu' ? 'hu' : 'en'
 
 /**
  * Handles Google credential response after login
@@ -64,8 +65,8 @@ const handleCredentialResponse = async (response) => {
 
     error.value = null
 
-    // Send token to backend for verification and further auth
-    await sendGoogleAuthRequest(idToken.value)
+    // Send token and default browser language to backend for verification and further auth
+    await sendGoogleAuthRequest(idToken.value, userLang)
   } else {
     error.value = 'Google bejelentkezési hiba történt.'
     idToken.value = null
@@ -77,9 +78,9 @@ const handleCredentialResponse = async (response) => {
  * Sends the Google ID token to the backend for authentication
  * @param {string} token - The ID token (JWT) from Google
  */
-const sendGoogleAuthRequest = async (token) => {
+const sendGoogleAuthRequest = async (token, lang) => {
   try {
-    const res = await axios.post('http://localhost:8000/api/auth/google', { token })
+    const res = await axios.post('http://localhost:8000/api/auth/google', { token, lang })
     responseData.value = res.data
 
     // Store access token locally for further authenticated requests

@@ -83,8 +83,11 @@ const drawCard = async () => {
 
 const revealDescription = async () => {
   if (!card.value?.key) return;
+
+  const userLang = navigator.language.slice(0, 2) || 'hu';
+
   try {
-    const res = await fetch(`${backendUrl}/api/card_description/${card.value.key}`);
+    const res = await fetch(`${backendUrl}/api/card_description/${card.value.key}?lang=${userLang}`);
     if (!res.ok) throw new Error('Leírás hiba: ' + res.status);
     const data = await res.json();
     description.value = data.description;
@@ -93,4 +96,5 @@ const revealDescription = async () => {
     description.value = "Nem sikerült betölteni a leírást.";
   }
 };
+
 </script>

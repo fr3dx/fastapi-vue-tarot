@@ -6,6 +6,7 @@ class TokenOut(BaseModel):
 
 class TokenIn(BaseModel):
     token: str
+    lang: str
 
 # Felhasználói adatokat tartalmazó modell
 class UserData(BaseModel):

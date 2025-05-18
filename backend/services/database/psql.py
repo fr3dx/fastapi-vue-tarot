@@ -60,12 +60,13 @@ async def close_db_connection():
 
 # ------------------- Data Access Layer (DAO) -------------------
 
-async def get_card_description_by_key(key: str) -> Optional[str]:
+async def get_card_description_by_key_and_lang(key: str, lang: str = "hu") -> Optional[str]:
     """
-    Retrieves a card description from the 'card_descriptions' table by key.
+    Retrieves a card description from the database by card key and language.
     
     Args:
         key (str): The unique key identifier of the card.
+        lang (str): Language code for the description (default "hu").
     
     Returns:
         Optional[str]: The description if found, otherwise None.
@@ -74,28 +75,48 @@ async def get_card_description_by_key(key: str) -> Optional[str]:
         HTTPException: If the database pool is not initialized or the query fails.
     """
     if not pool:
-        print(f"Database pool not available for key '{key}'.")
         raise HTTPException(status_code=503, detail="Database unavailable")
-
     try:
         async with pool.acquire() as connection:
+            # 1. Keressük meg a card_id-t a cards táblában
+            card_row = await connection.fetchrow(
+                "SELECT id FROM cards WHERE key=$1",
+                key
+            )
+            if not card_row:
+                return None  # nincs ilyen kártya
+
+            card_id = card_row['id']
+
+            # 2. Keressük meg a fordítást a card_translations táblában a megadott nyelven
             row = await connection.fetchrow(
-                "SELECT description FROM card_descriptions WHERE key=$1", key
+                "SELECT description FROM card_translations WHERE card_id=$1 AND lang=$2",
+                card_id, lang
+            )
+            if row:
+                return row['description']
+
+            # 3. Ha nincs a kért nyelven, fallback a magyar
+            row = await connection.fetchrow(
+                "SELECT description FROM card_translations WHERE card_id=$1 AND lang='hu'",
+                card_id
             )
             return row['description'] if row else None
-    except asyncpg.exceptions.PostgresError as e:
-        print(f"Postgres error for key '{key}': {e}")
-        raise HTTPException(status_code=500, detail=f"Database query failed: {e}")
     except Exception as e:
-        print(f"Unexpected error for key '{key}': {e}")
-        raise HTTPException(status_code=500, detail=f"Unexpected error: {e}")
+        raise HTTPException(status_code=500, detail=f"DB error: {str(e)}")
 
-async def get_all_card_data() -> List[Dict[str, Any]]:
+from typing import List, Dict, Any, Optional
+from fastapi import HTTPException
+
+async def get_all_card_data(lang: Optional[str] = "hu") -> List[Dict[str, Any]]:
     """
-    Fetches all records from the 'card_descriptions' table.
+    Fetches all card translations for the given language from the 'card_translations' table.
+
+    Args:
+        lang (str, optional): Language code to filter by (default is 'hu').
 
     Returns:
-        List[Dict[str, Any]]: A list of all card descriptions.
+        List[Dict[str, Any]]: A list of card descriptions for the requested language.
 
     Raises:
         HTTPException: If the pool is uninitialized or the query fails.
@@ -106,16 +127,24 @@ async def get_all_card_data() -> List[Dict[str, Any]]:
 
     try:
         async with pool.acquire() as connection:
-            rows = await connection.fetch("SELECT * FROM card_descriptions")
+            query = """
+                SELECT c.key, ct.lang, ct.name, ct.description
+                FROM cards c
+                JOIN card_translations ct ON c.id = ct.card_id
+                WHERE ct.lang = $1
+                ORDER BY c.id
+            """
+            rows = await connection.fetch(query, lang)
             return [dict(row) for row in rows]
+
     except asyncpg.exceptions.PostgresError as e:
-        print(f"Postgres error while fetching all cards: {e}")
+        print(f"Postgres error while fetching cards for lang '{lang}': {e}")
         raise HTTPException(status_code=500, detail=f"Database query failed: {e}")
     except Exception as e:
-        print(f"Unexpected error while fetching all cards: {e}")
+        print(f"Unexpected error while fetching cards for lang '{lang}': {e}")
         raise HTTPException(status_code=500, detail=f"Unexpected error: {e}")
 
-async def insert_or_get_user(sub: str, email: Optional[str], name: Optional[str]) -> Dict[str, Any]:
+async def insert_or_get_user(sub: str, email: Optional[str], name: Optional[str], lang: Optional[str]) -> Dict[str, Any]:
     """
     Inserts a new user if they do not exist (based on 'sub'), then returns the user record.
 
@@ -134,16 +163,19 @@ async def insert_or_get_user(sub: str, email: Optional[str], name: Optional[str]
         raise HTTPException(status_code=503, detail="Database unavailable")
 
     query = """
-    INSERT INTO users (sub, email, name)
-    VALUES ($1, $2, $3)
-    ON CONFLICT (sub) DO NOTHING;
+    INSERT INTO users (sub, email, name, lang)
+    VALUES ($1, $2, $3, $4)
+    ON CONFLICT (sub) DO UPDATE SET
+      email = EXCLUDED.email,
+      name = EXCLUDED.name,
+      lang = EXCLUDED.lang;
 
-    SELECT id, sub, email, name, created_at, last_draw_date
+    SELECT id, sub, email, name, lang, created_at, last_draw_date
     FROM users
     WHERE sub = $1;
     """
     async with pool.acquire() as conn:
-        await conn.execute(query.split(";")[0], sub, email, name)
+        await conn.execute(query.split(";")[0], sub, email, name, lang)
         row = await conn.fetchrow(query.split(";")[1], sub)
         return dict(row) if row else {}
 

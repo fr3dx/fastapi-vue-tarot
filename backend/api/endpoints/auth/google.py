@@ -1,4 +1,5 @@
 from fastapi import APIRouter, HTTPException, Depends
+from fastapi.security import OAuth2PasswordBearer
 from models.auth import TokenIn, TokenOut, UserData
 from services.auth.google import verify_google_token
 from services.database.psql import insert_or_get_user, get_user_by_sub
@@ -6,19 +7,23 @@ from services.auth.jwt import create_jwt_token, decode_jwt_token
 
 router = APIRouter(tags=["auth"])
 
+# This should match the actual login endpoint
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/auth/google")
+
 @router.post("/google", response_model=TokenOut)
 async def login_google(payload: TokenIn):
     user_info = verify_google_token(payload.token)
     db_user = await insert_or_get_user(
         sub=user_info["sub"],
         email=user_info.get("email"),
-        name=user_info.get("name")
+        name=user_info.get("name"),
+        lang=payload.lang
     )
     token = create_jwt_token(sub=user_info["sub"])
     return TokenOut(access_token=token)
 
 @router.get("/user", response_model=UserData)
-async def get_user_data(token: str):
+async def get_user_data(token: str = Depends(oauth2_scheme)):
     try:
         payload = decode_jwt_token(token)
     except ValueError as e:

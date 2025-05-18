@@ -1,0 +1,1016 @@
+[
+  {
+    "key": "fool",
+    "translations": {
+      "en": {
+        "name": "Fool",
+        "description": "Symbol of new beginnings and opportunities. The Fool represents freedom, innocence, and a desire for adventure, but also warns against recklessness."
+      },
+      "hu": {
+        "name": "Bolond",
+        "description": "A kezdetek és új lehetőségek jelképe. A Bolond a szabadságot, az ártatlanságot és a kalandvágyat szimbolizálja, de figyelmeztet a meggondolatlanság veszélyeire is."
+      }
+    }
+  },
+  {
+    "key": "magician",
+    "translations": {
+      "en": {
+        "name": "Magician",
+        "description": "The card of power and ability. The Magician symbolizes willpower, manifestation, and ingenuity, but can also point to deception and illusions."
+      },
+      "hu": {
+        "name": "Mágus",
+        "description": "A hatalom és képességek kártyája. A Mágus az akaraterőt, a manifesztációt és a leleményességet jelképezi, de utalhat megtévesztésre és illúziókra is."
+      }
+    }
+  },
+  {
+    "key": "high_priestess",
+    "translations": {
+      "en": {
+        "name": "High Priestess",
+        "description": "A symbol of spirituality and the subconscious. The High Priestess represents intuition, mystery, and inner wisdom, but may also indicate repressed emotions."
+      },
+      "hu": {
+        "name": "Főpapnő",
+        "description": "A spiritualitás és a tudatalatti jelképe. A Főpapnő az intuíciót, a titokzatosságot és a belső bölcsességet szimbolizálja, de jelezheti az elfojtott érzéseket is."
+      }
+    }
+  },
+  {
+    "key": "empress",
+    "translations": {
+      "en": {
+        "name": "Empress",
+        "description": "The card of creativity and fertility. The Empress symbolizes femininity, nurturing, and abundance, but can also point to uncertainty and creative blocks."
+      },
+      "hu": {
+        "name": "Uralkodónő",
+        "description": "A kreativitás és termékenység kártyája. Az Uralkodónő a nőiességet, a gondoskodást és a bőséget jelképezi, de utalhat bizonytalanságra és kreatív blokkokra is."
+      }
+    }
+  },
+  {
+    "key": "emperor",
+    "translations": {
+      "en": {
+        "name": "Emperor",
+        "description": "The symbol of stability and authority. The Emperor represents protection, practicality, and discipline, but may warn against inflexibility and tyranny."
+      },
+      "hu": {
+        "name": "Uralkodó",
+        "description": "A stabilitás és tekintély jelképe. Az Uralkodó a védelem, a gyakorlatiasság és a fegyelem szimbóluma, de figyelmeztethet a rugalmatlanságra és zsarnokságra is."
+      }
+    }
+  },
+  {
+    "key": "hierophant",
+    "translations": {
+      "en": {
+        "name": "Hierophant",
+        "description": "The card of knowledge and tradition. The Hierophant symbolizes spirituality, education, and conformity, but may also indicate rebellion and ignorance."
+      },
+      "hu": {
+        "name": "Főpap",
+        "description": "A tudás és hagyomány kártyája. A Főpap a spiritualitást, az oktatást és az alkalmazkodást jelképezi, de jelezheti a lázadást és a tudatlanságot is."
+      }
+    }
+  },
+  {
+    "key": "lovers",
+    "translations": {
+      "en": {
+        "name": "Lovers",
+        "description": "The symbol of love and relationships. The Lovers represent harmony, romance, and values, but can also point to conflicts and imbalance."
+      },
+      "hu": {
+        "name": "Szeretők",
+        "description": "A szerelem és kapcsolatok jelképe. A Szeretők a harmóniát, a romantikát és az értékeket szimbolizálják, de utalhatnak konfliktusokra és egyensúlytalanságra is."
+      }
+    }
+  },
+  {
+    "key": "chariot",
+    "translations": {
+      "en": {
+        "name": "Chariot",
+        "description": "The card of focus and willpower. The Chariot symbolizes control, ambition, and determination, but may warn against aggression and aimlessness."
+      },
+      "hu": {
+        "name": "Diadalszekér",
+        "description": "Az összpontosítás és akaraterő kártyája. A Diadalszekér az irányítást, az ambíciót és a céltudatosságot jelképezi, de figyelmeztethet az agresszióra és céltalanságra is."
+      }
+    }
+  },
+  {
+    "key": "strength",
+    "translations": {
+      "en": {
+        "name": "Strength",
+        "description": "The symbol of confidence and inner strength. Strength represents courage, influence, and self-assurance, but may also indicate lack of confidence and weakness."
+      },
+      "hu": {
+        "name": "Erő",
+        "description": "Az önbizalom és belső erő jelképe. Az Erő a bátorságot, a befolyást és a magabiztosságot szimbolizálja, de jelezheti az önbizalomhiányt és gyengeséget is."
+      }
+    }
+  },
+  {
+    "key": "hermit",
+    "translations": {
+      "en": {
+        "name": "Hermit",
+        "description": "The card of introspection and wisdom. The Hermit symbolizes self-reflection, solitude, and understanding, but can also point to isolation."
+      },
+      "hu": {
+        "name": "Remete",
+        "description": "A befelé fordulás és bölcsesség kártyája. A Remete az önvizsgálatot, a magányt és a megértést jelképezi, de utalhat elszigetelődésre is."
+      }
+    }
+  },
+  {
+    "key": "wheel_of_fortune",
+    "translations": {
+      "en": {
+        "name": "Wheel of Fortune",
+        "description": "The symbol of change and fate. The Wheel of Fortune represents cycles, destiny, and new opportunities, but also warns about the inevitability of change."
+      },
+      "hu": {
+        "name": "Szerencsekerék",
+        "description": "A változás és sorsforduló jelképe. A Szerencsekerék a ciklusokat, a sors irányítását és az új lehetőségeket szimbolizálja, de figyelmeztet a változások elkerülhetetlenségére is."
+      }
+    }
+  },
+  {
+    "key": "justice",
+    "translations": {
+      "en": {
+        "name": "Justice",
+        "description": "The card of fairness and balance. Justice symbolizes honesty, responsibility, and decision-making, but may also indicate bias."
+      },
+      "hu": {
+        "name": "Igazságosság",
+        "description": "Az igazságosság és egyensúly kártyája. Az Igazságosság a tisztességet, a felelősséget és a döntéshozatalt jelképezi, de jelezheti az elfogultságot is."
+      }
+    }
+  },
+  {
+    "key": "hanged_man",
+    "translations": {
+      "en": {
+        "name": "Hanged Man",
+        "description": "The symbol of sacrifice and perspective shift. The Hanged Man represents letting go, patience, and new viewpoints, but can also point to stagnation."
+      },
+      "hu": {
+        "name": "Akasztott Ember",
+        "description": "Az áldozat és szemléletváltás jelképe. Az Akasztott Ember a lemondást, a türelmet és az új perspektívát szimbolizálja, de utalhat stagnálásra is."
+      }
+    }
+  },
+  {
+    "key": "death",
+    "translations": {
+      "en": {
+        "name": "Death",
+        "description": "The card of change and transformation. Death symbolizes endings, new beginnings, and renewal, but may warn against resistance."
+      },
+      "hu": {
+        "name": "Halál",
+        "description": "A változás és átalakulás kártyája. A Halál a lezárást, az újrakezdést és a megújulást jelképezi, de figyelmeztethet az ellenállásra is."
+      }
+    }
+  },
+  {
+    "key": "temperance",
+    "translations": {
+      "en": {
+        "name": "Temperance",
+        "description": "The symbol of balance and harmony. Temperance represents equilibrium, patience, and adaptation, but may also indicate excess."
+      },
+      "hu": {
+        "name": "Mértékletesség",
+        "description": "A kiegyensúlyozottság és harmónia jelképe. A Mértékletesség az egyensúlyt, a türelmet és az alkalmazkodást szimbolizálja, de jelezheti a mértéktelenséget is."
+      }
+    }
+  },
+  {
+    "key": "devil",
+    "translations": {
+      "en": {
+        "name": "Devil",
+        "description": "The card of bondage and temptation. The Devil symbolizes addictions, illusions, and materialism, but may also point to the need for liberation."
+      },
+      "hu": {
+        "name": "Ördög",
+        "description": "A kötöttségek és kísértések kártyája. Az Ördög a függőségeket, az illúziókat és a materializmust jelképezi, de utalhat a felszabadulás szükségességére is."
+      }
+    }
+  },
+  {
+    "key": "tower",
+    "translations": {
+      "en": {
+        "name": "Tower",
+        "description": "The symbol of sudden change and collapse. The Tower represents upheaval, revelation of truth, and the opportunity for rebuilding."
+      },
+      "hu": {
+        "name": "Torony",
+        "description": "A hirtelen változás és összeomlás jelképe. A Torony a megrázkódtatásokat, az igazság feltárását és az újjáépítés lehetőségét szimbolizálja."
+      }
+    }
+  },
+  {
+    "key": "star",
+    "translations": {
+      "en": {
+        "name": "Star",
+        "description": "The card of hope and inspiration. The Star symbolizes healing, spirituality, and optimism, but may warn against disappointment."
+      },
+      "hu": {
+        "name": "Csillag",
+        "description": "A remény és inspiráció kártyája. A Csillag a gyógyulást, a spiritualitást és az optimizmust jelképezi, de figyelmeztethet a csalódottságra is."
+      }
+    }
+  },
+  {
+    "key": "moon",
+    "translations": {
+      "en": {
+        "name": "Moon",
+        "description": "The symbol of illusions and intuition. The Moon represents the subconscious, fears, and instincts, but can also point to deception."
+      },
+      "hu": {
+        "name": "Hold",
+        "description": "Az illúziók és intuíció jelképe. A Hold a tudatalattit, a félelmeket és a megérzéseket szimbolizálja, de jelezheti a félrevezetést is."
+      }
+    }
+  },
+  {
+    "key": "sun",
+    "translations": {
+      "en": {
+        "name": "Sun",
+        "description": "The card of happiness and success. The Sun symbolizes joy, vitality, and fulfillment, but may also indicate excessive optimism."
+      },
+      "hu": {
+        "name": "Nap",
+        "description": "A boldogság és siker kártyája. A Nap az örömöt, a vitalitást és a beteljesülést jelképezi, de utalhat a túlzott optimizmusra is."
+      }
+    }
+  },
+  {
+    "key": "judgement",
+    "translations": {
+      "en": {
+        "name": "Judgement",
+        "description": "The symbol of rebirth and judgment. Judgement represents self-evaluation, forgiveness, and new beginnings, but may warn against self-criticism."
+      },
+      "hu": {
+        "name": "Ítélet",
+        "description": "Az újjászületés és ítélet jelképe. Az Ítélet az önvizsgálatot, a megbocsátást és az új kezdeteket szimbolizálja, de figyelmeztethet az önkritikára is."
+      }
+    }
+  },
+  {
+    "key": "world",
+    "translations": {
+      "en": {
+        "name": "World",
+        "description": "The card of completion and fulfillment. The World symbolizes success, unity, and closure, but may also indicate incompleteness."
+      },
+      "hu": {
+        "name": "Világ",
+        "description": "A teljesség és beteljesülés kártyája. A Világ a siker, az egység és a lezárás szimbóluma, de jelezheti a befejezetlenséget is."
+      }
+    }
+  },
+  {
+    "key": "ace_of_wands",
+    "translations": {
+      "en": {
+        "name": "Ace of Wands",
+        "description": "The card of new beginnings and inspiration. It represents energy, enthusiasm, and creative opportunities."
+      },
+      "hu": {
+        "name": "Pálcák ásza",
+        "description": "Az új kezdetek és inspiráció kártyája. Az energiát, lelkesedést és a kreatív lehetőségeket jelképezi."
+      }
+    }
+  },
+  {
+    "key": "two_of_wands",
+    "translations": {
+      "en": {
+        "name": "Two of Wands",
+        "description": "The symbol of planning and decision-making. It shows ambition and future-oriented thinking."
+      },
+      "hu": {
+        "name": "Pálcák kettője",
+        "description": "A tervezés és döntéshelyzet jelképe. Az ambíció és a jövőorientált gondolkodás jelenik meg benne."
+      }
+    }
+  },
+  {
+    "key": "three_of_wands",
+    "translations": {
+      "en": {
+        "name": "Three of Wands",
+        "description": "The card of growth and opportunities. It represents expansion, progress, and the realization of successful plans."
+      },
+      "hu": {
+        "name": "Pálcák hármasa",
+        "description": "A fejlődés és lehetőségek kártyája. A növekedés, előrelépés és sikeres tervek megvalósulása."
+      }
+    }
+  },
+  {
+    "key": "four_of_wands",
+    "translations": {
+      "en": {
+        "name": "Four of Wands",
+        "description": "The symbol of celebration and stability. It represents family harmony, community joy, and security."
+      },
+      "hu": {
+        "name": "Pálcák négyese",
+        "description": "Az ünneplés és stabilitás jelképe. Családi harmónia, közösségi örömök és biztonság."
+      }
+    }
+  },
+  {
+    "key": "five_of_wands",
+    "translations": {
+      "en": {
+        "name": "Five of Wands",
+        "description": "The card of conflict and competition. It represents struggle, disagreement, but can also bring growth."
+      },
+      "hu": {
+        "name": "Pálcák ötöse",
+        "description": "A konfliktus és versengés kártyája. Küzdelem, nézeteltérés, de fejlődést is hozhat."
+      }
+    }
+  },
+  {
+    "key": "six_of_wands",
+    "translations": {
+      "en": {
+        "name": "Six of Wands",
+        "description": "The card of victory and recognition. It represents success, glory, and leadership qualities."
+      },
+      "hu": {
+        "name": "Pálcák hatosa",
+        "description": "A győzelem és elismerés kártyája. A siker, dicsőség és vezetői képességek megjelenése."
+      }
+    }
+  },
+  {
+    "key": "seven_of_wands",
+    "translations": {
+      "en": {
+        "name": "Seven of Wands",
+        "description": "The symbol of self-defense and perseverance. It represents standing your ground, courage, and determination."
+      },
+      "hu": {
+        "name": "Pálcák hetese",
+        "description": "Az önvédelem és állhatatosság jelképe. Küzdelem a pozíció megtartásáért, bátorság és kitartás."
+      }
+    }
+  },
+  {
+    "key": "eight_of_wands",
+    "translations": {
+      "en": {
+        "name": "Eight of Wands",
+        "description": "The card of rapid progress and dynamism. It represents quick action, communication, and successful solutions."
+      },
+      "hu": {
+        "name": "Pálcák nyolcasa",
+        "description": "A gyors előrehaladás és dinamizmus kártyája. Gyors cselekvés, kommunikáció és sikeres megoldások."
+      }
+    }
+  },
+  {
+    "key": "nine_of_wands",
+    "translations": {
+      "en": {
+        "name": "Nine of Wands",
+        "description": "The card of perseverance and protection. It represents overcoming challenges and seeing efforts through."
+      },
+      "hu": {
+        "name": "Pálcák kilencse",
+        "description": "A kitartás és védelem kártyája. A nehézségeken való túljutás és az erőfeszítések véghezvitele."
+      }
+    }
+  },
+  {
+    "key": "ten_of_wands",
+    "translations": {
+      "en": {
+        "name": "Ten of Wands",
+        "description": "The symbol of burdens and responsibility. It represents overwork, effort, and striving toward a final goal."
+      },
+      "hu": {
+        "name": "Pálcák tízese",
+        "description": "A terhek és felelősség jelképe. A túlterheltség, a munka és a végső cél elérése érdekében tett erőfeszítések."
+      }
+    }
+  },
+  {
+    "key": "page_of_wands",
+    "translations": {
+      "en": {
+        "name": "Page of Wands",
+        "description": "The card of curiosity and new ideas. It represents youthful energy, creativity, and fresh starts."
+      },
+      "hu": {
+        "name": "Pálcák lovagja",
+        "description": "A kíváncsiság és új ötletek kártyája. Fiatalos energia, kreativitás és új kezdetek."
+      }
+    }
+  },
+  {
+    "key": "knight_of_wands",
+    "translations": {
+      "en": {
+        "name": "Knight of Wands",
+        "description": "The symbol of courage and adventure. It represents determination, action, and sudden impulses."
+      },
+      "hu": {
+        "name": "Pálcák lovagja",
+        "description": "A bátorság és kalandvágy jelképe. Elszántság, cselekvésre való készség és hirtelen impulzusok."
+      }
+    }
+  },
+  {
+    "key": "queen_of_wands",
+    "translations": {
+      "en": {
+        "name": "Queen of Wands",
+        "description": "The card of confidence and leadership. It represents inner strength, creativity, and social connections."
+      },
+      "hu": {
+        "name": "Pálcák királynője",
+        "description": "A magabiztosság és vezetői képességek kártyája. Belső erő, kreativitás és társadalmi kapcsolatok."
+      }
+    }
+  },
+  {
+    "key": "king_of_wands",
+    "translations": {
+      "en": {
+        "name": "King of Wands",
+        "description": "The symbol of authority and decision-making. It represents leadership, planning, and strategic thinking."
+      },
+      "hu": {
+        "name": "Pálcák királya",
+        "description": "A tekintély és döntéshozatal jelképe. A vezetés, tervezés és stratégiai gondolkodás szimbóluma."
+      }
+    }
+  },
+  {
+    "key": "ace_of_cups",
+    "translations": {
+      "en": {
+        "name": "Ace of Cups",
+        "description": "The symbol of love and new emotional beginnings. It represents romance, joy, and emotional richness."
+      },
+      "hu": {
+        "name": "Kelyhek ásza",
+        "description": "A szeretet és érzelmek új kezdetének jelképe. A szerelem, öröm és érzelmi gazdagság kártyája."
+      }
+    }
+  },
+  {
+    "key": "two_of_cups",
+    "translations": {
+      "en": {
+        "name": "Two of Cups",
+        "description": "The symbol of connection and harmony. It represents strong bonds, romantic relationships, and balance."
+      },
+      "hu": {
+        "name": "Kelyhek kettője",
+        "description": "A kapcsolat és harmónia jelképe. Két ember közötti erős kötelék, szerelmi kapcsolatok és egyensúly."
+      }
+    }
+  },
+  {
+    "key": "three_of_cups",
+    "translations": {
+      "en": {
+        "name": "Three of Cups",
+        "description": "The card of joy and celebration. It represents friendships, community events, and happy moments."
+      },
+      "hu": {
+        "name": "Kelyhek hármasa",
+        "description": "Az öröm és ünneplés kártyája. Barátságok, közösségi események és örömteli pillanatok."
+      }
+    }
+  },
+  {
+    "key": "four_of_cups",
+    "translations": {
+      "en": {
+        "name": "Four of Cups",
+        "description": "The card of emotional dissatisfaction and boredom. It represents introspection and rejecting new opportunities."
+      },
+      "hu": {
+        "name": "Kelyhek négyese",
+        "description": "Az érzelmi elégedetlenség és unalom kártyája. A befelé fordulás, új lehetőségek elutasítása."
+      }
+    }
+  },
+  {
+    "key": "five_of_cups",
+    "translations": {
+      "en": {
+        "name": "Five of Cups",
+        "description": "The card of sorrow and loss. It represents missed opportunities, disappointment, but also remaining chances."
+      },
+      "hu": {
+        "name": "Kelyhek ötöse",
+        "description": "A bánat és veszteség kártyája. Elvesztett lehetőségek, csalódás, de még mindig léteznek új esélyek."
+      }
+    }
+  },
+  {
+    "key": "six_of_cups",
+    "translations": {
+      "en": {
+        "name": "Six of Cups",
+        "description": "The symbol of the past and nostalgia. It represents childhood happiness, old memories, and simple joys."
+      },
+      "hu": {
+        "name": "Kelyhek hatosa",
+        "description": "A múlt és nosztalgia jelképe. Gyermeki boldogság, régi emlékek és egyszerű örömök."
+      }
+    }
+  },
+  {
+    "key": "seven_of_cups",
+    "translations": {
+      "en": {
+        "name": "Seven of Cups",
+        "description": "The card of choices and illusions. It represents many options but avoiding clear decisions."
+      },
+      "hu": {
+        "name": "Kelyhek hetese",
+        "description": "A választás és illúziók kártyája. Sokféle lehetőség, de elkerülhetjük a tiszta döntést."
+      }
+    }
+  },
+  {
+    "key": "eight_of_cups",
+    "translations": {
+      "en": {
+        "name": "Eight of Cups",
+        "description": "The card of letting go and moving on. It represents detachment from emotional ties and starting anew."
+      },
+      "hu": {
+        "name": "Kelyhek nyolcasa",
+        "description": "Az elengedés és elindulás kártyája. Az érzelmi kötődésektől való elszakadás, új irányba való elindulás."
+      }
+    }
+  },
+  {
+    "key": "nine_of_cups",
+    "translations": {
+      "en": {
+        "name": "Nine of Cups",
+        "description": "The card of fulfillment and joy. It represents emotional satisfaction and wishes coming true."
+      },
+      "hu": {
+        "name": "Kelyhek kilencse",
+        "description": "A beteljesülés és öröm kártyája. Az érzelmi elégedettség és a kívánságok teljesülése."
+      }
+    }
+  },
+  {
+    "key": "ten_of_cups",
+    "translations": {
+      "en": {
+        "name": "Ten of Cups",
+        "description": "The card of happiness and harmony. It represents family unity, love, and complete emotional fulfillment."
+      },
+      "hu": {
+        "name": "Kelyhek tízese",
+        "description": "A boldogság és harmónia kártyája. Családi összhang, szeretet és a teljes érzelmi teljesség."
+      }
+    }
+  },
+  {
+    "key": "page_of_cups",
+    "translations": {
+      "en": {
+        "name": "Page of Cups",
+        "description": "The card of creativity and emotional discovery. It represents new feelings, curiosity, and sensitivity."
+      },
+      "hu": {
+        "name": "Kelyhek lovagja",
+        "description": "A kreativitás és érzelmi felfedezés kártyája. Új érzelmek, kíváncsiság és érzékenység megjelenése."
+      }
+    }
+  },
+  {
+    "key": "knight_of_cups",
+    "translations": {
+      "en": {
+        "name": "Knight of Cups",
+        "description": "The card of romance and emotions. It represents passionate, intuitive actions and emotional journeys."
+      },
+      "hu": {
+        "name": "Kelyhek lovagja",
+        "description": "A romantika és érzelmek kártyája. Szenvedélyes, intuitív cselekedetek és érzelmi utazások."
+      }
+    }
+  },
+  {
+    "key": "queen_of_cups",
+    "translations": {
+      "en": {
+        "name": "Queen of Cups",
+        "description": "The symbol of care and empathy. It represents emotional expression, understanding, and intuition."
+      },
+      "hu": {
+        "name": "Kelyhek királynője",
+        "description": "A törődés és empátia jelképe. Az érzelmek kifejezése, megértés és intuíció."
+      }
+    }
+  },
+  {
+    "key": "king_of_cups",
+    "translations": {
+      "en": {
+        "name": "King of Cups",
+        "description": "The card of wisdom and emotional balance. It represents leadership with emotional control and compassion."
+      },
+      "hu": {
+        "name": "Kelyhek királya",
+        "description": "A bölcsesség és érzelmi egyensúly kártyája. A vezetés érzelem és indulatok kezelésével."
+      }
+    }
+  },
+  {
+    "key": "ace_of_swords",
+    "translations": {
+      "en": {
+        "name": "Ace of Swords",
+        "description": "The card of clarity and new thoughts. It represents mental clarity, truth, and the beginning of communication."
+      },
+      "hu": {
+        "name": "Kardok ásza",
+        "description": "A tisztánlátás és új gondolatok kártyája. A mentális tisztaság, igazság és kommunikáció kezdete."
+      }
+    }
+  },
+  {
+    "key": "two_of_swords",
+    "translations": {
+      "en": {
+        "name": "Two of Swords",
+        "description": "The card of decision and conflict. It represents being at a crossroads, inner struggle, and seeking balance."
+      },
+      "hu": {
+        "name": "Kardok kettője",
+        "description": "A döntés és konfliktus kártyája. A választás előtt állás, belső harc és egyensúly keresése."
+      }
+    }
+  },
+  {
+    "key": "three_of_swords",
+    "translations": {
+      "en": {
+        "name": "Three of Swords",
+        "description": "The card of pain and loss. It represents heartbreak, disappointment, and emotional healing."
+      },
+      "hu": {
+        "name": "Kardok hármasa",
+        "description": "A fájdalom és veszteség kártyája. A szívfájdalom, csalódás és érzelmi gyógyulás."
+      }
+    }
+  },
+  {
+    "key": "four_of_swords",
+    "translations": {
+      "en": {
+        "name": "Four of Swords",
+        "description": "The symbol of rest and renewal. It represents relaxation, healing, and seeking mental peace."
+      },
+      "hu": {
+        "name": "Kardok négyese",
+        "description": "A pihenés és megújulás jelképe. A pihenés, gyógyulás és a mentális nyugalom keresése."
+      }
+    }
+  },
+  {
+    "key": "five_of_swords",
+    "translations": {
+      "en": {
+        "name": "Five of Swords",
+        "description": "The card of defeat and battles. It represents conflicts, betrayals, and victories at a cost."
+      },
+      "hu": {
+        "name": "Kardok ötöse",
+        "description": "A vereség és harcok kártyája. A konfliktusok, csalódások és győzelem árán elért sikerek."
+      }
+    }
+  },
+  {
+    "key": "six_of_swords",
+    "translations": {
+      "en": {
+        "name": "Six of Swords",
+        "description": "The card of escape and travel. It represents leaving difficulties behind and moving toward a better future."
+      },
+      "hu": {
+        "name": "Kardok hatosa",
+        "description": "A menekülés és utazás kártyája. A nehézségek elhagyása és a jobb jövő felé való elindulás."
+      }
+    }
+  },
+  {
+    "key": "seven_of_swords",
+    "translations": {
+      "en": {
+        "name": "Seven of Swords",
+        "description": "The card of secrets and deception. It represents manipulation, tactical moves, and avoidance."
+      },
+      "hu": {
+        "name": "Kardok hetese",
+        "description": "A titkok és csalás kártyája. A manipuláció, taktikai lépések és az elkerülés."
+      }
+    }
+  },
+  {
+    "key": "eight_of_swords",
+    "translations": {
+      "en": {
+        "name": "Eight of Swords",
+        "description": "The card of limitations and obstacles. It represents mental traps, blocks, and restrictive thoughts."
+      },
+      "hu": {
+        "name": "Kardok nyolcasa",
+        "description": "A korlátok és akadályok kártyája. A mentális csapdák, blokkok és a korlátozó gondolatok."
+      }
+    }
+  },
+  {
+    "key": "nine_of_swords",
+    "translations": {
+      "en": {
+        "name": "Nine of Swords",
+        "description": "The card of fears and anxieties. It represents nighttime worries, stress, and self-criticism."
+      },
+      "hu": {
+        "name": "Kardok kilencse",
+        "description": "A félelmek és aggodalmak kártyája. Az éjszakai félelmek, a szorongás és az önmarcangolás."
+      }
+    }
+  },
+  {
+    "key": "ten_of_swords",
+    "translations": {
+      "en": {
+        "name": "Ten of Swords",
+        "description": "The card of endings and closure. It represents painful conclusions but also the possibility of new beginnings."
+      },
+      "hu": {
+        "name": "Kardok tízese",
+        "description": "A vég és zárás kártyája. A fájdalmas befejezés, de egyúttal az új kezdet lehetősége."
+      }
+    }
+  },
+  {
+    "key": "page_of_swords",
+    "translations": {
+      "en": {
+        "name": "Page of Swords",
+        "description": "The card of new thoughts and curiosity. It represents fresh ideas, quick action, and intellectual challenges."
+      },
+      "hu": {
+        "name": "Kardok lovagja",
+        "description": "Az új gondolatok és kíváncsiság kártyája. Friss ötletek, gyors cselekvés és szellemi kihívások."
+      }
+    }
+  },
+  {
+    "key": "knight_of_swords",
+    "translations": {
+      "en": {
+        "name": "Knight of Swords",
+        "description": "The card of bold action and risk-taking. It represents quick decisions, logical thinking, and decisive moves."
+      },
+      "hu": {
+        "name": "Kardok lovagja",
+        "description": "A bátor cselekvés és kockázatvállalás kártyája. A gyors döntések, logikus gondolkodás és határozott lépések."
+      }
+    }
+  },
+  {
+    "key": "queen_of_swords",
+    "translations": {
+      "en": {
+        "name": "Queen of Swords",
+        "description": "The symbol of clarity and rationality. It represents sharp intellect, independence, and clear thinking."
+      },
+      "hu": {
+        "name": "Kardok királynője",
+        "description": "A tisztánlátás és racionalitás jelképe. Az éles elme, függetlenség és világos gondolkodás."
+      }
+    }
+  },
+  {
+    "key": "king_of_swords",
+    "translations": {
+      "en": {
+        "name": "King of Swords",
+        "description": "The card of decision-making and justice. It represents integrity, logic, and wise leadership."
+      },
+      "hu": {
+        "name": "Kardok királya",
+        "description": "A döntéshozatal és igazságosság kártyája. A tisztesség, logika és bölcsesség vezetői képessége."
+      }
+    }
+  },
+  {
+    "key": "ace_of_pentacles",
+    "translations": {
+      "en": {
+        "name": "Ace of Pentacles",
+        "description": "The card of new financial opportunities. It represents wealth, stability, and the promise of material gains."
+      },
+      "hu": {
+        "name": "Pentakulumok ásza",
+        "description": "Az új anyagi lehetőségek kártyája. A gazdagság, stabilitás és a földi javak kezdeti ígérete."
+      }
+    }
+  },
+  {
+    "key": "two_of_pentacles",
+    "translations": {
+      "en": {
+        "name": "Two of Pentacles",
+        "description": "The card of balance and decision. It represents financial situations and balancing work with personal life."
+      },
+      "hu": {
+        "name": "Pentakulumok kettője",
+        "description": "Az egyensúly és döntés kártyája. A pénzügyi helyzetek, a munka és magánélet közötti egyensúly keresése."
+      }
+    }
+  },
+  {
+    "key": "three_of_pentacles",
+    "translations": {
+      "en": {
+        "name": "Three of Pentacles",
+        "description": "The card of teamwork and effort. It represents collaboration and successful group projects."
+      },
+      "hu": {
+        "name": "Pentakulumok hármasa",
+        "description": "Az együttműködés és munka kártyája. Közös erőfeszítések és sikeres csapatmunka."
+      }
+    }
+  },
+  {
+    "key": "four_of_pentacles",
+    "translations": {
+      "en": {
+        "name": "Four of Pentacles",
+        "description": "The card of possession and security. It represents wealth preservation but warns against excessive attachment."
+      },
+      "hu": {
+        "name": "Pentakulumok négyese",
+        "description": "A birtoklás és biztonság kártyája. A vagyon megőrzése, de figyelmeztethet a túlzott ragaszkodásra."
+      }
+    }
+  },
+  {
+    "key": "five_of_pentacles",
+    "translations": {
+      "en": {
+        "name": "Five of Pentacles",
+        "description": "The card of loss and financial hardship. It represents material lack and seeking help."
+      },
+      "hu": {
+        "name": "Pentakulumok ötöse",
+        "description": "A veszteség és anyagi nehézségek kártyája. Az anyagi hiány és a segítség keresése."
+      }
+    }
+  },
+  {
+    "key": "six_of_pentacles",
+    "translations": {
+      "en": {
+        "name": "Six of Pentacles",
+        "description": "The card of generosity and balance. It represents giving and receiving, and fair distribution."
+      },
+      "hu": {
+        "name": "Pentakulumok hatosa",
+        "description": "A generozitás és egyensúly kártyája. Az adás és kapás, az igazságos elosztás szimbóluma."
+      }
+    }
+  },
+  {
+    "key": "seven_of_pentacles",
+    "translations": {
+      "en": {
+        "name": "Seven of Pentacles",
+        "description": "The card of patience and long-term goals. It represents invested effort that will eventually pay off."
+      },
+      "hu": {
+        "name": "Pentakulumok hetese",
+        "description": "A türelem és hosszú távú célok kártyája. A befektetett munka, amely végül megtérül."
+      }
+    }
+  },
+  {
+    "key": "eight_of_pentacles",
+    "translations": {
+      "en": {
+        "name": "Eight of Pentacles",
+        "description": "The card of work and progress. It represents craftsmanship, diligence, and professional growth."
+      },
+      "hu": {
+        "name": "Pentakulumok nyolcasa",
+        "description": "A munka és fejlődés kártyája. A mesterségbeli tudás, szorgalom és a szakmai fejlődés."
+      }
+    }
+  },
+  {
+    "key": "nine_of_pentacles",
+    "translations": {
+      "en": {
+        "name": "Nine of Pentacles",
+        "description": "The card of wealth and independence. It represents success, financial freedom, and enjoyment."
+      },
+      "hu": {
+        "name": "Pentakulumok kilencse",
+        "description": "A gazdagság és önállóság kártyája. A siker, a pénzügyi függetlenség és az élvezet."
+      }
+    }
+  },
+  {
+    "key": "ten_of_pentacles",
+    "translations": {
+      "en": {
+        "name": "Ten of Pentacles",
+        "description": "The symbol of tradition and long-term security. It represents family legacy, stability, and generational wealth."
+      },
+      "hu": {
+        "name": "Pentakulumok tízese",
+        "description": "A hagyomány és hosszú távú biztonság jelképe. Családi örökség, stabilitás és generációkon átívelő értékek."
+      }
+    }
+  },
+  {
+    "key": "page_of_pentacles",
+    "translations": {
+      "en": {
+        "name": "Page of Pentacles",
+        "description": "The card of new opportunities and learning. It represents beginnings, education, and financial prospects."
+      },
+      "hu": {
+        "name": "Pentakulumok lovagja",
+        "description": "Az új lehetőségek és tanulás kártyája. A kezdetek, a tanulás és a pénzügyi lehetőségek."
+      }
+    }
+  },
+  {
+    "key": "knight_of_pentacles",
+    "translations": {
+      "en": {
+        "name": "Knight of Pentacles",
+        "description": "The card of work and responsibility. It represents reliability, perseverance, and striving for long-term goals."
+      },
+      "hu": {
+        "name": "Pentakulumok lovagja",
+        "description": "A munka és felelősség kártyája. A megbízhatóság, kitartás és hosszú távú célok elérésére való törekvés."
+      }
+    }
+  },
+  {
+    "key": "queen_of_pentacles",
+    "translations": {
+      "en": {
+        "name": "Queen of Pentacles",
+        "description": "The symbol of nurturing and material well-being. It represents stability, family, and financial security."
+      },
+      "hu": {
+        "name": "Pentakulumok királynője",
+        "description": "A gondoskodás és anyagi jólét jelképe. A stabilitás, család és a pénzügyi biztonság."
+      }
+    }
+  },
+  {
+    "key": "king_of_pentacles",
+    "translations": {
+      "en": {
+        "name": "King of Pentacles",
+        "description": "The card of financial success and wisdom. It represents wealth, sound business decisions, and mastery over material matters."
+      },
+      "hu": {
+        "name": "Pentakulumok királya",
+        "description": "A pénzügyi siker és bölcsesség kártyája. A gazdagság, sikeres üzleti döntések és az anyagi világ irányítása."
+      }
+    }
+  }
+]
