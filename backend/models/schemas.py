@@ -17,6 +17,7 @@ class CardDescription(BaseModel):
     Represents the textual description of a Tarot card.
     Used in responses where only the card’s explanation is needed.
     """
+    name: str
     description: str  # Narrative or symbolic meaning of the card
 
 class CardData(BaseModel):

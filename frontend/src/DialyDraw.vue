@@ -34,26 +34,31 @@
 </template>
 
 <script setup>
+// Import necessary Vue features and external libraries
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
 import '@/assets/DialyDraw.css';
 
-const card = ref(null);
-const errorMessage = ref(null);
-const loading = ref(false);
-const description = ref(null);
-const isAuthenticated = ref(false);
-const backendUrl = import.meta.env.VITE_BACKEND_URL;
-const token = localStorage.getItem('access_token');
+// Reactive references
+const card = ref(null); // stores the drawn card
+const errorMessage = ref(null); // stores error messages
+const loading = ref(false); // loading state
+const description = ref(null); // card description
+const isAuthenticated = ref(false); // login status
+const backendUrl = import.meta.env.VITE_BACKEND_URL; // backend base URL
+const token = localStorage.getItem('access_token'); // JWT token from localStorage
 
+// Check if user is logged in by verifying token existence
 const checkAuthentication = () => {
   isAuthenticated.value = !!token;
 };
 
+// Run on page load
 onMounted(() => {
   checkAuthentication();
 });
 
+// Draw a daily card from the backend
 const drawCard = async () => {
   if (loading.value) return;
   loading.value = true;
@@ -61,16 +66,29 @@ const drawCard = async () => {
   errorMessage.value = null;
 
   try {
+    // Request the daily card
     const response = await axios.get(`${backendUrl}/api/daily_card`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
+
     card.value = response.data;
+
+    // Fetch localized card name based on user's browser language
+    const userLang = navigator.language.slice(0, 2) || 'hu';
+    const res = await fetch(`${backendUrl}/api/card_description/${card.value.key}?lang=${userLang}`);
+    if (res.ok) {
+      const data = await res.json();
+      // Only update name if translation is available
+      card.value.name = data.name ?? card.value.name;
+    }
+
   } catch (e) {
     console.error('Hiba történt:', e);
     card.value = null;
 
+    // Handle specific daily draw limit error
     if (e.response?.status === 403) {
       errorMessage.value = "Ma már húztál kártyát! Holnap újra próbálhatod.";
     } else {
@@ -81,20 +99,26 @@ const drawCard = async () => {
   }
 };
 
+// Reveal and fetch localized description of the drawn card
 const revealDescription = async () => {
   if (!card.value?.key) return;
 
   const userLang = navigator.language.slice(0, 2) || 'hu';
 
   try {
+    // Request card description for the selected language
     const res = await fetch(`${backendUrl}/api/card_description/${card.value.key}?lang=${userLang}`);
     if (!res.ok) throw new Error('Leírás hiba: ' + res.status);
+
     const data = await res.json();
+
+    // Update name and description, fallback if no translation
+    card.value.name = data.name ?? card.value.name;
     description.value = data.description;
+
   } catch (e) {
     console.error('Leírás hiba:', e);
     description.value = "Nem sikerült betölteni a leírást.";
   }
 };
-
 </script>
