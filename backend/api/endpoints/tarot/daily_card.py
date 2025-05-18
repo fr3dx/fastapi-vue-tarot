@@ -10,7 +10,7 @@ from services.storage.minio import client, BUCKET_NAME
 from services.database.psql import (
     get_user_by_sub,
     update_user_draw_date,
-    get_card_description_by_key_and_lang,
+    get_card_data_by_key_and_lang
 )
 from utils.formatters import format_card_name
 
@@ -91,8 +91,12 @@ async def get_daily_card(
         user_lang = user.get("lang", "hu")
 
         # Retrieve card description in user's language
-        description = await get_card_description_by_key_and_lang(key, user_lang)
-        if not description:
+        card_data = await get_card_data_by_key_and_lang(key, user_lang)
+        if card_data:
+            name = card_data.get("name", format_card_name(selected))
+            description = card_data.get("description", "No description available.")
+        else:
+            name = format_card_name(selected)
             description = "No description available."
 
         # Update the user's last draw date to today

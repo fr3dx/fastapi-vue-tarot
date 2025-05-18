@@ -60,53 +60,44 @@ async def close_db_connection():
 
 # ------------------- Data Access Layer (DAO) -------------------
 
-async def get_card_description_by_key_and_lang(key: str, lang: str = "hu") -> Optional[str]:
+async def get_card_data_by_key_and_lang(key: str, lang: str = "hu") -> Optional[Dict[str, str]]:
     """
-    Retrieves a card description from the database by card key and language.
-    
-    Args:
-        key (str): The unique key identifier of the card.
-        lang (str): Language code for the description (default "hu").
-    
-    Returns:
-        Optional[str]: The description if found, otherwise None.
+    Retrieves card name and description from the database by card key and language.
 
-    Raises:
-        HTTPException: If the database pool is not initialized or the query fails.
+    Returns:
+        Optional[Dict[str, str]]: {"name": ..., "description": ...} or None
     """
     if not pool:
         raise HTTPException(status_code=503, detail="Database unavailable")
     try:
         async with pool.acquire() as connection:
-            # 1. Keressük meg a card_id-t a cards táblában
             card_row = await connection.fetchrow(
                 "SELECT id FROM cards WHERE key=$1",
                 key
             )
             if not card_row:
-                return None  # nincs ilyen kártya
+                return None
 
             card_id = card_row['id']
 
-            # 2. Keressük meg a fordítást a card_translations táblában a megadott nyelven
             row = await connection.fetchrow(
-                "SELECT description FROM card_translations WHERE card_id=$1 AND lang=$2",
+                "SELECT name, description FROM card_translations WHERE card_id=$1 AND lang=$2",
                 card_id, lang
             )
             if row:
-                return row['description']
+                return {"name": row["name"], "description": row["description"]}
 
-            # 3. Ha nincs a kért nyelven, fallback a magyar
+            # fallback magyarul
             row = await connection.fetchrow(
-                "SELECT description FROM card_translations WHERE card_id=$1 AND lang='hu'",
+                "SELECT name, description FROM card_translations WHERE card_id=$1 AND lang='hu'",
                 card_id
             )
-            return row['description'] if row else None
+            if row:
+                return {"name": row["name"], "description": row["description"]}
+
+            return None
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"DB error: {str(e)}")
-
-from typing import List, Dict, Any, Optional
-from fastapi import HTTPException
 
 async def get_all_card_data(lang: Optional[str] = "hu") -> List[Dict[str, Any]]:
     """

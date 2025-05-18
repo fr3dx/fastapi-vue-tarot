@@ -4,11 +4,12 @@ from models.auth import TokenIn, TokenOut, UserData
 from services.auth.google import verify_google_token
 from services.database.psql import insert_or_get_user, get_user_by_sub
 from services.auth.jwt import create_jwt_token, decode_jwt_token
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 
 router = APIRouter(tags=["auth"])
 
 # This should match the actual login endpoint
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/auth/google")
+bearer_scheme = HTTPBearer()
 
 @router.post("/google", response_model=TokenOut)
 async def login_google(payload: TokenIn):
@@ -23,7 +24,12 @@ async def login_google(payload: TokenIn):
     return TokenOut(access_token=token)
 
 @router.get("/user", response_model=UserData)
-async def get_user_data(token: str = Depends(oauth2_scheme)):
+async def get_user_data(credentials: HTTPAuthorizationCredentials = Depends(bearer_scheme)):
+    if credentials.scheme.lower() != "bearer":
+        raise HTTPException(status_code=401, detail="Invalid authentication scheme.")
+    
+    token = credentials.credentials
+    
     try:
         payload = decode_jwt_token(token)
     except ValueError as e:
