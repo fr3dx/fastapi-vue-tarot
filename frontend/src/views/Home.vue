@@ -1,9 +1,9 @@
 <template>
   <div class="home-container">
-    <!-- Main title of the application -->
+    <!-- Main page title, localized -->
     <h1 class="text-2xl font-bold">{{ t('home.title') }}</h1>
 
-    <!-- Navigation buttons: daily draw and Google OAuth login -->
+    <!-- Navigation buttons to daily draw and login -->
     <div class="links mt-4">
       <router-link to="/dailydraw" class="button-link">
         <button class="p-2 bg-blue-500 text-white rounded">
@@ -18,7 +18,7 @@
       </router-link>
     </div>
 
-    <!-- Display error message if present -->
+    <!-- Display error messages if any -->
     <div v-if="error" class="mt-4 bg-red-100 p-2 rounded">
       <strong>{{ t('home.error_label') }}</strong> {{ error }}
     </div>
@@ -26,21 +26,18 @@
 </template>
 
 <script setup>
-// Import Vue composition API and localization
-import { ref } from 'vue'
-import { useI18n } from 'vue-i18n'
+import { ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 
-// Internationalization function
-const { t } = useI18n()
+const { t } = useI18n();
 
-// Reactive variable for error messages
-const error = ref(null)
+const error = ref(null);
 
-// You may add custom error-handling logic here later
+// Placeholder for future error handling or state management
 </script>
 
 <style scoped>
-/* Center the container vertically and horizontally */
+/* Center content vertically and horizontally */
 .home-container {
   display: flex;
   flex-direction: column;
@@ -49,12 +46,12 @@ const error = ref(null)
   height: 100vh;
 }
 
-/* Remove underline from router-links */
+/* Remove underline from router links */
 .button-link {
   text-decoration: none;
 }
 
-/* Styling for all buttons */
+/* Button styles */
 button {
   font-size: 16px;
   cursor: pointer;
