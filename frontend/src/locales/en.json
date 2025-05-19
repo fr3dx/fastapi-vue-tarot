@@ -1,0 +1,36 @@
+{
+  "home": {
+    "title": "Tarot App",
+    "dailyDraw": "Daily Card Draw",
+    "login": "Google OAuth Login",
+    "error_label": "Error"
+  },
+
+  "login": {
+    "title": "Google Login",
+    "error_label": "An error occurred:",
+    "decode_failed": "Failed to decode user information.",
+    "auth_failed": "Backend authentication failed.",
+    "script_load_failed": "Failed to load Google OAuth script.",
+    "missing_client_id": "Google client ID is not set.",
+    "missing_container": "Sign-in button container not found.",
+    "backend_response": "Backend response:",
+    "access_token": "Access Token",
+    "token_type": "Token Type",
+    "username": "Username",
+    "backend_description": "This is the access token and related data issued by the backend."
+  },
+
+  "dailyDraw": {
+    "title": "Daily Card Draw",
+    "login_prompt": "You must log in to draw a card!",
+    "login_button": "Login with Google",
+    "draw_button": "Draw a card",
+    "loading": "Loading…",
+    "error_already_drawn": "You have already drawn a card today! Try again tomorrow.",
+    "error_general": "An error occurred while drawing a card.",
+    "show_description": "Show meaning",
+    "description_error": "Failed to load the description.",
+    "card_alt": "Card image"
+  }
+}

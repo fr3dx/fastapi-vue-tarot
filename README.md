@@ -1,4 +1,4 @@
-# Tarot Card Draw Application (Readme not ready)
+# Tarot Card Draw Application (Production and Readme not ready)
 
 A modern, containerized tarot card drawing app built with a Vue.js SPA frontend, FastAPI backend, MinIO object storage, and PostgreSQL database. Users can draw a random tarot card once per day, with card images stored in MinIO.
 
@@ -6,7 +6,7 @@ A modern, containerized tarot card drawing app built with a Vue.js SPA frontend,
 
 ## Technology Stack
 
-* **Frontend:** Vue.js Single Page Application (SPA) served by NGINX
+* **Frontend:** Vue.js SPA served by NGINX with i18n (English & Hungarian)
 * **Backend:** FastAPI (Python) REST API
 * **Authentication:** Google OAuth 2.0 (JWT-based authentication)
 * **Storage:** MinIO (S3-compatible object storage)
@@ -14,6 +14,17 @@ A modern, containerized tarot card drawing app built with a Vue.js SPA frontend,
 * **Containerization:** Docker Compose with separate containers for each service
 
 ---
+
+## Multilanguage Support
+
+This application supports **multiple languages** (currently English and Hungarian) using `vue-i18n`.
+
+- The frontend automatically detects the user's browser language.
+- Supported locales: `en` (English) and `hu` (Hungarian).
+- New translations can be added easily in the `locales/` directory.
+- The Google OAuth login UI tries to adapt to the browser language, but results may vary depending on Google’s behavior.
+
+You can override the language by changing your browser’s language settings.
 
 ## Architecture Overview
 
@@ -134,7 +145,7 @@ This application is containerized using Docker Compose. To run it, you will need
     ---
 
     ## License
-    This project is licensed under the [MIT](https://mit-license.org/) License. 
+    This project released under the [GNU General Public License.](https://www.gnu.org/licenses/gpl-3.0-standalone.html). 
 
     ---
 

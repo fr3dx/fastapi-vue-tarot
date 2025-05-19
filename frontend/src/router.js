@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import Home from './Home.vue';
-import DialyDraw from './DialyDraw.vue';
+import DailyDraw from './DailyDraw.vue';
 import GoogleOauth from './GoogleOauth.vue'; // Google OAuth2 login page
 
 // Authentication check function
@@ -20,7 +20,7 @@ const requireAuth = (to, from, next) => {
 // Route configuration
 const routes = [
   { path: '/', name: 'Home', component: Home },
-  { path: '/dialydraw', name: 'DialyDraw', component: DialyDraw, beforeEnter: requireAuth },
+  { path: '/dailydraw', name: 'DailyDraw', component: DailyDraw, beforeEnter: requireAuth },
   { path: '/googleoauth', name: 'GoogleOauth', component: GoogleOauth },
 ];
 

@@ -1,121 +1,126 @@
 <template>
   <div class="p-4">
-    <h1 class="text-xl font-bold mb-4">Google Login</h1>
+    <!-- Page title -->
+    <h1 class="text-xl font-bold mb-4">{{ t('login.title') }}</h1>
 
-    <!-- Google Login Button Container -->
+    <!-- Container for the Google sign-in button -->
     <div ref="googleButtonContainer"></div>
 
-    <!-- Error message displayed to the user -->
+    <!-- Error message display -->
     <div v-if="error" class="mt-4 bg-red-100 p-2 rounded">
-      <strong>Hiba történt:</strong> {{ error }}
+      <strong>{{ t('login.error_label') }}</strong> {{ error }}
     </div>
 
-    <!-- Backend response shown only in debug mode -->
+    <!-- Debug mode: display raw backend response -->
     <div v-if="DEBUG_MODE && responseData" class="mt-4 bg-blue-100 p-4 rounded">
-      <h2 class="font-semibold mb-2">Backend válasz:</h2>
+      <h2 class="font-semibold mb-2">{{ t('login.backend_response') }}</h2>
       <ul class="text-sm">
-        <li><strong>Access Token:</strong> {{ responseData.access_token }}</li>
-        <li><strong>Token Type:</strong> {{ responseData.token_type }}</li>
-        <li v-if="responseData.username"><strong>Felhasználónév:</strong> {{ responseData.username }}</li>
+        <li><strong>{{ t('login.access_token') }}:</strong> {{ responseData.access_token }}</li>
+        <li><strong>{{ t('login.token_type') }}:</strong> {{ responseData.token_type }}</li>
+        <li v-if="responseData.username">
+          <strong>{{ t('login.username') }}:</strong> {{ responseData.username }}
+        </li>
       </ul>
-      <p class="mt-2 text-sm text-gray-700">Ez a backend által kiállított hozzáférési token és kapcsolódó adatok.</p>
+      <p class="mt-2 text-sm text-gray-700">{{ t('login.backend_description') }}</p>
     </div>
 
-    <!-- Decoded user information shown only in debug mode -->
+    <!-- Debug mode: display decoded user information -->
     <UserInfo v-if="DEBUG_MODE && decoded" :user="decoded" />
   </div>
 </template>
 
 <script setup>
+// Vue core + dependencies
 import { ref, onMounted, onUnmounted } from 'vue'
 import axios from 'axios'
 import { jwtDecode } from 'jwt-decode'
 import { useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 
-// Enable debug mode based on environment variable
-const DEBUG_MODE = import.meta.env.VITE_DEBUG_MODE === 'true'
-
+// Localization and routing setup
+const { t } = useI18n()
 const router = useRouter()
 
+// Debug mode flag from environment
+const DEBUG_MODE = import.meta.env.VITE_DEBUG_MODE === 'true'
+
 // Reactive state variables
-const idToken = ref(null)          // Stores raw JWT from Google
-const decoded = ref(null)          // Stores decoded user info from JWT
-const error = ref(null)            // Stores error message for user feedback
-const responseData = ref(null)     // Stores backend response data
-const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID // Google OAuth client ID from env
-const googleButtonContainer = ref(null) // Reference to Google sign-in button container
+const idToken = ref(null)
+const decoded = ref(null)
+const error = ref(null)
+const responseData = ref(null)
+
+// Google client ID and DOM ref
+const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID
+const googleButtonContainer = ref(null)
+
+// Set user language from browser (default to English)
 const userLang = navigator.language?.split('-')[0] === 'hu' ? 'hu' : 'en'
 
 /**
- * Handles Google credential response after login
- * @param {Object} response - The response object from Google OAuth
+ * Handles the response after Google sign-in.
+ * Decodes the JWT and sends it to the backend.
  */
 const handleCredentialResponse = async (response) => {
   if (response.credential) {
     idToken.value = response.credential
 
+    // Try to decode the JWT token
     try {
-      // Decode JWT to extract user info
       decoded.value = jwtDecode(response.credential)
     } catch (e) {
-      error.value = 'Felhasználói adatok dekódolása sikertelen.'
+      error.value = t('login.decode_failed')
       decoded.value = null
       return
     }
 
     error.value = null
-
-    // Send token and default browser language to backend for verification and further auth
     await sendGoogleAuthRequest(idToken.value, userLang)
   } else {
-    error.value = 'Google bejelentkezési hiba történt.'
+    error.value = t('login.auth_failed')
     idToken.value = null
     decoded.value = null
   }
 }
 
 /**
- * Sends the Google ID token to the backend for authentication
- * @param {string} token - The ID token (JWT) from Google
+ * Sends the token and language to the backend for authentication.
  */
 const sendGoogleAuthRequest = async (token, lang) => {
   try {
     const res = await axios.post('http://localhost:8000/api/auth/google', { token, lang })
     responseData.value = res.data
-
-    // Store access token locally for further authenticated requests
     localStorage.setItem('access_token', res.data.access_token)
 
-    // Redirect user if not in debug mode
+    // Navigate only if not in debug mode
     if (!DEBUG_MODE) {
-      router.push('/dialydraw')
+      router.push('/dailydraw')
     }
   } catch {
-    error.value = 'Backend hitelesítési hiba.'
+    error.value = t('login.auth_failed')
   }
 }
 
 /**
- * Initializes Google OAuth client and renders the sign-in button
+ * Initializes the Google sign-in widget and renders the button.
  */
 const initializeGoogleAuth = () => {
   if (!window.google?.accounts?.id) {
-    error.value = 'Google OAuth szkript nem töltődött be. Ellenőrizd az internetkapcsolatot!'
+    error.value = t('login.script_load_failed')
     return
   }
 
   if (!clientId) {
-    error.value = 'A Google kliens azonosító nincs beállítva.'
+    error.value = t('login.missing_client_id')
     return
   }
 
-  // Initialize Google Identity Services
   window.google.accounts.id.initialize({
     client_id: clientId,
-    callback: handleCredentialResponse
+    callback: handleCredentialResponse,
+    locale: userLang
   })
 
-  // Render the Google Sign-In button
   if (googleButtonContainer.value) {
     window.google.accounts.id.renderButton(googleButtonContainer.value, {
       type: 'standard',
@@ -126,13 +131,12 @@ const initializeGoogleAuth = () => {
       logo_alignment: 'left'
     })
   } else {
-    error.value = 'Bejelentkezés gomb konténer nem található.'
+    error.value = t('login.missing_container')
   }
 }
 
 /**
- * Loads the Google OAuth client script dynamically
- * @returns {Promise<void>}
+ * Loads Google's OAuth script dynamically.
  */
 const loadGoogleScript = () =>
   new Promise((resolve, reject) => {
@@ -145,16 +149,16 @@ const loadGoogleScript = () =>
     document.head.appendChild(script)
   })
 
-// Lifecycle hook: on component mount
+// Load and initialize Google sign-in on mount
 onMounted(() => {
   loadGoogleScript()
     .then(initializeGoogleAuth)
     .catch(() => {
-      error.value = 'Nem sikerült betölteni a Google OAuth szkriptet.'
+      error.value = t('login.script_load_failed')
     })
 })
 
-// Lifecycle hook: on component unmount
+// Cancel the sign-in session when component is destroyed
 onUnmounted(() => {
   if (window.google?.accounts?.id) {
     window.google.accounts.id.cancel()
@@ -162,19 +166,19 @@ onUnmounted(() => {
 })
 
 /**
- * Inline component to display decoded user information (for debugging)
+ * Component to show decoded user information (debug mode only).
  */
 const UserInfo = {
   props: ['user'],
   template: `
     <div class="mt-4 bg-green-100 p-4 rounded">
-      <h2 class="font-semibold mb-2">Dekódolt felhasználói adatok:</h2>
+      <h2 class="font-semibold mb-2">{{ $t('login.decoded_title') }}</h2>
       <ul class="text-sm">
-        <li><strong>Felhasználónév:</strong> {{ user.name }}</li>
+        <li><strong>{{ $t('login.username') }}:</strong> {{ user.name }}</li>
         <li><strong>Email:</strong> {{ user.email }}</li>
         <li><strong>Google ID:</strong> {{ user.sub }}</li>
         <li>
-          <strong>Profilkép:</strong>
+          <strong>{{ $t('login.profile_picture') }}:</strong>
           <img :src="user.picture" alt="profile picture" class="inline w-10 h-10 rounded-full ml-2" />
         </li>
       </ul>
@@ -183,4 +187,5 @@ const UserInfo = {
 }
 </script>
 
+<!-- Scoped external style for the component -->
 <style src="@/assets/GoogleOauth.css"></style>

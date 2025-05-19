@@ -1,0 +1,36 @@
+{
+  "home": {
+    "title": "Tarot App",
+    "dailyDraw": "Napi Kártyahúzás",
+    "login": "Google OAuth Bejelentkezés",
+    "error_label": "Hiba"
+  },
+
+  "login": {
+    "title": "Google Bejelentkezés",
+    "error_label": "Hiba történt:",
+    "decode_failed": "Felhasználói adatok dekódolása sikertelen.",
+    "auth_failed": "Backend hitelesítési hiba.",
+    "script_load_failed": "Nem sikerült betölteni a Google OAuth szkriptet.",
+    "missing_client_id": "A Google kliens azonosító nincs beállítva.",
+    "missing_container": "Bejelentkezés gomb konténer nem található.",
+    "backend_response": "Backend válasz:",
+    "access_token": "Hozzáférési token",
+    "token_type": "Token típusa",
+    "username": "Felhasználónév",
+    "backend_description": "Ez a backend által kiállított hozzáférési token és kapcsolódó adatok."
+  },
+
+  "dailyDraw": {
+    "title": "Napi Kártyahúzás",
+    "login_prompt": "Be kell jelentkezned, hogy húzhass egy kártyát!",
+    "login_button": "Jelentkezz be Google-lel",
+    "draw_button": "Húzz egy kártyát",
+    "loading": "Töltés…",
+    "error_already_drawn": "Ma már húztál kártyát! Holnap újra próbálhatod.",
+    "error_general": "Hiba történt a kártyahúzás közben.",
+    "show_description": "Mutasd a jelentését",
+    "description_error": "Nem sikerült betölteni a leírást.",
+    "card_alt": "Kártya kép"
+  }
+}
