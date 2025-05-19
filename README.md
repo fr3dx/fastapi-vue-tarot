@@ -46,56 +46,8 @@ This application is containerized using Docker Compose. To run it, you will need
     cd fastapi-vue-tarot
     ```
 
-2.  **Create a `.env` File:**
-    Create the `.env` file in the root of the project and fill in the necessary environment variables:
-
-    ```dotenv
-    # Container
-    POSTGRES_USER=username
-    POSTGRES_PASSWORD=password
-    POSTGRES_DB=test_db
-
-    # Backend
-    DB_HOST=test-db
-    DB_PORT=5432
-    DB_NAME=test_db
-    DB_USER=username
-    DB_PASSWORD=password.
-
-    # Minio
-    MINIO_ENDPOINT=minio:9000
-    MINIO_ROOT_USER=
-    MINIO_ROOT_PASSWORD=
-    MINIO_BUCKET_TAROT=yourbucket
-    MINIO_PUBLIC_URL=http://localhost:9000
-    USE_PRESIGNED_URL=false
-
-    # Folder where datas uploaded to bucket
-    MINIO_FOLDER_PATH='C:\Users\your\path'
-
-    # Oauth Google
-    GOOGLE_CLIENT_ID=google_token.apps.googleusercontent.com
-    GOOGLE_CLIENT_SECRET=google_secret
-    DATABASE_URL=postgresql+psycopg2://username:password@test-db:5432/test_db
-
-    # FastAPI JWT secret key
-    JWT_SECRET_KEY=your-secret-token
-
-    # Frontend App.vue
-    VITE_BACKEND_URL=http://localhost:8000
-    VITE_GOOGLE_CLIENT_ID=google_token.apps.googleusercontent.com
-
-    # Helper scripts
-    DB_HOST_HELPER_SCRIPTS=localhost
-    MINIO_ENDPOINT_HELPER_SCRIPTS=localhost:9000
-    ```
 2. **Create a `.env` File:**
-    Create the `.env` file in the frontend of the project and fill in the necessary environment variables:
-    ```dotenv
-    VITE_BACKEND_URL=http://localhost:8000
-    VITE_GOOGLE_CLIENT_ID=google_token.apps.googleusercontent.com
-    VITE_DEBUG_MODE=false
-    ```
+    Create the `.env` file in the root and the frontend of the project and fill in the necessary environment variables.
 
 3.  **Start the Containers:**
     Run the following command from the project root directory:

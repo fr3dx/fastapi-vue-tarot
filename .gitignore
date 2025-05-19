@@ -1,3 +1,22 @@
+# === Tarot cards application specific ===
+
+Cards-png-Test/
+Cards-webp-Prod/
+Cards-png-Prod/
+
+# Environment variables
+.env
+frontend/.env
+
+# Minio data
+minio-data/
+
+# Node modules
+node_modules/
+
+# Todo
+todo.txt
+
 # === Python ===
 
 # Bytecode
@@ -53,22 +72,53 @@ ehthumbs.db
 # Backend pycache
 backend/__pycache__
 
-# === Tarot cards ===
-Cards-png-Test/
-Cards-webp-Prod/
-Cards-png-Prod/
+# === Node.js / Vue ===
 
-# Environment variables
-.env
-frontend/.env
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
 
-# Minio data
-minio-data/
+# Build outputs
+dist/
+build/
+*.log
 
-# Todo
-todo.txt
+# Dependency lockfiles
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
 
-# === Node.js ===
+# Local environment settings
+.env.local
+.env.*.local
+.env.development.local
+.env.production.local
 
-# Node modules (ignore everything in node_modules)
-node_modules/
+# Vite / Vue cache
+.vite/
+.cache/
+vite.config.ts
+vite.config.js
+
+# IDEs
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# OS-generated files
+.DS_Store
+Thumbs.db
+
+# Coverage reports
+coverage/
+*.lcov
+
+# Optional: custom scripts, secrets, temp files
+*.bak
+*.tmp
+*.swp
