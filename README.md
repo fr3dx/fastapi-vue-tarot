@@ -137,10 +137,10 @@ This application is containerized using Docker Compose. To run it, you will need
     ## The frontend
     ![Frontend1](/images/1.png)
     ![Frontend2](/images/2.png)
-    ![Frontend1](/images/3.png)
-    ![Frontend2](/images/4.png)
-    ![Frontend1](/images/5.png)
-    ![Frontend2](/images/6.png)
+    ![Frontend3](/images/3.png)
+    ![Frontend4](/images/4.png)
+    ![Frontend5](/images/5.png)
+    ![Frontend6](/images/6.png)
 
     ---
 
