@@ -26,40 +26,11 @@
 </template>
 
 <script setup>
+import '@/assets/Home.css';
+
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
-
 const error = ref(null);
-
-// Placeholder for future error handling or state management
 </script>
-
-<style scoped>
-/* Center content vertically and horizontally */
-.home-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-}
-
-/* Remove underline from router links */
-.button-link {
-  text-decoration: none;
-}
-
-/* Button styles */
-button {
-  font-size: 16px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-/* Hover effect for buttons */
-button:hover {
-  background-color: #444;
-}
-</style>
