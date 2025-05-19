@@ -1,9 +1,11 @@
-# Python bytecode files
+# === Python ===
+
+# Bytecode
 __pycache__/
 *.py[cod]
 *$py.class
 
-# Distribution / packaging
+# Packaging
 .Python
 build/
 develop-eggs/
@@ -22,46 +24,41 @@ wheels/
 pip-log.txt
 pip-delete-this-directory.txt
 
-# Pytest
+# Testing
 .cache
 nosetests.xml
 coverage.xml
 *.cover
 *.py,cover
 
-# mypy
+# Mypy
 .mypy_cache/
 .dmypy.json
 dmypy.json
 
-# Jupyter Notebook
+# Jupyter
 .ipynb_checkpoints
 
-# VS Code
+# IDEs
 .vscode/
-
-# PyCharm
 .idea/
 
-# Linux
+# OS Files
 *~
 *.swp
-
-# macOS
 .DS_Store
-
-# Windows
 Thumbs.db
 ehthumbs.db
 
-# backedn folder pycache
+# Backend pycache
 backend/__pycache__
 
-# Tarot cards
-Cards-png/
-tarot-cards/
+# === Tarot cards ===
+Cards-png-Test/
+Cards-webp-Prod/
+Cards-png-Prod/
 
-# .env
+# Environment variables
 .env
 frontend/.env
 
@@ -71,3 +68,7 @@ minio-data/
 # Todo
 todo.txt
 
+# === Node.js ===
+
+# Node modules (ignore everything in node_modules)
+node_modules/

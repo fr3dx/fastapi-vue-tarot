@@ -157,17 +157,13 @@ async def insert_or_get_user(sub: str, email: Optional[str], name: Optional[str]
     INSERT INTO users (sub, email, name, lang)
     VALUES ($1, $2, $3, $4)
     ON CONFLICT (sub) DO UPDATE SET
-      email = EXCLUDED.email,
-      name = EXCLUDED.name,
-      lang = EXCLUDED.lang;
-
-    SELECT id, sub, email, name, lang, created_at, last_draw_date
-    FROM users
-    WHERE sub = $1;
+    email = EXCLUDED.email,
+    name = EXCLUDED.name,
+    lang = EXCLUDED.lang
+    RETURNING id, sub, email, name, lang, created_at, last_draw_date;
     """
     async with pool.acquire() as conn:
-        await conn.execute(query.split(";")[0], sub, email, name, lang)
-        row = await conn.fetchrow(query.split(";")[1], sub)
+        row = await conn.fetchrow(query, sub, email, name, lang)
         return dict(row) if row else {}
 
 async def get_user_by_sub(sub: str) -> Optional[Dict[str, Any]]:

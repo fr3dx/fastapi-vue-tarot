@@ -67,15 +67,15 @@ async def get_daily_card(
         raise HTTPException(status_code=403, detail="You have already drawn a card today.")
 
     try:
-        # List all objects in the MinIO bucket and filter PNG files
+        # List all objects in the MinIO bucket and filter webp files
         objects = list(client.list_objects(BUCKET_NAME, recursive=True))
-        png_files = [obj.object_name for obj in objects if obj.object_name.lower().endswith(".png")]
+        webp_files = [obj.object_name for obj in objects if obj.object_name.lower().endswith(".webp")]
 
-        if not png_files:
-            raise HTTPException(status_code=404, detail="No PNG files found in MinIO bucket.")
+        if not webp_files:
+            raise HTTPException(status_code=404, detail="No webp files found in MinIO bucket.")
 
-        # Select a random card image from the available PNG files
-        selected = random.choice(png_files)
+        # Select a random card image from the available webp files
+        selected = random.choice(webp_files)
 
         # Generate accessible image URL depending on config
         if USE_PRESIGNED_URL:

@@ -105,7 +105,7 @@ This application is containerized using Docker Compose. To run it, you will need
     ```
 
     ```bash
-    python set_up_db_and_all_tables_psql_prod.py && python set_up_minio_prod.py && python load_tarot_cards_to_minio.py
+    python set_up_db_and_all_tables_multilanguage_psql_prod.py && python set_up_minio_prod.py && python load_tarot_cards_to_minio.py
     ```
 
     ```bash
