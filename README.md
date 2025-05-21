@@ -1,4 +1,4 @@
-# Tarot Card Draw Application (Production and Readme not ready)
+# Tarot Card Draw Application
 
 A modern, containerized tarot card drawing app built with a Vue.js SPA frontend, FastAPI backend, MinIO object storage, and PostgreSQL database. Users can draw a random tarot card once per day, with card images stored in MinIO.
 
