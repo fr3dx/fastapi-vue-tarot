@@ -8,19 +8,38 @@ SECRET_KEY = os.getenv("JWT_SECRET_KEY", "test")
 
 # JWT configuration constants
 ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 60
+ACCESS_TOKEN_EXPIRE_MINUTES = 15  # Changed to 15 minutes
+REFRESH_TOKEN_EXPIRE_DAYS = 7
 
-def create_jwt_token(sub: str) -> str:
+def create_access_token(sub: str) -> str:
     """
-    Generates a JWT token containing a subject and expiry time.
+    Generates an access token containing a subject and expiry time.
 
     Args:
         sub (str): The subject of the token (typically a user ID or unique identifier).
 
     Returns:
-        str: A signed JWT token as a string.
+        str: A signed JWT access token as a string.
     """
     expire = datetime.utcnow() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    payload = {
+        "sub": sub,
+        "exp": expire,
+        "iat": datetime.utcnow()  # Issued at
+    }
+    return jwt.encode(payload, SECRET_KEY, algorithm=ALGORITHM)
+
+def create_refresh_token(sub: str) -> str:
+    """
+    Generates a refresh token containing a subject and expiry time.
+
+    Args:
+        sub (str): The subject of the token (typically a user ID or unique identifier).
+
+    Returns:
+        str: A signed JWT refresh token as a string.
+    """
+    expire = datetime.utcnow() + timedelta(days=REFRESH_TOKEN_EXPIRE_DAYS)
     payload = {
         "sub": sub,
         "exp": expire,
