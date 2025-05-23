@@ -1,50 +1,15 @@
-<template>
-  <div class="draw-container">
-    <h1>{{ t('dailyDraw.title') }}</h1>
-
-    <!-- Show login prompt if user is not authenticated -->
-    <div v-if="!isAuthenticated">
-      <p>{{ t('dailyDraw.login_prompt') }}</p>
-      <router-link to="/googleoauth">
-        <button class="p-2 bg-green-500 text-white rounded">
-          {{ t('dailyDraw.login_button') }}
-        </button>
-      </router-link>
-    </div>
-
-    <!-- Show card draw interface if user is authenticated -->
-    <div v-else>
-      <button @click="drawCard" :disabled="loading">
-        <span v-if="!loading">{{ t('dailyDraw.draw_button') }}</span>
-        <span v-else>{{ t('dailyDraw.loading') }}</span>
-      </button>
-
-      <!-- Display error message -->
-      <p v-if="errorMessage" class="text-red-500 mt-2">{{ errorMessage }}</p>
-
-      <!-- Display drawn card and description -->
-      <div v-if="card" class="card-display">
-        <img :src="card.image_url" width="300" height="527" :alt="t('dailyDraw.card_alt')" />
-        <p class="card-name">{{ card.name }}</p>
-
-        <!-- Button to reveal card description -->
-        <button v-if="!description" @click="revealDescription">
-          {{ t('dailyDraw.show_description') }}
-        </button>
-        <p class="card-description" v-if="description">{{ description }}</p>
-      </div>
-    </div>
-  </div>
-</template>
-
 <script setup>
 // Vue and libraries
 import { ref, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import axios from 'axios';
 import '@/assets/DailyDraw.css';
+import { isAuthenticated as checkAuthServiceAuthenticated, TOKEN_KEY } from '@/services/authService';
+
 
 // Localization instance
+
+const isAuthenticated = ref(checkAuthServiceAuthenticated());
 const { t, locale } = useI18n();
 
 // Reactive state variables
@@ -52,19 +17,20 @@ const card = ref(null);            // Stores drawn card details
 const errorMessage = ref(null);    // Stores error messages for user feedback
 const loading = ref(false);        // Loading state for async calls
 const description = ref(null);     // Card description text
-const isAuthenticated = ref(false); // User authentication status
+//const isAuthenticated = ref(false); // User authentication status
 
-// Retrieve token from localStorage on component mount
-const getToken = () => localStorage.getItem('access_token');
+// Retrieve token from localStorage using the imported TOKEN_KEY
+const getToken = () => localStorage.getItem(TOKEN_KEY);
 
 // Backend URL from environment variables
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 /**
  * Checks if user is authenticated based on presence of JWT token.
+ * Use the imported isAuthenticated from authService for consistency
  */
 const checkAuthentication = () => {
-  isAuthenticated.value = !!getToken();
+  isAuthenticated.value = checkAuthServiceAuthenticated();
 };
 
 // Run authentication check when component mounts
@@ -128,4 +94,5 @@ const revealDescription = async () => {
     description.value = t('dailyDraw.description_error');
   }
 };
+    console.log('Script setup end - isAuthenticated.value:', isAuthenticated.value);
 </script>
