@@ -17,14 +17,16 @@ export const loginWithGoogle = async (idToken, lang) => {
       token: idToken,
       lang: lang,
     });
-    const { access_token, refresh_token, token_type, username } = res.data; // Destructure response data
+    const { access_token, token_type } = res.data; // Destructure response data, refresh_token removed
 
-    // Persist access token and refresh token locally
+    // Persist access token locally
     localStorage.setItem('access_token', access_token);
-    localStorage.setItem('refresh_token', refresh_token);
-    // Optionally, you may want to save token_type or username as well for global usage
+    // refresh_token is no longer stored in localStorage
 
-    return { access_token, refresh_token, token_type, username }; // Return useful authentication data
+    // Optionally, you may want to save token_type or username as well for global usage
+    // The 'username' field was mentioned in the return type but not destructured or returned previously.
+    // Assuming it's not part of the TokenOut model from backend for now.
+    return { access_token, token_type }; // Return authentication data, refresh_token removed
   } catch (error) {
     console.error("Authentication failed:", error);
     throw error; // Propagate error for handling in caller
@@ -32,83 +34,57 @@ export const loginWithGoogle = async (idToken, lang) => {
 };
 
 /**
- * Retrieve the stored access and refresh tokens from localStorage
- * @returns {{accessToken: string|null, refreshToken: string|null}} - Object containing JWT tokens or null if not found
+ * Retrieve the stored access token from localStorage
+ * @returns {string|null} - JWT access token or null if not found
  */
-export const getTokens = () => {
-  const accessToken = localStorage.getItem('access_token');
-  const refreshToken = localStorage.getItem('refresh_token');
-  return { accessToken, refreshToken };
+export const getAccessToken = () => { // Renamed from getTokens
+  return localStorage.getItem('access_token');
+  // Logic for refresh_token removed
 };
 
 /**
  * Check whether the user is currently authenticated.
- * This check is based on the presence of both access and refresh tokens.
- * Optional: Could add access token expiration check here and attempt refresh.
- * @returns {boolean} - True if both tokens exist, false otherwise
+ * This check is based on the presence of an access token.
+ * @returns {boolean} - True if access token exists, false otherwise
  */
 export const isAuthenticated = () => {
-  const { accessToken, refreshToken } = getTokens();
-  // For now, just checking for presence. Expiration check can be added.
-  // Example of expiration check (and proactive refresh):
-  // if (accessToken) {
-  //   const decoded = decodeToken(accessToken);
-  //   if (decoded && decoded.exp * 1000 < Date.now()) {
-  //     // Token expired, try to refresh it or return false
-  //     // console.log("Access token expired, attempting refresh or flagging as not authenticated.");
-  //     // For simplicity here, we'll rely on API calls to trigger refresh if needed.
-  //     // Or, you could attempt refreshToken() here.
-  //     return false; // Or attempt refresh and return based on its success
-  //   }
-  // }
-  return !!accessToken && !!refreshToken;
+  const accessToken = getAccessToken(); // Uses the renamed function
+  // Check for refresh_token removed
+  return !!accessToken;
 };
 
 /**
- * Log out the current user by removing authentication tokens.
+ * Log out the current user.
+ * This involves removing the local access token and calling the backend logout endpoint.
  */
-export const logout = () => {
-  localStorage.removeItem('access_token');
-  localStorage.removeItem('refresh_token');
-  // TODO: Clear other local storage items if needed (e.g., user profile)
-  // Consider redirecting the user to the login page or updating UI state.
-  console.log("User logged out, tokens cleared.");
-};
-
-/**
- * Attempt to refresh the access token using the stored refresh token.
- * @returns {Promise<string>} - The new access token.
- * @throws Will throw an error if refresh token is not found, or if API refresh fails.
- */
-export const refreshToken = async () => {
-  const { refreshToken: currentRefreshToken } = getTokens();
-
-  if (!currentRefreshToken) {
-    console.error("No refresh token available for refreshing session.");
-    logout(); // Ensure user is logged out if refresh token is missing
-    throw new Error("Refresh token not found. User logged out.");
-  }
+export const logout = async () => { // Made async
+  const token = getAccessToken(); // Get token for Authorization header
 
   try {
-    const res = await axios.post(`${API_URL}/refresh`, {
-      refresh_token: currentRefreshToken,
-    });
-    const { access_token: newAccessToken } = res.data;
-
-    if (!newAccessToken) {
-      throw new Error("New access token not found in refresh response.");
+    if (token) {
+      await axios.post(`${API_URL}/logout`, {}, { // Empty body for logout
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
     }
-
-    localStorage.setItem('access_token', newAccessToken);
-    console.log("Access token refreshed successfully.");
-    return newAccessToken;
   } catch (error) {
-    console.error("Failed to refresh token:", error.response ? error.response.data : error.message);
-    logout(); // Critical failure, log out the user
-    // Propagate the error for the caller to handle (e.g., redirect to login)
-    throw new Error(error.response?.data?.detail || "Session expired. Please log in again.");
+    // Log error but proceed with local logout anyway
+    console.error("Backend logout failed:", error.response ? error.response.data : error.message);
+  } finally {
+    // Always remove local token and perform client-side cleanup
+    localStorage.removeItem('access_token');
+    // localStorage.removeItem('refresh_token'); // Already removed as per previous step logic
+    
+    // TODO: Clear other local storage items if needed (e.g., user profile)
+    // TODO: Consider redirecting the user to the login page or updating UI state globally.
+    console.log("User logged out, local access token cleared.");
+    // For example, to redirect:
+    // window.location.href = '/login'; // Or use router if within a SPA framework
   }
 };
+
+// The refreshToken function is removed as its logic will be handled by the Axios interceptor.
 
 /**
  * Decode a JWT token to extract payload data
@@ -124,3 +100,84 @@ export const decodeToken = (token) => {
     return null; // Return null if token is invalid or decoding fails
   }
 };
+
+// --- Axios Interceptor for Token Refresh ---
+
+let isRefreshing = false;
+let failedQueue = [];
+
+const processQueue = (error, token = null) => {
+  failedQueue.forEach(prom => {
+    if (error) {
+      prom.reject(error);
+    } else {
+      prom.resolve(token);
+    }
+  });
+  failedQueue = [];
+};
+
+axios.interceptors.response.use(
+  response => response,
+  async error => {
+    const originalRequest = error.config;
+
+    // Check if the error is a 401, not a retry attempt, and not for the refresh token endpoint itself
+    if (error.response && error.response.status === 401 && !originalRequest._retry && originalRequest.url !== `${API_URL}/refresh`) {
+      if (isRefreshing) {
+        // If token is already being refreshed, queue the request
+        return new Promise((resolve, reject) => {
+          failedQueue.push({ resolve, reject });
+        }).then(token => {
+          originalRequest.headers['Authorization'] = 'Bearer ' + token;
+          return axios(originalRequest); // Retry with new token
+        }).catch(err => {
+          return Promise.reject(err); // Propagate error if queue processing fails
+        });
+      }
+
+      originalRequest._retry = true; // Mark that this request has been retried
+      isRefreshing = true;
+
+      try {
+        // Attempt to refresh the token using the HTTP-only cookie
+        const refreshResponse = await axios.post(`${API_URL}/refresh`, {}, { withCredentials: true });
+        
+        const newAccessToken = refreshResponse.data.access_token;
+        if (!newAccessToken) {
+          throw new Error("New access token not found in refresh response.");
+        }
+
+        localStorage.setItem('access_token', newAccessToken);
+        
+        // Optional: Update default Axios header if your app uses it globally
+        // axios.defaults.headers.common['Authorization'] = 'Bearer ' + newAccessToken;
+
+        // Update the header of the original request
+        originalRequest.headers['Authorization'] = 'Bearer ' + newAccessToken;
+        
+        // Process the queue of failed requests with the new token
+        processQueue(null, newAccessToken);
+        
+        // Retry the original request with the new token
+        return axios(originalRequest);
+
+      } catch (refreshError) {
+        // If refresh fails, process queue with error, logout user, and reject
+        processQueue(refreshError, null);
+        console.error("Refresh token failed, logging out:", refreshError.response ? refreshError.response.data : refreshError.message);
+        await logout(); // Call the updated logout function (ensure it's async and handles errors)
+        
+        // Optional: Redirect to login page
+        // window.location.href = '/login'; // Or use router navigation
+
+        return Promise.reject(refreshError);
+      } finally {
+        isRefreshing = false; // Reset refreshing state
+      }
+    }
+
+    // For errors not related to 401 or other conditions, just propagate them
+    return Promise.reject(error);
+  }
+);

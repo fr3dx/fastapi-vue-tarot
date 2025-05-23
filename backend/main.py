@@ -1,14 +1,14 @@
 from fastapi import FastAPI
 from starlette.exceptions import HTTPException as StarletteHTTPException
-from core.lifespan import lifespan
-from core.middleware import setup_cors
-from services.storage.minio import check_bucket_exists
-from core.exceptions import setup_exception_handlers
-from api.endpoints.tarot.daily_card import router as daily_card_router
-from api.endpoints.tarot.card_description import router as card_description_router
-from api.endpoints.tarot.all_cards import router as all_cards_router
-from api.endpoints.healthcheck.health import router as healthcheck_router
-from api.endpoints.auth.google import router as google_auth_router
+from backend.core.lifespan import lifespan
+from backend.core.middleware import setup_cors
+# from backend.services.storage.minio import check_bucket_exists # This import seems unused in the provided main.py context
+from backend.core.exceptions import setup_exception_handlers
+from backend.api.endpoints.tarot.daily_card import router as daily_card_router
+from backend.api.endpoints.tarot.card_description import router as card_description_router
+from backend.api.endpoints.tarot.all_cards import router as all_cards_router
+from backend.api.endpoints.healthcheck.health import router as healthcheck_router
+from backend.api.endpoints.auth.google import router as google_auth_router
 
 # Initialize the FastAPI application with a custom lifespan context manager.
 # The 'lifespan' handles application startup and shutdown events.

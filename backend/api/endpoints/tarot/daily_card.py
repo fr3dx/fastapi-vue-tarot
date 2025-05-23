@@ -4,15 +4,15 @@ import traceback
 from datetime import datetime, timezone
 from fastapi import APIRouter, HTTPException, Depends
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-from models.schemas import Card
-from services.auth.jwt import decode_jwt_token
-from services.storage.minio import client, BUCKET_NAME
-from services.database.psql import (
+from backend.models.schemas import Card
+from backend.services.auth.jwt import decode_jwt_token
+from backend.services.storage.minio import client, BUCKET_NAME
+from backend.services.database.psql import (
     get_user_by_sub,
     update_user_draw_date,
     get_card_data_by_key_and_lang
 )
-from utils.formatters import format_card_name
+from backend.utils.formatters import format_card_name
 
 # Load configuration from environment variables
 MINIO_EXTERNAL = os.getenv("MINIO_PUBLIC_URL", "http://localhost:9000")

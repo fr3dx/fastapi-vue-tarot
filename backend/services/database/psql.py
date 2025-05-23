@@ -209,3 +209,61 @@ async def update_user_draw_date(sub: str):
             SET last_draw_date = $1
             WHERE sub = $2
         """, datetime.utcnow(), sub)
+
+async def update_user_refresh_token(sub: str, refresh_token: Optional[str]):
+    """
+    Updates the user's refresh token in the database.
+
+    Args:
+        sub (str): User's unique identifier.
+        refresh_token (Optional[str]): The new refresh token. Can be None to clear it.
+
+    Raises:
+        HTTPException: If the database connection pool is not initialized.
+    """
+    if not pool:
+        raise HTTPException(status_code=503, detail="Database unavailable")
+
+    async with pool.acquire() as conn:
+        await conn.execute("""
+            UPDATE users
+            SET refresh_token = $1
+            WHERE sub = $2
+        """, refresh_token, sub)
+
+async def get_user_by_refresh_token(refresh_token: str) -> Optional[Dict[str, Any]]:
+    """
+    Retrieves a user record from the 'users' table by their refresh token.
+
+    Args:
+        refresh_token (str): The refresh token to search for.
+
+    Returns:
+        Optional[Dict[str, Any]]: The user record if found, otherwise None.
+                                 Includes id, sub, email, name, lang, and refresh_token.
+
+    Raises:
+        HTTPException: If the database is not available or query fails.
+    """
+    if not pool:
+        raise HTTPException(status_code=503, detail="Database unavailable")
+
+    if not refresh_token: # Guard against empty string query for token
+        return None
+
+    try:
+        async with pool.acquire() as conn:
+            row = await conn.fetchrow("""
+                SELECT id, sub, email, name, lang, refresh_token, created_at, last_draw_date
+                FROM users
+                WHERE refresh_token = $1;
+            """, refresh_token)
+            return dict(row) if row else None
+    except Exception as e:
+        # Log the exception for debugging purposes
+        print(f"Error in get_user_by_refresh_token: {e}")
+        # It's generally better to raise a specific exception or handle it
+        # rather than returning None for all errors, but for now,
+        # let's stick to None if user not found or basic error.
+        # Consider raising HTTPException for operational errors.
+        raise HTTPException(status_code=500, detail=f"Database query error: {str(e)}")
