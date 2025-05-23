@@ -26,7 +26,6 @@ app.include_router(card_description_router, prefix="/api")
 app.include_router(all_cards_router, prefix="/api")
 app.include_router(healthcheck_router, prefix="/api")
 app.include_router(google_auth_router, prefix="/api/auth")
-app.include_router(healthcheck_router, prefix="/api")
 
 # Set up custom exception handlers for unified error responses.
 setup_exception_handlers(app)

@@ -112,6 +112,7 @@ def create_tables_and_insert_data():
             sub VARCHAR(255) NOT NULL UNIQUE, -- Subject identifier (e.g., from OAuth)
             email VARCHAR(255),
             name VARCHAR(255),
+            refresh_token TEXT,
             created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT NOW(), -- Timestamp of user creation
             last_draw_date DATE, -- Date of the last card draw
             lang VARCHAR(10) NOT NULL DEFAULT 'hu' -- User's preferred language, default is Hungarian

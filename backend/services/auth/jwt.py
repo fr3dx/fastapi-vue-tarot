@@ -8,7 +8,7 @@ SECRET_KEY = os.getenv("JWT_SECRET_KEY", "test")
 
 # JWT configuration constants
 ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 15  # Changed to 15 minutes
+ACCESS_TOKEN_EXPIRE_MINUTES = 1  # Changed to 15 minutes
 REFRESH_TOKEN_EXPIRE_DAYS = 7
 
 def create_access_token(sub: str) -> str:

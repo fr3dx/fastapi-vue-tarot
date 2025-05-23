@@ -28,7 +28,7 @@ bearer_scheme = HTTPBearer()
 # Cookie settings
 COOKIE_PATH = "/api/auth" # Specific path for auth cookies
 COOKIE_SAMESITE = "lax" # Can be "strict" for better security if UX allows
-COOKIE_SECURE = True # Should be True in production, False in http dev if needed
+COOKIE_SECURE = False # Should be True in production, False in http dev if needed
 COOKIE_HTTPONLY = True
 
 @router.post("/google", response_model=TokenOut)
