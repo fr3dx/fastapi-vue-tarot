@@ -4,15 +4,15 @@ from datetime import timedelta # Added timedelta
 
 # Removed OAuth2PasswordBearer as it was unused
 # Removed pydantic.BaseModel as RefreshTokenIn is removed
-from backend.models.auth import TokenIn, TokenOut, UserData
-from backend.services.auth.google import verify_google_token
-from backend.services.database.psql import ( # Added new DB functions
+from models.auth import TokenIn, TokenOut, UserData
+from services.auth.google import verify_google_token
+from services.database.psql import ( # Added new DB functions
     insert_or_get_user,
     get_user_by_sub,
     update_user_refresh_token,
     get_user_by_refresh_token
 )
-from backend.services.auth.jwt import ( # Added REFRESH_TOKEN_EXPIRE_DAYS
+from services.auth.jwt import ( # Added REFRESH_TOKEN_EXPIRE_DAYS
     create_access_token,
     create_refresh_token,
     decode_jwt_token,

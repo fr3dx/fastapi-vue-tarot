@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, Query
 from typing import Optional
-from backend.services.database.psql import get_card_data_by_key_and_lang
-from backend.models.schemas import CardDescription
+from services.database.psql import get_card_data_by_key_and_lang
+from models.schemas import CardDescription
 
 router = APIRouter(tags=["cards"])
 
