@@ -114,7 +114,9 @@ def create_tables_and_insert_data():
             name VARCHAR(255),
             created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT NOW(), -- Timestamp of user creation
             last_draw_date DATE, -- Date of the last card draw
-            lang VARCHAR(10) NOT NULL DEFAULT 'hu' -- User's preferred language, default is Hungarian
+            lang VARCHAR(10) NOT NULL DEFAULT 'hu', -- User's preferred language, default is Hungarian
+            refresh_token TEXT,
+            refresh_token_expires_at TIMESTAMP
         );
         """)
 

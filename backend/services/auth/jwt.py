@@ -2,6 +2,7 @@ from datetime import datetime, timedelta
 from typing import Optional
 import jwt  # PyJWT library for encoding and decoding JWTs
 import os
+import secrets
 
 # Load secret key from environment or fallback to a default (use only for development)
 SECRET_KEY = os.getenv("JWT_SECRET_KEY", "test")
@@ -9,6 +10,9 @@ SECRET_KEY = os.getenv("JWT_SECRET_KEY", "test")
 # JWT configuration constants
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60
+
+# Refresh token configuration constant
+REFRESH_TOKEN_EXPIRE_DAYS = 30
 
 def create_jwt_token(sub: str) -> str:
     """
@@ -48,3 +52,21 @@ def decode_jwt_token(token: str) -> Optional[dict]:
         raise ValueError("Token expired")
     except jwt.InvalidTokenError:
         raise ValueError("Invalid token")
+
+def create_refresh_token() -> str:
+    """
+    Generates a secure random string to be used as a refresh token.
+
+    Returns:
+        str: A URL-safe random string token.
+    """
+    return secrets.token_urlsafe(48)
+
+def get_refresh_token_expiry() -> datetime:
+    """
+    Calculates the expiration datetime for the refresh token.
+
+    Returns:
+        datetime: The UTC datetime when the refresh token will expire.
+    """
+    return datetime.utcnow() + timedelta(days=REFRESH_TOKEN_EXPIRE_DAYS)

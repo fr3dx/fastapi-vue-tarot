@@ -209,3 +209,41 @@ async def update_user_draw_date(sub: str):
             SET last_draw_date = $1
             WHERE sub = $2
         """, datetime.utcnow(), sub)
+
+async def upsert_refresh_token_for_user(sub: str, refresh_token: str, expires_at: datetime):
+    if not pool:
+        raise HTTPException(status_code=503, detail="Database unavailable")
+    
+    async with pool.acquire() as conn:
+        await conn.execute("""
+            UPDATE users
+            SET refresh_token = $1,
+                refresh_token_expires_at = $2
+            WHERE sub = $3
+        """, refresh_token, expires_at, sub)
+
+async def get_user_by_refresh_token(refresh_token: str) -> Optional[Dict[str, Any]]:
+    if not pool:
+        raise HTTPException(status_code=503, detail="Database unavailable")
+
+    async with pool.acquire() as conn:
+        row = await conn.fetchrow("""
+            SELECT id, sub, email, name, refresh_token_expires_at
+            FROM users
+            WHERE refresh_token = $1
+        """, refresh_token)
+        return dict(row) if row else None
+
+async def delete_refresh_token(refresh_token: str):
+    if not pool:
+        raise HTTPException(status_code=503, detail="Database unavailable")
+    async with pool.acquire() as conn:
+        await conn.execute("""
+            UPDATE users
+            SET refresh_token = NULL,
+                refresh_token_expires_at = NULL
+            WHERE refresh_token = $1
+        """, refresh_token)
+
+
+
