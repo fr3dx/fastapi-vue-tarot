@@ -20,9 +20,6 @@
       <ul class="text-sm">
         <li><strong>{{ t('login.access_token') }}:</strong> {{ responseData.access_token }}</li>
         <li><strong>{{ t('login.token_type') }}:</strong> {{ responseData.token_type }}</li>
-        <li v-if="responseData.username">
-          <strong>{{ t('login.username') }}:</strong> {{ responseData.username }}
-        </li>
       </ul>
       <p class="mt-2 text-sm text-gray-700">{{ t('login.backend_description') }}</p>
     </div>

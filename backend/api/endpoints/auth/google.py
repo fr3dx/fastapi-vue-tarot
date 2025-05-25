@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException, Depends, Body
 from fastapi.security import OAuth2PasswordBearer
-from models.auth import TokenIn, TokenOut, UserData
+from models.auth import TokenIn, TokenOut, UserData, RefreshTokenRequest
 from services.auth.google import verify_google_token
 from services.database.psql import insert_or_get_user, get_user_by_sub, upsert_refresh_token_for_user, get_user_by_refresh_token, delete_refresh_token
 from services.auth.jwt import create_jwt_token, decode_jwt_token, create_refresh_token, get_refresh_token_expiry
@@ -26,7 +26,6 @@ async def login_google(payload: TokenIn):
     expires_at = get_refresh_token_expiry()
     await upsert_refresh_token_for_user(sub=user_info["sub"], refresh_token=refresh_token, expires_at=expires_at)
     return TokenOut(access_token=token, refresh_token=refresh_token)
-    #return TokenOut(access_token=token)
 
 @router.get("/user", response_model=UserData)
 async def get_user_data(credentials: HTTPAuthorizationCredentials = Depends(bearer_scheme)):
@@ -46,13 +45,12 @@ async def get_user_data(credentials: HTTPAuthorizationCredentials = Depends(bear
     
     return UserData(**db_user)
 
-from fastapi import Body
-
-from datetime import datetime
-from fastapi import HTTPException
+from fastapi import Request
+from fastapi.exceptions import HTTPException as FastAPIHTTPException
 
 @router.post("/refresh", response_model=TokenOut)
-async def refresh_access_token(refresh_token: str = Body(...)):
+async def refresh_access_token(payload: RefreshTokenRequest = Body(...)):
+    refresh_token = payload.refresh_token
     try:
         db_user = await get_user_by_refresh_token(refresh_token)
         if not db_user:
@@ -63,10 +61,23 @@ async def refresh_access_token(refresh_token: str = Body(...)):
             raise HTTPException(status_code=401, detail="Refresh token expired")
 
         new_access_token = create_jwt_token(sub=db_user["sub"])
-        return TokenOut(access_token=new_access_token, refresh_token=refresh_token)
+        new_refresh_token = create_refresh_token()
+        new_expires_at = get_refresh_token_expiry()
+
+        await upsert_refresh_token_for_user(
+            sub=db_user["sub"],
+            refresh_token=new_refresh_token,
+            expires_at=new_expires_at
+        )
+
+        return TokenOut(access_token=new_access_token, refresh_token=new_refresh_token)
+
+    except HTTPException as e:
+        raise e
+
     except Exception as e:
-        print(f"Refresh token endpoint error: {e}")
-        raise HTTPException(status_code=500, detail=f"Internal server error: {str(e)}")
+        print(f"Unexpected error in refresh token endpoint: {e}")
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 @router.post("/logout")
 async def logout(refresh_token: str = Body(..., embed=True)):

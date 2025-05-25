@@ -17,16 +17,44 @@ export const loginWithGoogle = async (idToken, lang) => {
       token: idToken,
       lang: lang,
     });
-    const { access_token, token_type, username } = res.data; // Destructure response data
+    const { access_token, refresh_token, token_type } = res.data; // Destructure response data
 
     // Persist access token locally for future authenticated requests
     localStorage.setItem('access_token', access_token);
+    localStorage.setItem('refresh_token', refresh_token);
     // Optionally, you may want to save token_type or username as well for global usage
 
-    return { access_token, token_type, username }; // Return useful authentication data
+    return { access_token, refresh_token, token_type }; // Return useful authentication data
   } catch (error) {
     console.error("Authentication failed:", error);
     throw error; // Propagate error for handling in caller
+  }
+};
+
+export const refreshAccessToken = async () => {
+  const refreshToken = localStorage.getItem('refresh_token');
+  if (!refreshToken) {
+    throw new Error('No refresh token available');
+  }
+
+  try {
+    const res = await axios.post(`${API_URL}/refresh`, {
+      refresh_token: refreshToken,
+    });
+
+    const { access_token, refresh_token: newRefreshToken } = res.data;
+
+    // Frissítjük a tárolt tokeneket (rotálás támogatása)
+    localStorage.setItem('access_token', access_token);
+    if (newRefreshToken) {
+      localStorage.setItem('refresh_token', newRefreshToken);
+    }
+
+    return access_token;
+  } catch (error) {
+    console.error('Token refresh failed:', error);
+    logout(); // Token hibánál tisztítás
+    throw error;
   }
 };
 
@@ -56,6 +84,7 @@ export const isAuthenticated = () => {
  */
 export const logout = () => {
   localStorage.removeItem('access_token');
+  localStorage.removeItem('refresh_token');
   // TODO: Clear other local storage items if needed (e.g., user profile, refresh tokens)
 };
 
@@ -73,3 +102,38 @@ export const decodeToken = (token) => {
     return null; // Return null if token is invalid or decoding fails
   }
 };
+
+// Validate Access token
+export const isAccessTokenExpired = () => {
+  const token = getAccessToken();
+  if (!token) return true;
+
+  const decoded = decodeToken(token);
+  if (!decoded || !decoded.exp) return true;
+
+  const currentTime = Math.floor(Date.now() / 1000);
+  return decoded.exp < currentTime;
+};
+
+// Token frissítés interceptor
+axios.interceptors.request.use(
+  async (config) => {
+    if (isAccessTokenExpired()) {
+      try {
+        const newAccessToken = await refreshAccessToken();
+        config.headers.Authorization = `Bearer ${newAccessToken}`;
+      } catch (err) {
+        console.warn('Failed to refresh token. User may be logged out.');
+      }
+    } else {
+      const token = getAccessToken();
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+      }
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+
+
