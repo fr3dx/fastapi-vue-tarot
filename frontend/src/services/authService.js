@@ -1,8 +1,8 @@
-import axios from 'axios';
-import * as jwtDecode from 'jwt-decode'; // Importing JWT decode utility
+import axios from "axios";
+import * as jwtDecode from "jwt-decode"; // Importing JWT decode utility
 
 // Base URL for authentication API endpoints
-const API_URL = 'http://localhost:8000/api/auth';
+const API_URL = "http://localhost:8000/api/auth";
 
 /**
  * Authenticate user via Google token with backend API
@@ -20,8 +20,8 @@ export const loginWithGoogle = async (idToken, lang) => {
     const { access_token, refresh_token, token_type } = res.data; // Destructure response data
 
     // Persist access token locally for future authenticated requests
-    localStorage.setItem('access_token', access_token);
-    localStorage.setItem('refresh_token', refresh_token);
+    localStorage.setItem("access_token", access_token);
+    localStorage.setItem("refresh_token", refresh_token);
     // Optionally, you may want to save token_type or username as well for global usage
 
     return { access_token, refresh_token, token_type }; // Return useful authentication data
@@ -32,9 +32,9 @@ export const loginWithGoogle = async (idToken, lang) => {
 };
 
 export const refreshAccessToken = async () => {
-  const refreshToken = localStorage.getItem('refresh_token');
+  const refreshToken = localStorage.getItem("refresh_token");
   if (!refreshToken) {
-    throw new Error('No refresh token available');
+    throw new Error("No refresh token available");
   }
 
   try {
@@ -45,14 +45,14 @@ export const refreshAccessToken = async () => {
     const { access_token, refresh_token: newRefreshToken } = res.data;
 
     // Frissítjük a tárolt tokeneket (rotálás támogatása)
-    localStorage.setItem('access_token', access_token);
+    localStorage.setItem("access_token", access_token);
     if (newRefreshToken) {
-      localStorage.setItem('refresh_token', newRefreshToken);
+      localStorage.setItem("refresh_token", newRefreshToken);
     }
 
     return access_token;
   } catch (error) {
-    console.error('Token refresh failed:', error);
+    console.error("Token refresh failed:", error);
     logout(); // Token hibánál tisztítás
     throw error;
   }
@@ -63,7 +63,7 @@ export const refreshAccessToken = async () => {
  * @returns {string|null} - JWT access token or null if not found
  */
 export const getAccessToken = () => {
-  return localStorage.getItem('access_token');
+  return localStorage.getItem("access_token");
 };
 
 /**
@@ -83,8 +83,8 @@ export const isAuthenticated = () => {
  * Also consider clearing any other locally stored user data here
  */
 export const logout = () => {
-  localStorage.removeItem('access_token');
-  localStorage.removeItem('refresh_token');
+  localStorage.removeItem("access_token");
+  localStorage.removeItem("refresh_token");
   // TODO: Clear other local storage items if needed (e.g., user profile, refresh tokens)
 };
 
@@ -123,7 +123,7 @@ axios.interceptors.request.use(
         const newAccessToken = await refreshAccessToken();
         config.headers.Authorization = `Bearer ${newAccessToken}`;
       } catch (err) {
-        console.warn('Failed to refresh token. User may be logged out.');
+        console.warn("Failed to refresh token. User may be logged out.");
       }
     } else {
       const token = getAccessToken();
@@ -135,5 +135,3 @@ axios.interceptors.request.use(
   },
   (error) => Promise.reject(error)
 );
-
-

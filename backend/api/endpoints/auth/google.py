@@ -88,4 +88,3 @@ async def logout(refresh_token: str = Body(..., embed=True)):
     await delete_refresh_token(refresh_token)
     return {"message": "Successfully logged out"}
 
-

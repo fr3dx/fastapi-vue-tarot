@@ -5,6 +5,6 @@
 
 <script>
 export default {
-  name: 'App', // Root component name
+  name: "App", // Root component name
 };
 </script>
