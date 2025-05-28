@@ -15,7 +15,8 @@
     "vue-google-oauth2": "^1.5.10",
     "vue-i18n": "^9.x",
     "vue-router": "^4.0.13",
-    "vue3-google-login": "^2.0.33"
+    "vue3-google-login": "^2.0.33",
+    "pinia": "^3.0.2"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.2.2",

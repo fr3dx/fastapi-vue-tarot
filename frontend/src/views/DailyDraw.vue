@@ -43,74 +43,72 @@
 </template>
 
 <script setup>
-// Vue and libraries
-import { ref, onMounted } from "vue";
-import { useI18n } from "vue-i18n";
-import axios from "axios";
-import "@/assets/DailyDraw.css";
+// Vue and third-party imports
+import { ref, onMounted } from 'vue';
+import { useI18n } from 'vue-i18n';
+import axios from 'axios';
+import '@/assets/DailyDraw.css';
 
 // Localization instance
 const { t, locale } = useI18n();
 
 // Reactive state variables
-const card = ref(null); // Stores drawn card details
-const errorMessage = ref(null); // Stores error messages for user feedback
-const loading = ref(false); // Loading state for async calls
-const description = ref(null); // Card description text
-const isAuthenticated = ref(false); // User authentication status
+const card = ref(null);            // Holds the drawn card's details
+const errorMessage = ref(null);    // Message to display in case of error
+const loading = ref(false);        // Indicates whether a request is in progress
+const description = ref(null);     // Holds the card's localized description
+const isAuthenticated = ref(false); // Tracks whether the user is authenticated
 
-// Retrieve token from localStorage on component mount
-const getToken = () => localStorage.getItem("access_token");
-
-// Backend URL from environment variables
+// Backend base URL from environment variables
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 /**
- * Checks if user is authenticated based on presence of JWT token.
+ * Determines authentication status based on the presence of access token.
+ * Note: Token validation logic should be handled globally (e.g., in an interceptor).
  */
 const checkAuthentication = () => {
-  isAuthenticated.value = !!getToken();
+  const token = localStorage.getItem('access_token');
+  isAuthenticated.value = !!token;
 };
 
-// Run authentication check when component mounts
+// Run authentication check on component mount
 onMounted(() => {
   checkAuthentication();
 });
 
 /**
- * Draw a daily card from the backend API.
- * Includes JWT token in Authorization header.
+ * Sends a request to the backend to draw a daily card.
+ * Uses Axios, which will include an Authorization header via interceptor if available.
  */
 const drawCard = async () => {
-  if (loading.value) return; // Prevent multiple simultaneous requests
+  if (loading.value) return; // Prevent overlapping requests
   loading.value = true;
-  description.value = null; // Reset description on new draw
   errorMessage.value = null;
+  card.value = null;
+  description.value = null;
 
   try {
-    const token = getToken();
-    const response = await axios.get(`${backendUrl}/api/daily_card`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-
+    // Request the daily card from the backend
+    const response = await axios.get(`${backendUrl}/api/daily_card`);
     card.value = response.data;
 
-    // Fetch localized card name
-    const res = await fetch(
+    // Request localized card name using Axios
+    const { data } = await axios.get(
       `${backendUrl}/api/card_description/${card.value.key}?lang=${locale.value}`
     );
-    if (res.ok) {
-      const data = await res.json();
-      card.value.name = data.name ?? card.value.name;
-    }
-  } catch (e) {
-    console.error("Draw error:", e);
+
+    // Fallback to default name if localization is unavailable
+    card.value.name = data.name ?? card.value.name;
+
+  } catch (error) {
+    console.error('Card draw failed:', error);
     card.value = null;
 
-    if (e.response?.status === 403) {
-      errorMessage.value = t("dailyDraw.error_already_drawn");
+    // Handle specific error codes
+    if (error.response?.status === 403) {
+      errorMessage.value = t('dailyDraw.error_already_drawn');
     } else {
-      errorMessage.value = t("dailyDraw.error_general");
+      errorMessage.value = t('dailyDraw.error_general');
     }
   } finally {
     loading.value = false;
@@ -118,23 +116,24 @@ const drawCard = async () => {
 };
 
 /**
- * Reveal and fetch localized description of the drawn card.
+ * Fetches and reveals the localized description of the drawn card.
+ * Should only be called after a card has been drawn.
  */
 const revealDescription = async () => {
   if (!card.value?.key) return;
 
   try {
-    const res = await fetch(
+    const { data } = await axios.get(
       `${backendUrl}/api/card_description/${card.value.key}?lang=${locale.value}`
     );
-    if (!res.ok) throw new Error("Description fetch failed");
 
-    const data = await res.json();
+    // Update name and description if data is available
     card.value.name = data.name ?? card.value.name;
     description.value = data.description;
-  } catch (e) {
-    console.error("Description error:", e);
-    description.value = t("dailyDraw.description_error");
+
+  } catch (error) {
+    console.error('Failed to load card description:', error);
+    description.value = t('dailyDraw.description_error');
   }
 };
 </script>

@@ -38,18 +38,20 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
+import { useAuthStore } from '@/services/authStore'; // Import Pinia auth store
 
 import GoogleLogin from "@/components/auth/GoogleLogin.vue";
-import { loginWithGoogle, decodeToken } from "@/services/authService"; // Import authentication services
+// loginWithGoogle and decodeToken are no longer directly used here, authStore handles it.
 
 const { t } = useI18n();
 const router = useRouter();
+const authStore = useAuthStore(); // Instantiate the auth store
 
 const DEBUG_MODE = import.meta.env.VITE_DEBUG_MODE === "true";
 
 const error = ref(null);
 const responseData = ref(null); // Holds the server response after login
-const decoded = ref(null);
+// decoded ref is no longer needed here as user info comes from the store
 
 // Detect user language for localization, default to English if not Hungarian
 const userLang = navigator.language?.split("-")[0] === "hu" ? "hu" : "en";
@@ -61,25 +63,25 @@ const userLang = navigator.language?.split("-")[0] === "hu" ? "hu" : "en";
  */
 const onGoogleCredential = async (idToken) => {
   error.value = null;
-
-  // Decode the JWT token to extract user info
-  decoded.value = decodeToken(idToken);
-  if (!decoded.value) {
-    error.value = t("login.decode_failed");
-    return;
-  }
+  // The store's login action will handle decoding and setting user info.
 
   try {
-    // Call backend service to validate and login with Google token
-    const result = await loginWithGoogle(idToken, userLang);
-    responseData.value = result;
+    // Call the store action to login
+    // authStore.isLoading can be used here if a loading indicator is desired
+    const result = await authStore.login(idToken, userLang);
+    responseData.value = result; // Store the raw response for debug mode if needed
+
+    // Access user info via authStore.user or authStore.decodedAccessToken if needed
+    // For example: console.log(authStore.user);
 
     if (!DEBUG_MODE) {
       router.push("/dailydraw"); // Redirect to protected route after successful login
     }
   } catch (err) {
-    // Error handling - show user-friendly message
-    error.value = t("login.auth_failed");
+    // The authStore.login action should throw an error, which is caught here.
+    // The error might be from the API call or token handling within the store.
+    console.error("Login failed in component:", err);
+    error.value = err.message || t("login.auth_failed"); // Display a user-friendly message
   }
 };
 </script>
