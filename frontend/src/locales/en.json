@@ -32,5 +32,18 @@
     "show_description": "Show meaning",
     "description_error": "Failed to load the description.",
     "card_alt": "Card image"
+  },
+
+  "nav": {
+    "home": "Home",
+    "daily_draw": "Daily Draw",
+    "login": "Login",
+    "logout": "Logout",
+    "welcome": "Welcome, {name}"
+  },
+
+  "footer": {
+    "company_name": "Fr3dx",
+    "rights_reserved": "All rights reserved."
   }
 }

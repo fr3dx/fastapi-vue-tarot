@@ -32,5 +32,18 @@
     "show_description": "Mutasd a jelentését",
     "description_error": "Nem sikerült betölteni a leírást.",
     "card_alt": "Kártya kép"
+  },
+
+  "nav": {
+    "home": "Kezdőlap",
+    "daily_draw": "Napi húzás",
+    "login": "Bejelentkezés",
+    "logout": "Kijelentkezés",
+    "welcome": "Üdv, {name}"
+  },
+
+  "footer": {
+    "company_name": "Fr3dx",
+    "rights_reserved": "Minden jog fenntartva."
   }
 }
