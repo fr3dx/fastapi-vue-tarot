@@ -1,0 +1,74 @@
+/* assets/base.css */
+:root {
+  --primary: #f8e8e9;
+  --secondary: #f1f1f1;
+  --accent: #d88b95;
+  --text-dark: #333;
+  --text-light: #666;
+  --error-bg: #ffe5e5;
+  --border-radius: 1rem;
+  --shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  font-family: 'Inter', sans-serif;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--secondary);
+  color: var(--text-dark);
+  font-family: "Ubuntu", sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+h1, h2, h3 {
+  color: var(--text-dark);
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  border-radius: var(--border-radius);
+  padding: 0.75rem 1.25rem;
+  background-color: var(--primary);
+  color: var(--text-dark);
+  box-shadow: var(--shadow);
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  background-color: var(--accent);
+  color: white;
+}
+
+input, textarea {
+  border: 1px solid #ccc;
+  border-radius: var(--border-radius);
+  padding: 0.5rem 0.75rem;
+  width: 100%;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.error-message {
+  background-color: var(--error-bg);
+  padding: 1rem;
+  border-radius: var(--border-radius);
+  color: var(--text-dark);
+  margin-top: 1rem;
+}
+
+@media (max-width: 768px) {
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  button {
+    width: 100%;
+  }
+}

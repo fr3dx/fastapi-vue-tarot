@@ -1,0 +1,44 @@
+/* assets/DailyDraw.css */
+.draw-container {
+  padding: 2rem;
+  background-color: white;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+}
+
+.auth-prompt {
+  background-color: var(--secondary);
+  padding: 1rem;
+  border-radius: var(--border-radius);
+  text-align: center;
+}
+
+.card-display {
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.card-display img {
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  max-width: 100%;
+  height: auto;
+}
+
+.card-name {
+  margin-top: 1rem;
+  font-weight: bold;
+  font-size: 1.25rem;
+}
+
+.card-description {
+  margin-top: 1rem;
+  font-size: 1rem;
+  color: var(--text-light);
+}
+
+.btn-draw,
+.btn-description,
+.btn-login {
+  margin-top: 1rem;
+}

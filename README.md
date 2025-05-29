@@ -6,12 +6,16 @@ A modern, containerized tarot card drawing app built with a Vue.js SPA frontend,
 
 ## Technology Stack
 
-* **Frontend:** Vue.js SPA served by NGINX with i18n (English & Hungarian)
-* **Backend:** FastAPI (Python) REST API
-* **Authentication:** Google OAuth 2.0 (JWT-based authentication)
-* **Storage:** MinIO (S3-compatible object storage)
-* **Database:** PostgreSQL
-* **Containerization:** Docker Compose with separate containers for each service
+| Layer          | Technology                                  |
+|----------------|---------------------------------------------|
+| **Frontend**   | Vue.js 3 SPA, Tailwind CSS, i18n (EN/HU)    |
+| **State Mgmt** | Pinia (Vue Store)                           |
+| **Backend**    | FastAPI (Python)                            |
+| **Auth**       | Google OAuth 2.0 + JWT (access + refresh)   |
+| **Storage**    | MinIO (S3-compatible object storage)        |
+| **Database**   | PostgreSQL                                  |
+| **Web Server** | NGINX                                       |
+| **Container**  | Docker Compose                              |
 
 ---
 

@@ -56,7 +56,7 @@ import { useI18n } from 'vue-i18n'
 // HTTP client for API calls
 import axios from 'axios'
 // Import component styles
-import '@/assets/DailyDraw.css'
+import '@/assets/styles/pages/dailydraw.css'
 
 // Setup i18n translation function and reactive locale
 const { t, locale } = useI18n()

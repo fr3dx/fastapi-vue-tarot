@@ -1,7 +1,7 @@
 <template>
-  <div class="p-4">
+  <div class="login-container">
     <!-- Page title, localized -->
-    <h1 class="text-xl font-bold mb-4">{{ t("login.title") }}</h1>
+    <h1>{{ t("login.title") }}</h1>
 
     <!-- Google OAuth login button component -->
     <GoogleLogin
@@ -42,6 +42,8 @@ import { useAuthStore } from '@/services/authStore'; // Import Pinia auth store
 
 import GoogleLogin from "@/components/auth/GoogleLogin.vue";
 // loginWithGoogle and decodeToken are no longer directly used here, authStore handles it.
+
+import "@/assets/styles/pages/login.css";
 
 const { t } = useI18n();
 const router = useRouter();

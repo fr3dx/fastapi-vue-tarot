@@ -11,7 +11,7 @@
 </template>
 
 <script setup>
-import "@/assets/Home.css";
+import "@/assets/styles/pages/home.css";
 
 import { ref } from "vue";
 import { useI18n } from "vue-i18n";

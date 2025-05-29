@@ -2,6 +2,7 @@
   <div id="app-layout">
     <!-- Main application header -->
     <header>
+      <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
       <nav>
         <!-- Navigation links (left side) -->
         <div>
@@ -65,4 +66,7 @@ const handleLogout = () => {
 }
 </script>
 
-<style src="@/assets/App.css"></style>
+<style src="@/assets/styles/base.css"></style>
+<style src="@/assets/styles/layout.css"></style>
+<style src="@/assets/styles/components/nav.css"></style>
+<style src="@/assets/styles/components/button.css"></style>

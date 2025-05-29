@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia';
-import { loginWithGoogle, decodeToken } from '@/services/authService'; // Assuming authService.js is in src/services
-
+import { loginWithGoogle, decodeToken } from '@/services/authService';
 export const useAuthStore = defineStore('auth', {
   state: () => ({
     accessToken: localStorage.getItem('access_token') || null,

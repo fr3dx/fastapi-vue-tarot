@@ -1,0 +1,25 @@
+/* layout.css */
+#app-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+header {
+  background: var(--primary-color);
+  padding: 1rem 1.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+main {
+  flex-grow: 1;
+  padding: 2rem 1.5rem;
+}
+
+footer {
+  background: var(--secondary-color);
+  text-align: center;
+  padding: 1rem;
+  font-size: 0.85rem;
+  color: #6b7280;
+}

@@ -1,0 +1,38 @@
+/* components/button.css */
+.btn {
+  padding: 0.4rem 0.75rem;
+  border: none;
+  border-radius: var(--border-radius);
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.btn-login,
+.btn-logout {
+  background-color: #f8e8e9;
+  color: #333;
+  border: none;
+  padding: 0.5rem 1rem;
+  font-weight: 500;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-login:hover,
+.btn-logout:hover {
+  background-color: #f4d4d5;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.btn-login:active,
+.btn-logout:active {
+  background-color: #ebc2c4;
+}
+
+.btn-login:focus,
+.btn-logout:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(248, 232, 233, 0.6);
+}
