@@ -1,6 +1,7 @@
 {
   "home": {
-    "title": "Tarot App",
+    "title": "Tarot Alkalmazás",
+    "welcome": "Üdvözlünk a Napi Tarot Kártya alkalmazásban! Minden nap húzz egy kártyát, és fedezd fel, milyen üzenetet tartogat számodra a mai nap. Engedd, hogy a tarot útmutatása segítse a döntéseidet és inspiráljon a mindennapokban.",
     "dailyDraw": "Napi Kártyahúzás",
     "login": "Google OAuth Bejelentkezés",
     "error_label": "Hiba"

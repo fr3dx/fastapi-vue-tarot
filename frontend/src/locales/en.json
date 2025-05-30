@@ -1,6 +1,7 @@
 {
   "home": {
-    "title": "Tarot App",
+    "title": "Tarot Application",
+    "welcome": "Welcome to the Daily Tarot Card app! Draw a card each day and discover the message the universe has for you today. Let the guidance of the tarot inspire your decisions and bring insight into your daily life.",
     "dailyDraw": "Daily Card Draw",
     "login": "Google OAuth Login",
     "error_label": "Error"

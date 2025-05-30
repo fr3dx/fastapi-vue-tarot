@@ -3,6 +3,11 @@
     <!-- Main page title, localized -->
     <h1 class="text-2xl font-bold">{{ t("home.title") }}</h1>
 
+    <!-- Introduction text -->
+    <p class="mt-4 text-base text-gray-700">
+      {{ t("home.welcome") }}
+    </p>
+
     <!-- Display error messages if any -->
     <div v-if="error" class="mt-4 bg-red-100 p-2 rounded">
       <strong>{{ t("home.error_label") }}</strong> {{ error }}
