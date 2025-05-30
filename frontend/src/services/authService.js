@@ -4,7 +4,7 @@ import { useAuthStore } from '@/services/authStore'; // Import Pinia store
 import router from '@/router/router'; // Import Vue Router
 
 // Base URL for authentication API endpoints
-const API_URL = "http://localhost:8000/api/auth";
+const API_URL = import.meta.env.VITE_APP_API_URL;;
 
 /**
  * Authenticate user via Google token with backend API

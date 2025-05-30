@@ -12,7 +12,6 @@
 
 <script setup>
 import "@/assets/styles/pages/home.css";
-
 import { ref } from "vue";
 import { useI18n } from "vue-i18n";
 

@@ -39,11 +39,8 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
-import { useAuthStore } from '@/services/authStore'; // Import Pinia auth store
-
-import { GoogleLogin } from "vue3-google-login"; // Component from the vue3-google-login package
-// loginWithGoogle and decodeToken are no longer directly used here, authStore handles it.
-
+import { useAuthStore } from '@/services/authStore';
+import { GoogleLogin } from "vue3-google-login";
 import "@/assets/styles/pages/login.css";
 
 const { t } = useI18n();
