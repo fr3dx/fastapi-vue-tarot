@@ -3,11 +3,12 @@
     <!-- Page title, localized -->
     <h1>{{ t("login.title") }}</h1>
 
-    <!-- Google OAuth login button component -->
-    <GoogleLogin
-      @credential-response="onGoogleCredential"
-      @error="error = $event"
-    />
+    <!-- 
+      Google OAuth login button component from vue3-google-login.
+      The 'callback' prop is assigned to the onGoogleCredential method 
+      to handle the response after a successful Google login.
+    -->
+    <GoogleLogin :callback="onGoogleCredential" />
 
     <!-- Display error messages if login fails -->
     <div v-if="error" class="mt-4 bg-red-100 p-2 rounded">
@@ -40,7 +41,7 @@ import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 import { useAuthStore } from '@/services/authStore'; // Import Pinia auth store
 
-import GoogleLogin from "@/components/auth/GoogleLogin.vue";
+import { GoogleLogin } from "vue3-google-login"; // Component from the vue3-google-login package
 // loginWithGoogle and decodeToken are no longer directly used here, authStore handles it.
 
 import "@/assets/styles/pages/login.css";
@@ -63,14 +64,16 @@ const userLang = navigator.language?.split("-")[0] === "hu" ? "hu" : "en";
  * Decodes the JWT token and sends it to backend for authentication.
  * Displays error messages or redirects on success.
  */
-const onGoogleCredential = async (idToken) => {
+// The callback from vue3-google-login provides a CredentialResponse object
+// The actual ID token is within the .credential property of this object.
+const onGoogleCredential = async (credentialResponse) => {
   error.value = null;
   // The store's login action will handle decoding and setting user info.
 
   try {
-    // Call the store action to login
+    // Call the store action to login, passing the ID token string
     // authStore.isLoading can be used here if a loading indicator is desired
-    const result = await authStore.login(idToken, userLang);
+    const result = await authStore.login(credentialResponse.credential, userLang);
     responseData.value = result; // Store the raw response for debug mode if needed
 
     // Access user info via authStore.user or authStore.decodedAccessToken if needed
