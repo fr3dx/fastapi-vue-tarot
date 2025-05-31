@@ -3,7 +3,7 @@
     <h1>{{ t("dailyDraw.title") }}</h1>
 
     <!-- Prompt user to log in if not authenticated -->
-    <div v-if="!isAuthenticated" class="auth-prompt">
+    <div v-if="!authStore.isAuthenticated">
       <p>{{ t("dailyDraw.login_prompt") }}</p>
       <router-link to="/googleoauth" class="btn btn-login">
         {{ t("dailyDraw.login_button") }}
@@ -49,103 +49,96 @@
 </template>
 
 <script setup>
-// Import Vue Composition API functions
+
 import { ref, onMounted } from 'vue'
-// Internationalization composable
 import { useI18n } from 'vue-i18n'
-// HTTP client for API calls
 import axios from 'axios'
-// Import component styles
+import { useAuthStore } from '@/services/authStore'
 import '@/assets/styles/pages/dailydraw.css'
 
-// Setup i18n translation function and reactive locale
+// Initialize i18n translation and reactive locale properties
 const { t, locale } = useI18n()
 
-// Reactive state variables
-const card = ref(null)              // Stores the currently drawn card data
-const errorMessage = ref(null)     // Holds any error messages to display to the user
-const loading = ref(false)         // Indicates if a card draw request is in progress
-const description = ref(null)      // Stores the localized description of the drawn card
-const isAuthenticated = ref(false) // Tracks if the user is logged in/authenticated
+// Initialize the authentication store
+const authStore = useAuthStore()
 
-// Backend API base URL from environment variables
+// Reactive references to hold the current card, error messages, loading state, and card description
+const card = ref(null)              // Holds the drawn card data
+const errorMessage = ref(null)     // Stores error messages for UI display
+const loading = ref(false)         // Indicates if an API request is in progress
+const description = ref(null)      // Holds the localized description of the drawn card
+
+// Backend API base URL loaded from environment variables
 const backendUrl = import.meta.env.VITE_BACKEND_URL
 
-/**
- * Check user authentication status by verifying the presence of a local access token.
- * Note: This is a basic check; token validation should be handled more securely globally,
- * for example in router guards or Axios interceptors.
- */
-const checkAuthentication = () => {
-  const token = localStorage.getItem('access_token')
-  isAuthenticated.value = !!token
-}
-
-// Check authentication status when component mounts
+// Initialize user authentication state on component mount
 onMounted(() => {
-  checkAuthentication()
+  authStore.initializeUser()
 })
 
 /**
- * Fetches the daily card data from the backend API.
- * Manages loading state and error handling.
- * Updates the card reactive variable with the fetched data.
+ * Initiates fetching of the daily card from the backend API.
+ * Manages loading state, resets relevant reactive variables,
+ * and handles errors by displaying user-friendly messages.
  */
 const drawCard = async () => {
-  if (loading.value) return // Prevent concurrent requests
+  if (loading.value) return // Prevent multiple simultaneous requests
 
-  // Reset state before API call
+  // Reset UI state before starting the API call
   loading.value = true
   errorMessage.value = null
   card.value = null
   description.value = null
 
   try {
-    // Request daily card data
+    // Request the daily card data from the API
     const response = await axios.get(`${backendUrl}/api/daily_card`)
     card.value = response.data
 
-    // Fetch localized card name based on current locale
+    // Fetch localized card name using the card key and current locale
     const { data } = await axios.get(
       `${backendUrl}/api/card_description/${card.value.key}?lang=${locale.value}`
     )
 
-    // Override card name with localized version if available
+    // Update card name with localized version if available
     card.value.name = data.name ?? card.value.name
   } catch (error) {
+    // Log the error for debugging purposes
     console.error('Card draw failed:', error)
     card.value = null
 
-    // Show specific error messages depending on the response
+    // Provide specific error messages based on response status
     if (error.response?.status === 403) {
       errorMessage.value = t('dailyDraw.error_already_drawn')
     } else {
       errorMessage.value = t('dailyDraw.error_general')
     }
   } finally {
+    // Reset loading state regardless of success or failure
     loading.value = false
   }
 }
 
 /**
- * Fetches and displays the localized description of the drawn card.
- * Should only be called after a card has been successfully drawn.
+ * Fetches and reveals the localized description of the drawn card.
+ * Should only be called after a card has been drawn successfully.
+ * Handles errors by displaying a fallback error message.
  */
 const revealDescription = async () => {
-  if (!card.value?.key) return
+  if (!card.value?.key) return // Exit early if no card has been drawn
 
   try {
-    // Request card description from backend based on card key and locale
+    // Request the card description based on card key and current locale
     const { data } = await axios.get(
       `${backendUrl}/api/card_description/${card.value.key}?lang=${locale.value}`
     )
 
-    // Update card name and description, if provided
+    // Update the card name and description if localized data is available
     card.value.name = data.name ?? card.value.name
     description.value = data.description
   } catch (error) {
+    // Log error and display fallback message to user
     console.error('Failed to load card description:', error)
-    // Display fallback error message in UI
     description.value = t('dailyDraw.description_error')
   }
 }
