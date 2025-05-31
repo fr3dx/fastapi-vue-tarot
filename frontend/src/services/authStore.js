@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
-import { loginWithGoogle, decodeToken } from '@/services/authService';
+import { loginWithGoogle } from '@/services/authService';
+import { decodeToken } from "@/services/jwtUtils";
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({

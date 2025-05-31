@@ -1,7 +1,8 @@
-import * as jwtDecode from "jwt-decode"; // Importing JWT decode utility
+//import * as jwtDecode from "jwt-decode"; // Importing JWT decode utility
 import { useAuthStore } from '@/services/authStore'; // Import Pinia store
 import router from '@/router/router'; // Import Vue Router
 import api from "@/services/api";
+import { decodeToken } from "@/services/jwtUtils";
 
 // Base URL for authentication API endpoints, loaded from environment variables
 const API_URL = import.meta.env.VITE_APP_API_URL;
@@ -65,20 +66,6 @@ export const refreshAccessToken = async () => {
 export const getAccessToken = () => {
   const authStore = useAuthStore();
   return authStore.accessToken;
-};
-
-/**
- * Decode a JWT token to extract the payload.
- * @param {string} token - JWT token string to decode.
- * @returns {Object|null} - Decoded token payload or null if decoding fails.
- */
-export const decodeToken = (token) => {
-  try {
-    return jwtDecode.jwtDecode(token); // Using jwtDecode.jwtDecode as per import style
-  } catch (error) {
-    console.error("Failed to decode token:", error);
-    return null;
-  }
 };
 
 /**
