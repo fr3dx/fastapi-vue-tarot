@@ -52,9 +52,9 @@
 
 import { ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
-import axios from 'axios'
 import { useAuthStore } from '@/services/authStore'
 import '@/assets/styles/pages/dailydraw.css'
+import api from "@/services/api"
 
 // Initialize i18n translation and reactive locale properties
 const { t, locale } = useI18n()
@@ -92,11 +92,11 @@ const drawCard = async () => {
 
   try {
     // Request the daily card data from the API
-    const response = await axios.get(`${backendUrl}/api/daily_card`)
+    const response = await api.get(`${backendUrl}/api/daily_card`)
     card.value = response.data
 
     // Fetch localized card name using the card key and current locale
-    const { data } = await axios.get(
+    const { data } = await api.get(
       `${backendUrl}/api/card_description/${card.value.key}?lang=${locale.value}`
     )
 
@@ -129,7 +129,7 @@ const revealDescription = async () => {
 
   try {
     // Request the card description based on card key and current locale
-    const { data } = await axios.get(
+    const { data } = await api.get(
       `${backendUrl}/api/card_description/${card.value.key}?lang=${locale.value}`
     )
 

@@ -1,16 +1,13 @@
 // Main entry point of the Vue application
-// Main entry point of the Vue application
 import { createApp } from "vue";
 import { createPinia } from 'pinia';
 import vue3GoogleLogin from 'vue3-google-login'; // Google OAuth login plugin
 import App from "./App.vue";
 import i18n from "./i18n"; // Internationalization plugin
 import router from "./router/router"; // Vue Router instance
-import axios from '@/utils/axiosSetup'; // Import configured Axios
 
 // Create Vue app instance
 const app = createApp(App);
-app.config.globalProperties.$axios = axios; // Make axios available globally
 const pinia = createPinia();
 
 // Register plugins

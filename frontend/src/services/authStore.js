@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { loginWithGoogle, decodeToken, refreshAccessToken } from '@/services/authService';
+import { loginWithGoogle, decodeToken } from '@/services/authService';
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
@@ -64,7 +64,7 @@ export const useAuthStore = defineStore('auth', {
         if (response && response.access_token && response.refresh_token) {
           this.setTokens(response.access_token, response.refresh_token);
         }
-        return response;
+        return response; 
       } catch (error) {
         console.error('Login failed:', error);
         this.clearAuthData(); // Clear authentication data if login fails
@@ -80,43 +80,6 @@ export const useAuthStore = defineStore('auth', {
      */
     logout() {
       this.clearAuthData();
-    },
-
-    async handleTokenRefresh() {
-      if (this.isRefreshing) {
-        // Avoid concurrent refresh calls.
-        // Depending on desired behavior, could return a promise that resolves
-        // with the outcome of the ongoing refresh, or simply return/throw.
-        console.warn('AuthStore: Token refresh already in progress.');
-        return this.accessToken; // Or throw new Error("Refresh in progress");
-      }
-
-      console.log("AuthStore: Attempting token refresh");
-      this.isRefreshing = true;
-      const currentRefreshToken = this.refreshToken;
-
-      if (!currentRefreshToken) {
-        console.warn("AuthStore: No refresh token available. Logging out.");
-        this.logout(); // Or this.clearAuthData();
-        this.isRefreshing = false;
-        throw new Error("No refresh token available for refresh.");
-      }
-
-      try {
-        // The refreshAccessToken service function was modified to return res.data directly
-        const responseData = await refreshAccessToken(currentRefreshToken);
-        // Assuming responseData contains access_token and optionally newRefreshToken
-        this.setTokens(responseData.access_token, responseData.newRefreshToken || this.refreshToken);
-        this.isRefreshing = false;
-        console.log("AuthStore: Token refresh successful");
-        return responseData.access_token;
-      } catch (error) {
-        console.error('AuthStore: Token refresh failed', error);
-        this.logout(); // Or this.clearAuthData();
-        this.isRefreshing = false;
-        // console.error('Token refresh failed in store:', error); // Already logged above
-        throw error;
-      }
     },
 
     /**
@@ -175,15 +138,7 @@ export const useAuthStore = defineStore('auth', {
     initializeUser() {
       if (this.accessToken) {
         try {
-          const decoded = decodeToken(this.accessToken);
-          // Check for token expiration during initialization
-          if (decoded && decoded.exp && decoded.exp * 1000 > Date.now()) {
-            this.user = decoded;
-          } else {
-            // Token is expired or invalid
-            console.warn('Token expired or invalid during initialization.');
-            this.clearAuthData(); // Clears tokens and user
-          }
+          this.user = decodeToken(this.accessToken);
         } catch (error) {
           console.error('Error decoding token on initializeUser:', error);
           this.user = null;
