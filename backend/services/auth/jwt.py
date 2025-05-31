@@ -14,12 +14,14 @@ ACCESS_TOKEN_EXPIRE_MINUTES = 1
 # Refresh token configuration constant
 REFRESH_TOKEN_EXPIRE_DAYS = 30
 
-def create_jwt_token(sub: str) -> str:
+def create_jwt_token(sub: str, name: Optional[str] = None, email: Optional[str] = None) -> str:
     """
-    Generates a JWT token containing a subject and expiry time.
+    Generates a JWT token containing a subject, expiry time, and optionally user's name and email.
 
     Args:
         sub (str): The subject of the token (typically a user ID or unique identifier).
+        name (Optional[str], optional): The user's name. Defaults to None.
+        email (Optional[str], optional): The user's email address. Defaults to None.
 
     Returns:
         str: A signed JWT token as a string.
@@ -30,6 +32,15 @@ def create_jwt_token(sub: str) -> str:
         "exp": expire,
         "iat": datetime.utcnow()  # Issued at
     }
+
+    # Add name to payload if it's provided and not None
+    if name is not None:
+        payload["name"] = name
+
+    # Add email to payload if it's provided and not None
+    if email is not None:
+        payload["email"] = email
+
     return jwt.encode(payload, SECRET_KEY, algorithm=ALGORITHM)
 
 def decode_jwt_token(token: str) -> Optional[dict]:

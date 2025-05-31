@@ -21,7 +21,13 @@ async def login_google(payload: TokenIn):
         name=user_info.get("name"),
         lang=payload.lang
     )
-    token = create_jwt_token(sub=user_info["sub"])
+
+    token = create_jwt_token(
+        sub=user_info["sub"],
+        name=user_info.get("name"),
+        email=user_info.get("email")
+    )
+
     refresh_token = create_refresh_token()
     expires_at = get_refresh_token_expiry()
     await upsert_refresh_token_for_user(sub=user_info["sub"], refresh_token=refresh_token, expires_at=expires_at)
@@ -31,18 +37,18 @@ async def login_google(payload: TokenIn):
 async def get_user_data(credentials: HTTPAuthorizationCredentials = Depends(bearer_scheme)):
     if credentials.scheme.lower() != "bearer":
         raise HTTPException(status_code=401, detail="Invalid authentication scheme.")
-    
+
     token = credentials.credentials
-    
+
     try:
         payload = decode_jwt_token(token)
     except ValueError as e:
         raise HTTPException(status_code=401, detail=str(e))
-    
+
     db_user = await get_user_by_sub(payload["sub"])
     if not db_user:
         raise HTTPException(status_code=404, detail="User not found")
-    
+
     return UserData(**db_user)
 
 from fastapi import Request
@@ -55,12 +61,21 @@ async def refresh_access_token(payload: RefreshTokenRequest = Body(...)):
         db_user = await get_user_by_refresh_token(refresh_token)
         if not db_user:
             raise HTTPException(status_code=401, detail="Invalid refresh token")
-        
+
         expires_at = db_user.get("refresh_token_expires_at")
         if not expires_at or expires_at < datetime.utcnow():
             raise HTTPException(status_code=401, detail="Refresh token expired")
 
-        new_access_token = create_jwt_token(sub=db_user["sub"])
+        user_data_for_token = await get_user_by_sub(db_user["sub"])
+        if not user_data_for_token:
+             raise HTTPException(status_code=404, detail="User not found for refresh token")
+
+        new_access_token = create_jwt_token(
+            sub=db_user["sub"],
+            name=user_data_for_token.get("name"),
+            email=user_data_for_token.get("email") 
+        )
+
         new_refresh_token = create_refresh_token()
         new_expires_at = get_refresh_token_expiry()
 
@@ -87,4 +102,3 @@ async def logout(refresh_token: str = Body(..., embed=True)):
 
     await delete_refresh_token(refresh_token)
     return {"message": "Successfully logged out"}
-
