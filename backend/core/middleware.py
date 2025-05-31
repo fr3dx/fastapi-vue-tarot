@@ -1,5 +1,8 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from slowapi import Limiter
+from slowapi.util import get_remote_address
+from slowapi.middleware import SlowAPIMiddleware
 
 # CORS Configuration: This middleware enables Cross-Origin Resource Sharing.
 # It allows your backend API to accept requests from frontend clients hosted on different origins.
@@ -19,3 +22,9 @@ def setup_cors(app: FastAPI):
         allow_headers=["*"],  # Allow all custom and standard headers
     )
     print("CORS middleware setup complete.")
+
+def setup_rate_limiter(app: FastAPI):
+    limiter = Limiter(key_func=get_remote_address, default_limits=["2/minute"])
+    app.state.limiter = limiter
+    app.add_middleware(SlowAPIMiddleware)
+    print("Rate limiter middleware setup complete.")

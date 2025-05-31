@@ -1,6 +1,5 @@
 //import * as jwtDecode from "jwt-decode"; // Importing JWT decode utility
 import { useAuthStore } from '@/services/authStore'; // Import Pinia store
-import router from '@/router/router'; // Import Vue Router
 import api from "@/services/api";
 import { decodeToken } from "@/services/jwtUtils";
 

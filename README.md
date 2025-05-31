@@ -8,7 +8,7 @@ A modern, containerized tarot card drawing app built with a Vue.js SPA frontend,
 
 | Layer          | Technology                                  |
 |----------------|---------------------------------------------|
-| **Frontend**   | Vue.js 3 SPA, Tailwind CSS, i18n (EN/HU)    |
+| **Frontend**   | Vue.js 3 SPA, *Tailwind CSS, i18n (EN/HU)   |
 | **State Mgmt** | Pinia (Vue Store)                           |
 | **Backend**    | FastAPI (Python)                            |
 | **Auth**       | Google OAuth 2.0 + JWT (access + refresh)   |
@@ -17,6 +17,7 @@ A modern, containerized tarot card drawing app built with a Vue.js SPA frontend,
 | **Web Server** | NGINX                                       |
 | **Container**  | Docker Compose                              |
 
+*Tailwind CSS Planned
 ---
 
 ## Multilanguage Support
