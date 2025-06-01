@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 
 router = APIRouter(tags=["health"])
-# Healthcheck endpoint definition.
+
 @router.get("/health")
 async def health():
     """

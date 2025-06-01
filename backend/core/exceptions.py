@@ -2,7 +2,7 @@ from fastapi import Request
 from fastapi.exceptions import RequestValidationError
 from starlette.exceptions import HTTPException as StarletteHTTPException
 from fastapi.responses import JSONResponse
-from slowapi.errors import RateLimitExceeded  # <-- Importáld a slowapi hibát
+from slowapi.errors import RateLimitExceeded
 
 # Exception handler registration: Attaches custom handlers for various exception types.
 def setup_exception_handlers(app):
@@ -41,13 +41,14 @@ def setup_exception_handlers(app):
     @app.exception_handler(RateLimitExceeded)
     async def rate_limit_handler(request: Request, exc: RateLimitExceeded):
         """
-        Handles rate limit exceeded errors by slowapi.
-        Returns a friendly 429 response with a clear message.
+        Handles rate limit exceeded errors raised by SlowAPI.
+        Returns a user-friendly 429 response with a clear message.
         """
         return JSONResponse(
             status_code=429,
-            content={"error": True, "message": "Túl sok kérés érkezett. Kérlek, próbáld újra egy perc múlva."},
+            content={"error": True, "message": "Too many requests. Please try again in a minute."},
         )
+
 
     @app.exception_handler(Exception)
     async def global_exception_handler(request: Request, exc: Exception):

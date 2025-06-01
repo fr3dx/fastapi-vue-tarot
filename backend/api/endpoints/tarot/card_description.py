@@ -1,10 +1,9 @@
 from fastapi import APIRouter, HTTPException, Query
 from typing import Optional
 from services.database.psql import get_card_data_by_key_and_lang
-from models.schemas import CardDescription
+from models.card import CardDescription
 
 router = APIRouter(tags=["cards"])
-
 
 @router.get("/card_description/{key}", response_model=CardDescription)
 async def get_card_description(key: str, lang: Optional[str] = Query("hu", max_length=10)) -> CardDescription:

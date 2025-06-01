@@ -4,7 +4,7 @@ import traceback
 from datetime import datetime, timezone
 from fastapi import APIRouter, HTTPException, Depends
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-from models.schemas import Card
+from models.card import Card
 from services.auth.jwt import decode_jwt_token
 from services.storage.minio import client, BUCKET_NAME
 from services.database.psql import (
@@ -22,7 +22,6 @@ USE_PRESIGNED_URL = os.getenv("USE_PRESIGNED_URL", "false").lower() == "true"
 bearer_scheme = HTTPBearer()
 
 router = APIRouter(tags=["cards"])
-
 
 @router.get("/daily_card", response_model=Card)
 async def get_daily_card(

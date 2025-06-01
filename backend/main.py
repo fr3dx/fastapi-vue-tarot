@@ -1,8 +1,6 @@
 from fastapi import FastAPI
-#from starlette.exceptions import HTTPException as StarletteHTTPException
 from core.lifespan import lifespan
 from core.middleware import setup_cors, setup_rate_limiter
-#from services.storage.minio import check_bucket_exists
 from core.exceptions import setup_exception_handlers
 from api.endpoints.tarot.daily_card import router as daily_card_router
 from api.endpoints.tarot.card_description import router as card_description_router

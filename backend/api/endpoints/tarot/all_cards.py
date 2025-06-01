@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Query
 from typing import List
 from services.database.psql import get_all_card_data
-from models.schemas import CardData
+from models.card import CardData
 
 router = APIRouter(tags=["cards"])
 
