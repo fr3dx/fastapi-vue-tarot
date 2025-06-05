@@ -30,6 +30,7 @@
     "loading": "Loading…",
     "error_already_drawn": "You have already drawn a card today! Try again tomorrow.",
     "error_general": "An error occurred while drawing a card.",
+    "error_rate_limit": "Too many requests. Please try again in a minute.",
     "show_description": "Show meaning",
     "description_error": "Failed to load the description.",
     "card_alt": "Card image"
@@ -46,5 +47,15 @@
   "footer": {
     "company_name": "Fr3dx",
     "rights_reserved": "All rights reserved."
+  },
+  "errors": {
+    "network_error": "Network error, please try again.",
+    "unauthorized": "Unauthorized access. Please log in.",
+    "bad_request": "Bad request. Please check your input.",
+    "forbidden": "Forbidden. You don't have permission.",
+    "not_found": "Resource not found.",
+    "too_many_requests": "Too many requests. Please try again later.",
+    "server_error": "Internal server error. Please try again later.",
+    "general": "An unexpected error occurred."
   }
 }

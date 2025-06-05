@@ -53,6 +53,7 @@
 import { ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useAuthStore } from '@/services/authStore'
+import { handleApiError } from '@/services/errorHandler';
 import '@/assets/styles/pages/dailydraw.css'
 import api from "@/services/api"
 
@@ -111,7 +112,8 @@ const drawCard = async () => {
     if (error.response?.status === 403) {
       errorMessage.value = t('dailyDraw.error_already_drawn')
     } else {
-      errorMessage.value = t('dailyDraw.error_general')
+      //errorMessage.value = t('dailyDraw.error_general')
+      errorMessage.value = await handleApiError(error, t, authStore);
     }
   } finally {
     // Reset loading state regardless of success or failure
@@ -140,6 +142,7 @@ const revealDescription = async () => {
     // Log error and display fallback message to user
     console.error('Failed to load card description:', error)
     description.value = t('dailyDraw.description_error')
+    errorMessage.value = await handleApiError(error, t, authStore);
   }
 }
 </script>

@@ -30,6 +30,7 @@
     "loading": "Töltés…",
     "error_already_drawn": "Ma már húztál kártyát! Holnap újra próbálhatod.",
     "error_general": "Hiba történt a kártyahúzás közben.",
+    "error_rate_limit": "Túl sok kérés. Kérjük, próbálja meg újra egy perc múlva.",
     "show_description": "Mutasd a jelentését",
     "description_error": "Nem sikerült betölteni a leírást.",
     "card_alt": "Kártya kép"
@@ -46,5 +47,15 @@
   "footer": {
     "company_name": "Fr3dx",
     "rights_reserved": "Minden jog fenntartva."
+  },
+  "errors": {
+    "network_error": "Hálózati hiba, kérjük próbáld újra.",
+    "unauthorized": "Nem jogosult hozzáférés. Kérjük, jelentkezz be.",
+    "bad_request": "Hibás kérés. Ellenőrizd a bevitt adatokat.",
+    "forbidden": "Tiltott művelet. Nincs engedélyed.",
+    "not_found": "Az erőforrás nem található.",
+    "too_many_requests": "Túl sok kérés. Kérjük, próbáld meg később.",
+    "server_error": "Szerverhiba. Kérjük, próbáld meg később.",
+    "general": "Váratlan hiba történt."
   }
 }

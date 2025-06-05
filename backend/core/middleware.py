@@ -36,7 +36,7 @@ def setup_rate_limiter(app: FastAPI):
     """
     limiter = Limiter(
         key_func=get_remote_address,
-        default_limits=["2/minute"],  # Define global rate limits
+        default_limits=["10/minute"],  # Define global rate limits
     )
     app.state.limiter = limiter
     app.add_middleware(SlowAPIMiddleware)  # Attach the rate limiter middleware
